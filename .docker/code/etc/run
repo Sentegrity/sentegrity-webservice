@@ -1,0 +1,9 @@
+#!/bin/bash
+
+## configure symfony2
+sed -ri "s/(resources_path:+)( [[:graph:]]+)/\1 $RESOURCES_PATH/" /opt/symfony/app/config/parameters.yml && unset RESOURCES_PATH
+
+
+## clear caches
+rm -rf /opt/symfony/app/cache/*
+rm -rf /opt/symfony/app/logs/*

@@ -1,0 +1,3 @@
+parameters:
+    policy_location: %resources_path%policy/
+    data_location: %resources_path%data/

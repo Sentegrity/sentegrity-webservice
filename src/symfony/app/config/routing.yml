@@ -1,0 +1,3 @@
+sentegrity_api:
+    resource: "@SentegrityApiBundle/Resources/config/routing.yml"
+    prefix:   /

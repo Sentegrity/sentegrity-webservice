@@ -1,0 +1,21 @@
+version: '2'
+services:
+    code:
+        build:
+            context: code/
+            dockerfile: Dockerfile
+        image: sentegrity/code
+
+    php-fpm:
+        build:
+            context: php-fpm/
+            dockerfile: Dockerfile
+            args:
+                DEV: 1
+        image: sentegrity/php-fpm
+
+    nginx:
+        build:
+            context: nginx/
+            dockerfile: Dockerfile
+        image: sentegrity/nginx

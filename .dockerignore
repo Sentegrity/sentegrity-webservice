@@ -1,0 +1,3 @@
+## cache and logs
+src/symfony/app/cache/*
+src/symfony/app/logs/*

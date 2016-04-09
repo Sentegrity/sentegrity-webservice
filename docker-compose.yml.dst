@@ -1,0 +1,31 @@
+version: '2'
+services:
+    code:
+        image: sentegrity/code
+        container_name: s_code
+        volumes:
+            - ~/Development/freelance/sentegrity-webservice/src/symfony:/opt/symfony
+            - ~/Development/freelance/sentegrity-webservice/src/web:/var/www
+            - ~/Development/freelance/sentegrity-webservice/src/bucket:/var/bucket
+        environment:
+            - RESOURCES_PATH=/var/bucket/
+        tty: true
+
+    php_node:
+        image: sentegrity/php-fpm
+        container_name: s_php-node
+        volumes_from:
+            - code
+        ports:
+            - "9000:9000"
+
+    nginx:
+        image: sentegrity/nginx
+        container_name: s_loadbalancer
+        ports:
+            - "33777:80"
+            - "33778:443"
+        volumes_from:
+            - code
+        links:
+            - php_node
