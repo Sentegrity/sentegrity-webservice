@@ -22,7 +22,6 @@ RUN apt-get update && apt-get install -y php7.0 \
       php7.0-mbstring \
       php7.0-xml \
       php7.0-zip \
-      php7.0-mysql \
       php7.0-imap \
       php7.0-mcrypt \
 && rm -rf /var/lib/apt/lists/*
