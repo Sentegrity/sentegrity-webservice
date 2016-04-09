@@ -32,7 +32,7 @@ class RunHistory extends Service
 
         // validate parameters
         if (!$email || !$deviceSalt || !$runHistoryObjects) {
-            // TODO: throw an exception
+            throw new \Exception("Data parameters invalid", 200);
             // we can do more advance validation later
         }
 
@@ -40,11 +40,11 @@ class RunHistory extends Service
 
         if (file_exists($filePath)) {
             if (!$this->appendToExisting($filePath, $runHistoryObjects)) {
-                // TODO: thow an exception
+                throw new \Exception("Adding to existing file failed", 100);
             }
         } else {
             if (!$this->addNewData($filePath, $runHistoryObjects)) {
-                // TODO: thow an exception
+                throw new \Exception("Adding to new file failed", 101);
             }
         }
 
