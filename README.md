@@ -16,7 +16,7 @@ After `sudo docker-compose up -d` run `sudo docker exec -it s_loadbalancer /bin/
 ```
 add_header Public-Key-Pins 'pin-sha256="-->orig<--"; pin-sha256="-->first bck<--"; pin-sha256="-->second bck<--"; max-age=10';
 ```
-**if file `/etc/ssl/nginx/certs.fingerprint` does not exist of is outdated you can generate new finger prints:*
+**if file `/etc/ssl/nginx/certs.fingerprint` does not exist or is outdated you can generate new finger prints:*
 ```
 openssl req -pubkey < {your cert file here} | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | base64
 ```
