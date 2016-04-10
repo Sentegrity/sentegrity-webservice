@@ -110,7 +110,7 @@
         <attribute name="name" type="string">Default Jar</attribute>
     </object>
     <object type="LMENVIRONMENTVARIABLEVALUE" id="z108">
-        <attribute name="value" type="string">http://sentegrity.docker.localhost:33777/app_dev.php/</attribute>
+        <attribute name="value" type="string">https://sentegrity.docker.localhost:33778/app_dev.php/</attribute>
         <relationship name="environment" type="1/1" destination="LMENVIRONMENT" idrefs="z109"></relationship>
         <relationship name="variable" type="1/1" destination="LMENVIRONMENTVARIABLE" idrefs="z104"></relationship>
     </object>
@@ -122,6 +122,7 @@
         <relationship name="variablesvalues" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z108"></relationship>
     </object>
     <object type="LMREQUEST" id="z110">
+        <attribute name="clientcertificate" type="string">[{"data":{"keyUUID":"2EC72CFA-1FE2-4ED2-B97B-1DA2EEADDD82","pemCertificateName":"","mode":0},"identifier":"com.luckymarmot.CertificateDynamicValue"}]</attribute>
         <attribute name="uuid" type="string">C7FB0C6C-9A55-437D-9764-D3B6B4B65F1A</attribute>
         <attribute name="url" type="string">[{"data":{"environmentVariable":"C2EB62DD-759C-4311-8711-1E59A56BB323"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"checkin"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
@@ -130,7 +131,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"policyID\\":1,\\"policyRevision\\":2,\\"deviceSalt\\":1,\\"email\\":\\"abraovic@gmail.com\\",\\"runHistoryObjects\\":[\\"item1\\",\\"item2\\"]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"policyID\\":1,\\"policyRevision\\":1,\\"deviceSalt\\":1,\\"email\\":\\"abraovic@gmail.com\\",\\"runHistoryObjects\\":[\\"item1\\",\\"item2\\"]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">Check In</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM"></relationship>
@@ -148,7 +149,7 @@
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z110"></relationship>
     </object>
     <object type="LMENVIRONMENTVARIABLEVALUE" id="z112">
-        <attribute name="value" type="string">http://cloud.sentegrity.com/app_dev.php/</attribute>
+        <attribute name="value" type="string">https://cloud.sentegrity.com/app_dev.php/</attribute>
         <relationship name="environment" type="1/1" destination="LMENVIRONMENT" idrefs="z113"></relationship>
         <relationship name="variable" type="1/1" destination="LMENVIRONMENTVARIABLE" idrefs="z104"></relationship>
     </object>

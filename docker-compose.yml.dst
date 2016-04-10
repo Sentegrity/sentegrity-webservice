@@ -4,9 +4,9 @@ services:
         image: sentegrity/code
         container_name: s_code
         volumes:
-            - ~/sentegrity-webservice/src/symfony:/opt/symfony
-            - ~/sentegrity-webservice/src/web:/var/www
-            - ~/sentegrity-webservice/src/bucket:/var/bucket
+            - /home/abraovic/sentegrity-webservice/src/symfony:/opt/symfony
+            - /home/abraovic/sentegrity-webservice/src/web:/var/www
+            - /home/abraovic/sentegrity-webservice/src/bucket:/var/bucket
         environment:
             - RESOURCES_PATH=/var/bucket/
         tty: true
@@ -23,7 +23,6 @@ services:
         image: sentegrity/nginx
         container_name: s_loadbalancer
         ports:
-            - "80:80"
             - "443:443"
         volumes_from:
             - code
