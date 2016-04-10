@@ -19,7 +19,16 @@ class ExceptionListener
     {
         // You get the exception object from the received event
         $e = $event->getException();
-        Response::responseInternalServerError($this->unknownError($e));
+
+        switch ($e->getCode()) {
+            case 200:
+                Response::responseBadRequest($this->unknownError($e));
+                break;
+            default:
+                Response::responseInternalServerError($this->unknownError($e));
+                break;
+        }
+
         $event->setResponse(Response::$response);
     }
 

@@ -3,6 +3,7 @@ namespace Sentegrity\ApiBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sentegrity\BusinessBundle\Handlers as Handler;
+use Sentegrity\BusinessBundle\Services\ValidateRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 class CheckInController extends RootController
@@ -18,6 +19,7 @@ class CheckInController extends RootController
     public function checkInAction(Request $request)
     {
         $requestData = json_decode($request->getContent(), true);
+        ValidateRequest::validateRequestBody($requestData);
 
         /** @var \Sentegrity\BusinessBundle\Services\RunHistory $runHistory */
         $runHistory = $this->container->get('sentegrity_business.run_history');
