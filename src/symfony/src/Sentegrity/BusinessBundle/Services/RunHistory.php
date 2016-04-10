@@ -22,6 +22,7 @@ class RunHistory extends Service
      * @param array $runHistoryObjects     -> data to store
      *
      * @return bool true
+     * @throws \Exception
      */
     public function saveRunHistoryObjects(
         $email,
@@ -112,7 +113,7 @@ class RunHistory extends Service
         // try to put data into file on the given path
         if (file_put_contents(
             $filePath,
-            json_encode($runHistoryObjects),
+            json_encode($runHistoryObjects, JSON_PRETTY_PRINT),
             LOCK_EX
         )) {
             return true;
