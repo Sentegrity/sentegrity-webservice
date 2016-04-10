@@ -21,7 +21,7 @@ class CheckInController extends RootController
 
         /** @var \Sentegrity\BusinessBundle\Services\RunHistory $runHistory */
         $runHistory = $this->container->get('sentegrity_business.run_history');
-        $runHistoryObjectSuccessStatus = $runHistory->saveRunHistoryObjects(
+        $runHistory->saveRunHistoryObjects(
             $requestData['email'],
             $requestData['deviceSalt'],
             $requestData['runHistoryObjects']
@@ -35,7 +35,6 @@ class CheckInController extends RootController
         );
 
         $rsp = new \stdClass();
-        $rsp->runHistoryObjectSuccessStatus = $runHistoryObjectSuccessStatus;
         $rsp->newPolicy = $newPolicy;
 
         Handler\Response::responseOK($rsp);
