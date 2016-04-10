@@ -1,8 +1,6 @@
 <?php
 namespace Sentegrity\BusinessBundle\Services;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 class ValidateRequest
 {
     /**
@@ -15,8 +13,8 @@ class ValidateRequest
      * @throws \Exception
      */
     public static function validateRequestBody(
-        $body,
-        $requiredFields = ['email', 'deviceSalt', 'runHistoryObjects', 'policyID', 'policyRevision']
+        array $body,
+        array $requiredFields = ['email', 'deviceSalt', 'runHistoryObjects', 'policyID', 'policyRevision']
     ) {
         /***/
         $unExisting = [];
@@ -34,6 +32,13 @@ class ValidateRequest
         return true;
     }
 
+    /**
+     * Creates string out of an array
+     *
+     * @param array $unExisting
+     *
+     * @return string
+     */
     private static function unExisting2String($unExisting)
     {
         return "Missing fields: (" . implode(", ", $unExisting) . ")";
