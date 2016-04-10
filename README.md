@@ -44,5 +44,9 @@ sudo docker-compose up -d
 
 For this to work you should install [docker] and [composer] on your machine.
 
+### Add a new policy and access run history objects
+
+For this you will need to have SFTP access to a server. Files are located at `/home/abraovic/sentegrity-webservice/src/bucket/`. File permissions are 777 so any user will be able to access it.
+
 [composer]: http://getcomposer.org/
 [docker]: https://docs.docker.com/engine/installation/
