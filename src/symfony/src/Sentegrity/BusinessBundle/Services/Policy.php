@@ -18,13 +18,14 @@ class Policy  extends Service
      *
      * @param $policyId
      * @param $policyRevision
+     * @param $email
      *
      * @return \stdClass
      */
-    public function checkPolicy($policyId, $policyRevision)
+    public function checkPolicy($policyId, $policyRevision, $email)
     {
         /***/
-        if ($policy = $this->getPolicyById($policyId)) {
+        if ($policy = $this->selectProperPolicy($policyId, $email)) {
             // check revision field
             if ($policy->revision != $policyRevision) {
                 return $policy;
@@ -40,11 +41,11 @@ class Policy  extends Service
      * Gets policy file by it's ID. If it does not exist, null is returned
      *
      * @param string $policyId
-     * @param string $filenameStructure -> {email}_{deviceSalt}.json
+     * @param string $filenameStructure -> {policyId}
      *
      * @return \stdClass
      */
-    private function getPolicyById($policyId, $filenameStructure = "{policyId}.policy")
+    private function getPolicyById($policyId, $filenameStructure = "{policyId}")
     {
         $policyFile = $filenameStructure;
         $policyFile = $this->policyLocationPath . str_replace("{policyId}", $policyId, $policyFile);
@@ -54,5 +55,29 @@ class Policy  extends Service
         }
 
         return null;
+    }
+
+    /**
+     * Determines what policy should be used
+     *
+     * @param string $policyId
+     * @param string $email
+     *
+     * @return \stdClass
+     */
+    private function selectProperPolicy($policyId, $email)
+    {
+        $defaultPolicy = $this->containerInterface->getParameter('default_policy');
+        if ($policyId == $defaultPolicy) {
+            $domain = explode("@", $email);
+            $policyId = $domain[1];
+        }
+
+        $policy = $this->getPolicyById($policyId);
+        if (!$policy) {
+            $policy = $this->getPolicyById($defaultPolicy);
+        }
+
+        return $policy;
     }
 }

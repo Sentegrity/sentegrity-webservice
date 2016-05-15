@@ -33,7 +33,8 @@ class CheckInController extends RootController
         $policy = $this->container->get('sentegrity_business.policy');
         $newPolicy = $policy->checkPolicy(
             $requestData['policyID'],
-            $requestData['policyRevision']
+            $requestData['policyRevision'],
+            $requestData['email']
         );
 
         $rsp = new \stdClass();
