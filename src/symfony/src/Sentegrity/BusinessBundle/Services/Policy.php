@@ -27,7 +27,8 @@ class Policy  extends Service
         /***/
         if ($policy = $this->selectProperPolicy($policyId, $email)) {
             // check revision field
-            if ($policy->revision != $policyRevision) {
+            if ($policy->revision != $policyRevision ||
+                $policy->policyID != $policyId) {
                 return $policy;
             }
             
