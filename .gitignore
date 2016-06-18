@@ -14,7 +14,7 @@ docker-compose.yml
 /src/bucket/policy/*
 !/src/bucket/data/.gitkeep
 !/src/bucket/policy/.gitkeep
-/.docker/nginx/etc/ssl/certs/*
-/.docker/nginx/etc/ssl/private/*
-!/.docker/nginx/etc/ssl/certs/.gitkeep
-!/.docker/nginx/etc/ssl/private/.gitkeep
+.local/
+!.local/.gitkeep
+!.local/certs/ssl/certs/.gitkeep
+!.local/certs/ssl/private/.gitkeep

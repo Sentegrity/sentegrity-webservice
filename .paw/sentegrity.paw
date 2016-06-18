@@ -110,7 +110,7 @@
         <attribute name="name" type="string">Default Jar</attribute>
     </object>
     <object type="LMENVIRONMENTVARIABLEVALUE" id="z108">
-        <attribute name="value" type="string">https://sentegrity.docker.localhost:33778/app_dev.php/</attribute>
+        <attribute name="value" type="string">https://sentegrity.docker.localhost:32878/app_dev.php/</attribute>
         <relationship name="environment" type="1/1" destination="LMENVIRONMENT" idrefs="z109"></relationship>
         <relationship name="variable" type="1/1" destination="LMENVIRONMENTVARIABLE" idrefs="z104"></relationship>
     </object>

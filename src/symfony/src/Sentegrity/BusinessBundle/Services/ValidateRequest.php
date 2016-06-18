@@ -7,14 +7,14 @@ class ValidateRequest
      * Validates Request JSON
      *
      * @param array $body -> decoded JSON body
-     * @param array $requiredFields = ['email', 'deviceSalt', 'runHistoryObjects', 'policyID', 'policyRevision']
+     * @param array $requiredFields
      *
      * @return bool true
      * @throws \Exception
      */
     public static function validateRequestBody(
         array $body,
-        array $requiredFields = ['email', 'deviceSalt', 'runHistoryObjects', 'policyID', 'policyRevision']
+        array $requiredFields
     ) {
         /***/
         $unExisting = [];

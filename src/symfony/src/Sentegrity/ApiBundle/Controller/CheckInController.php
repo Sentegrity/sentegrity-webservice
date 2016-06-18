@@ -19,7 +19,10 @@ class CheckInController extends RootController
     public function checkInAction(Request $request)
     {
         $requestData = json_decode($request->getContent(), true);
-        ValidateRequest::validateRequestBody($requestData);
+        ValidateRequest::validateRequestBody(
+            $requestData,
+            $this->container->getParameter('required_request_data')
+        );
 
         /** @var \Sentegrity\BusinessBundle\Services\RunHistory $runHistory */
         $runHistory = $this->container->get('sentegrity_business.run_history');
@@ -34,7 +37,9 @@ class CheckInController extends RootController
         $newPolicy = $policy->checkPolicy(
             $requestData['policyID'],
             $requestData['policyRevision'],
-            $requestData['email']
+            $requestData['email'],
+            $requestData['platform'],
+            $requestData['currentAppVersion']
         );
 
         $rsp = new \stdClass();

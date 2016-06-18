@@ -20,7 +20,9 @@
         "symfony/monolog-bundle": "~2.4",
         "sensio/distribution-bundle": "~5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "soy-php/soy": ">=0.2.0",
+        "soy-php/replace-task": ">=0.1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
@@ -29,6 +31,7 @@
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "./vendor/soy-php/soy/bin/soy symfony-parameters --recipe src/Sentegrity/BusinessBundle/Receipts/loadParameters.php",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -37,6 +40,7 @@
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "./vendor/soy-php/soy/bin/soy symfony-parameters --recipe src/Sentegrity/BusinessBundle/Receipts/loadParameters.php",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -54,11 +58,6 @@
         "incenteev-parameters": [
             {
                 "file": "app/config/parameters.yml"
-            },
-            {
-                "file": "../../docker-compose.yml",
-                "dist-file": "../../docker-compose.yml.dst",
-                "parameter-key": "services"
             }
         ]
     }
