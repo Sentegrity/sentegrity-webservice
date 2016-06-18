@@ -131,7 +131,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"policyID\\":\\"bcbsil.com\\",\\"policyRevision\\":2,\\"deviceSalt\\":1,\\"email\\":\\"jsinchak@sentegrity.com\\",\\"runHistoryObjects\\":[\\"item1\\",\\"item2\\"]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"policyID\\":\\"default\\",\\"policyRevision\\":1,\\"deviceSalt\\":1,\\"email\\":\\"jsinchak@sentegrity.com\\",\\"runHistoryObjects\\":[\\"item1\\",\\"item2\\"]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">Check In</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM"></relationship>
