@@ -1,30 +1,23 @@
 version: '2'
 services:
-    code:
-        image: sentegrity/code
-        container_name: s_code
-        volumes:
-            - /home/abraovic/sentegrity-webservice/src/symfony:/opt/symfony
-            - /home/abraovic/sentegrity-webservice/src/web:/var/www
-            - /home/abraovic/sentegrity-webservice/src/bucket:/var/bucket
+    mysql:
+        image: mysql:5.6
+        container_name: sentegrity_mysql
         environment:
-            - RESOURCES_PATH=/var/bucket/
-        tty: true
-
-    php_node:
-        image: sentegrity/php-fpm
-        container_name: s_php-node
-        volumes_from:
-            - code
+            - MYSQL_ROOT_PASSWORD=abc
+            - MYSQL_DATABASE=sentegrity
         ports:
-            - "9000:9000"
+            - '&port_mysql&:3306'
 
-    nginx:
-        image: sentegrity/nginx
-        container_name: s_loadbalancer
+    application:
+        image: sentegrity/web-service
+        container_name: sentegrity_webservice
+        volumes:
+            - '&volumes_main&sentegrity-webservice/src/symfony:/opt/symfony'
+            - '&volumes_main&sentegrity-webservice/src/web:/var/www'
+            - '&volumes_main&sentegrity-webservice/src/bucket:/var/bucket'
         ports:
-            - "443:443"
-        volumes_from:
-            - code
+            - '&port_https&:443'
+        dns: 8.8.8.8
         links:
-            - php_node
+            - mysql

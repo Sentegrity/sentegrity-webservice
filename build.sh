@@ -27,14 +27,14 @@ sudo rm -rf src/symfony/app/logs/*
 ## make docker base image
 echo "Make base image\n"
 docker build -t sentegrity/base -f src/.docker/builders/Dockerfile ../
-
 ## make app image
 docker build -t sentegrity/web-service -f src/.docker/builders/webservice/$ENV/Dockerfile ../
 
 ## create database schema if dev
-
-##if [ "$1" != "dev" ]; then
-    ## app/console doctrine:schema:update --force
-##fi
+if [ "$1" == "dev" ]; then
+    docker-compose up -d
+    cd src/symfony
+    app/console doctrine:schema:update --force
+fi
 
 exit 0

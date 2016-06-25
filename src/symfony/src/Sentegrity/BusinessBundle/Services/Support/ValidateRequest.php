@@ -1,5 +1,5 @@
 <?php
-namespace Sentegrity\BusinessBundle\Services;
+namespace Sentegrity\BusinessBundle\Services\Support;
 
 class ValidateRequest
 {

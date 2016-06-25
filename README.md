@@ -1,52 +1,109 @@
-## Start a project
+# Start a project
 
-### SSL Pinning - needs to be done before starting
+Make sure you have all right permissions to clone repo.
+
+## Get project from the repo
+
+```sh
+# Assuming you have Git installed and on your PATH.
+git clone git@github.com:Sentegrity/sentegrity-webservice.git
+cd sentegrity-webservice/
+git fetch && git checkout your-branch
+```
+
+## First time build
+
+When building this project for the first time there are several thing that needs to be done once in order for everything to work as it should. Most of the job is related to generating and storing certificates and it's fingerprints in order to make SSL Pinning work.
+
+### SSL Pinning
 In order to make ssl pinning you should do the following:
 
 Copy your keys and certs to the following locations
 ```
-.docker/nginx/etc/ssl/private/original.key
-.docker/nginx/etc/ssl/certs/original.crt
-.docker/nginx/etc/ssl/private/backup.first.key
-.docker/nginx/etc/ssl/certs/backup.first.csr
-.docker/nginx/etc/ssl/private/backup.second.key
-.docker/nginx/etc/ssl/certs/backup.second.csr
+.local/certs/ssl/private/original.key
+.local/certs/ssl/certs/original.crt
+
+.local/certs/ssl/private/backup.first.key
+.local/certs/ssl/certs/backup.first.csr
+
+.local/certs/ssl/private/backup.second.key
+.local/certs/ssl/certs/backup.second.csr
 ```
-After `sudo docker-compose up -d` run `sudo docker exec -it s_loadbalancer /bin/bash` and edit `/etc/nginx/sites-available/symfony.conf`. Add pins from host machine that are located at `/etc/ssl/nginx/certs.fingerprint` to:
-```
-add_header Public-Key-Pins 'pin-sha256="-->orig<--"; pin-sha256="-->first bck<--"; pin-sha256="-->second bck<--"; max-age=10';
-```
-**if file `/etc/ssl/nginx/certs.fingerprint` does not exist or is outdated you can generate new finger prints:*
+
+For each certificate you should generate fingerprint using
 ```
 openssl req -pubkey < {your cert file here} | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | base64
 ```
-Reload nginx
-```
-service nginx reload
-```
-NOTE: **vim** editor is installed. If you with any other you can run:
 
+And then sore them for future use in `.local/certs/certs.fingerprint`.
+
+At the end you should update `src/.docker/nginx/symfony.conf` with new fingerprints by replacing an existing fingerprints in the line:
 ```
-apt-get update && apt-get install -y {your editor package name}
+add_header Public-Key-Pins 'pin-sha256="-->orig<--"; pin-sha256="-->first bck<--"; pin-sha256="-->second bck<--"; max-age=10';
 ```
 
-### Start an app
 
-Pull the stuff from git repo then enter the directory and run:
+### Create local environment files
 
+#### Parameter environment file
+Create file environment.yml in `.local/` and replace `&string&` with proper data
 ```
+# MySQL credential data
+database_host:          &database_host&
+database_port:          &database_port&
+database_name:          &database_name&
+database_user:          &database_user&
+database_password:      &database_password&
+
+# Mail data
+mailer_transport:  &mailer_transport&
+mailer_host:       &mailer_host&
+mailer_user:       &mailer_user&
+mailer_password:   &mailer_password&
+
+# A secret key that's used to generate certain security-related tokens
+secret: &secret&
+```
+
+#### Docker compose environment file
+Create file docker.env.yml in `.local/` and replace `&string&` with proper data
+```sh
+volumes_main: &volumes_main&
+
+ports:
+    https: '&https&'
+    mysql: '&mysql&'
+```
+
+## Each time build
+You need to start [Docker] and build the project. This docker is using a [VirtualBox]. Please download and install both of them to use it.
+
+```sh
+# Assuming you have Docker and VirtualBox installed and Composer installed on your PATH
+./build.sh [prod | dev]
+
+# prod -> prepares a project for production
+# dev -> prepares a project for development
+```
+
+#### If docker is not updated you can run several command that will reduce build time:
+```sh
+# Assuming you have Docker and VirtualBox installed and Composer installed on your PATH
 cd src/symfony/
 composer install
+
+## if docker containers are down run
 cd ../../
-sudo docker-compose -f .docker/docker-image-builder.yaml build
-sudo docker-compose up -d
+docker-compose up -d
+cd src/symfony
+app/console doctrine:schema:update --force
+
+## to check if containers are running run
+docker-compose ps
 ```
 
-For this to work you should install [docker] and [composer] on your machine.
+Push stuff on your branch. DO NOT PUSH stuff on MASTER.
 
-### Add a new policy and access run history objects
-
-For this you will need to have SFTP access to a server. Files are located at `/home/abraovic/sentegrity-webservice/src/bucket/`. File permissions are 777 so any user will be able to access it.
-
-[composer]: http://getcomposer.org/
-[docker]: https://docs.docker.com/engine/installation/
+[composer]:https://getcomposer.org/download/
+[Docker]:https://docs.docker.com/
+[VirtualBox]:https://www.virtualbox.org/wiki/Downloads

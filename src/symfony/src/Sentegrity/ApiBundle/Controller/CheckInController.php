@@ -3,7 +3,7 @@ namespace Sentegrity\ApiBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sentegrity\BusinessBundle\Handlers as Handler;
-use Sentegrity\BusinessBundle\Services\ValidateRequest;
+use Sentegrity\BusinessBundle\Services\Support\ValidateRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 class CheckInController extends RootController

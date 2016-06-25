@@ -32,6 +32,7 @@
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "./vendor/soy-php/soy/bin/soy symfony-parameters --recipe src/Sentegrity/BusinessBundle/Receipts/loadParameters.php",
+            "./vendor/soy-php/soy/bin/soy docker-compose-parameters --recipe src/Sentegrity/BusinessBundle/Receipts/buildDockerComposer.php",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -41,6 +42,7 @@
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "./vendor/soy-php/soy/bin/soy symfony-parameters --recipe src/Sentegrity/BusinessBundle/Receipts/loadParameters.php",
+            "./vendor/soy-php/soy/bin/soy docker-compose-parameters --recipe src/Sentegrity/BusinessBundle/Receipts/buildDockerComposer.php",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
