@@ -10,10 +10,6 @@
 /src/symfony/bin/
 /.idea/
 docker-compose.yml
-/src/bucket/data/*
-/src/bucket/policy/*
-!/src/bucket/data/.gitkeep
-!/src/bucket/policy/.gitkeep
 .local/environment.yml
 .local/docker.env.yml
 .local/certs/certs.fingerprint
