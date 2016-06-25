@@ -15,7 +15,6 @@ services:
         volumes:
             - '&volumes_main&sentegrity-webservice/src/symfony:/opt/symfony'
             - '&volumes_main&sentegrity-webservice/src/web:/var/www'
-            - '&volumes_main&sentegrity-webservice/src/bucket:/var/bucket'
         ports:
             - '&port_https&:443'
         dns: 8.8.8.8

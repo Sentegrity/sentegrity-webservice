@@ -1,6 +1,4 @@
 parameters:
-    policy_location: %resources_path%policy/
-    data_location: %resources_path%data/
     default_policy: default
     required_request_data:
         - email
