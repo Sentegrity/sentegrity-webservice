@@ -7,8 +7,30 @@ services:
         class: Sentegrity\BusinessBundle\Services\Policy
         arguments: ['@service_container']
 
+
+
+
+
+    ## Support stuff
+    pdo_master_connection:
+        class: PDO
+        arguments: ["%database_dsn%", "%database_user%", "%database_password%", "%pdo.options%"]
+
+    pdo_slave_connection:
+        class: Sentegrity\BusinessBundle\Services\Support\Database\PDOSlave
+        arguments: ["%slave_database_hosts%", "%database_name%", "%database_user%", "%database_password%", "%pdo.options%"]
+
     sentegrity_business.exception_listener:
         class: Sentegrity\BusinessBundle\EventListener\ExceptionListener
         arguments: ['@service_container']
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    validation_annotation_driver:
+        class: Sentegrity\BusinessBundle\Annotations\Driver\ValidatorDriver
+        tags: [{name: kernel.event_listener, event: kernel.controller, method: onKernelController}]     # Point event
+        arguments: ['@annotation_reader', '@request_stack']
+
+    my_sql_query:
+        class: Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery
+        arguments: ['@pdo_master_connection', '@pdo_slave_connection']

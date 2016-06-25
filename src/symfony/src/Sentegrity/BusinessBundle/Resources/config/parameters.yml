@@ -8,3 +8,10 @@ parameters:
         - policyRevision
         - platform
         - currentAppVersion
+
+    ## support
+    database_dsn: mysql:dbname=%database_name%;host=%database_host%;port=%database_port%;charset=utf8mb4
+    pdo.attr_errmode: 3
+    pdo.erromode_exception: 2
+    pdo.options:
+        %pdo.attr_errmode%: %pdo.erromode_exception%

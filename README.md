@@ -54,6 +54,7 @@ database_port:          &database_port&
 database_name:          &database_name&
 database_user:          &database_user&
 database_password:      &database_password&
+slave_database_hosts:   &slave_database_hosts&
 
 # Mail data
 mailer_transport:  &mailer_transport&
