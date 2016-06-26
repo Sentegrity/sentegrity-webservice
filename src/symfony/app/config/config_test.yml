@@ -14,3 +14,8 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+parameters:
+    database_name: sentegrity_test
+    database_user: root
+    database_password: abc

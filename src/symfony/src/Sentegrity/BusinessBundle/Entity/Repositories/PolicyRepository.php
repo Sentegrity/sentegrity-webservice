@@ -1,6 +1,7 @@
 <?php
 
 namespace Sentegrity\BusinessBundle\Entity\Repository;
+use Sentegrity\BusinessBundle\Entity\Documents\Policy;
 
 /**
  * PolicyRepository
@@ -10,4 +11,17 @@ namespace Sentegrity\BusinessBundle\Entity\Repository;
  */
 class PolicyRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Get policy from database by uuid
+     * @param $uuid
+     * @return Policy;
+     */
+    public function getByUuid($uuid)
+    {
+        return $this->getEntityManager()
+            ->getRepository('\Sentegrity\BusinessBundle\Entity\Documents\Policy')
+            ->findOneBy(array(
+                'uuid' => $uuid
+            ));
+    }
 }

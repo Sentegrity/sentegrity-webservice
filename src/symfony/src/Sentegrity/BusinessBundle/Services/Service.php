@@ -15,25 +15,51 @@ abstract class Service
     /** @var MySQLQuery $mysqlq */
     protected $mysqlq;
 
+    /** @var \Doctrine\ORM\EntityManager $entityManager */
+    protected $entityManager;
+
     function __construct(ContainerInterface $containerInterface)
     {
         $this->containerInterface = $containerInterface;
         $this->translator = $this->containerInterface->get('translator');
         $this->mysqlq = $containerInterface->get('my_sql_query');
+        $this->entityManager = $containerInterface->get('doctrine')->getManager();
     }
 
-    public function true()
+    public function true($data = "")
     {
         $rsp = new \stdClass();
-        $rsp->successfull = true;
+        $rsp->successful = true;
+        $rsp->data = $data;
         return $rsp;
     }
 
     public function false($msg = "")
     {
         $rsp = new \stdClass();
-        $rsp->successfull = false;
+        $rsp->successful = false;
         $rsp->msg = $msg;
         return $rsp;
+    }
+
+    /**
+     * Smart flush
+     * @param $errorMessage
+     * @return \stdClass
+     */
+    protected function flush(
+        $errorMessage = "An error occurred while performing this action",
+        $successData = ""
+    ) {
+        try {
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            // TODO: log exception to a file
+            return $this->false(
+                $this->translator->trans($errorMessage)
+            );
+        }
+
+        return $this->true($successData);
     }
 } 

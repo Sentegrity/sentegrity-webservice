@@ -90,16 +90,15 @@ class Policy
      *     }
      * )
      */
-    private $isDefault;
+    private $isDefault = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(
      *     name="app_version", 
-     *     type="decimal", 
-     *     precision=10, 
-     *     scale=2,
+     *     type="string",
+     *     length=10,
      *     nullable=false
      * )
      */
@@ -111,10 +110,13 @@ class Policy
      * @ORM\Column(
      *     name="revision_no", 
      *     type="integer",
-     *     nullable=false
+     *     nullable=false,
+     *     options={
+     *         "default":"1"
+     *     }
      * )
      */
-    private $revisionNo;
+    private $revisionNo = 1;
 
     /**
      * @var string
@@ -122,10 +124,7 @@ class Policy
      * @ORM\Column(
      *     name="data", 
      *     type="text",
-     *     nullable=false,
-     *     options={
-     *         "default":"1"
-     *     }
+     *     nullable=false
      * )
      */
     private $data;

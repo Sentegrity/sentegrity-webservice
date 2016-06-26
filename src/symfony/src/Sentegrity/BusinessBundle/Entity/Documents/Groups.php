@@ -70,7 +70,7 @@ class Groups
      *     }
      * )
      */
-    private $name;
+    private $name = 'Default Group';
 
     /**
      * @var int

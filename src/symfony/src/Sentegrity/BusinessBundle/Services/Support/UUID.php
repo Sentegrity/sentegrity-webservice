@@ -18,6 +18,7 @@ class UUID
         try {
             $uuid = UuidGenerator::uuid5(UuidGenerator::NAMESPACE_DNS, $seed . random_int(0, 2000000000));
             self::$uuid = $uuid->toString();
+            return self::$uuid;
         } catch (UnsatisfiedDependencyException $e) {
             throw new ValidatorException($e);
         }
