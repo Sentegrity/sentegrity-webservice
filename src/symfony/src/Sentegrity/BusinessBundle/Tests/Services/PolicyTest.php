@@ -17,9 +17,11 @@ class PolicyTest extends WebTestCase
     }
     
     /**
+     * @expectedException        \Sentegrity\BusinessBundle\Exceptions\ValidatorException
+     * @expectedExceptionMessage Policy with a given uuid not founded.
      * @group policy
      */
-    public function testCreateAndRead()
+    public function testCRUD()
     {
         // just some test case data
         $policyData = array(
@@ -34,8 +36,9 @@ class PolicyTest extends WebTestCase
         $this->assertTrue($rsp->successful, 'New policy not saved');
 
         // while performing this we can also test read
+        $uuid = $rsp->data;
         // this way we'll make sure all is stored as it should be
-        $rsp = self::$policyService->read(['uuid' => $rsp->data]);
+        $rsp = self::$policyService->read(['uuid' => $uuid]);
 
         // here we can also test if json coders are working
         $rsp = json_encode($rsp);
@@ -46,34 +49,16 @@ class PolicyTest extends WebTestCase
         $this->assertEquals($rsp->appVersion, $policyData['app_version'],   'App version is not good');
         $this->assertEquals($rsp->organization, 0,                          'Organization is not good');
         $this->assertEquals($rsp->data->key, $policyData['data']['key'],    'Data is not good');
-    }
 
-    /**
-     * @group policy
-     */
-    public function testUpdate()
-    {
-        // First let's create new policy
+        // after create and read are good lt's check update
         $policyData = array(
-            "name" => 'Test policy name',
-            "platform" => Platform::IOS,
-            "is_default" => 1,
-            "app_version" => 'v1.0',
-            "data" => ['key' => 'value']
-        );
-
-        $rsp = self::$policyService->create($policyData);
-        $this->assertTrue($rsp->successful, 'New policy not saved');
-        // if create is good then we have a new uuid so let's add it to an array
-        // that contains edited data
-        $policyData = array(
+            "uuid" => $uuid,
             "name" => 'Test policy name edit',
             "platform" => Platform::ANDROID, // this should not be edited
             "is_default" => 0,
             "app_version" => 'v1.1',
             "data" => ['key' => 'value edit']
         );
-        $policyData['uuid'] = $rsp->data;
 
         $rsp = self::$policyService->update($policyData);
         $this->assertTrue($rsp->successful, 'Existing policy not updated');
@@ -87,30 +72,10 @@ class PolicyTest extends WebTestCase
         $this->assertEquals($rsp->isDefault, $policyData['is_default'],     'Default falg is not good');
         $this->assertEquals($rsp->appVersion, $policyData['app_version'],   'App version is not good');
         $this->assertEquals($rsp->data->key, $policyData['data']['key'],    'Data is not good');
-    }
 
-    /**
-     * @expectedException        \Sentegrity\BusinessBundle\Exceptions\ValidatorException
-     * @expectedExceptionMessage Policy with a given uuid not founded.
-     * @group policy
-     */
-    public function testDelete()
-    {
-        // First let's create new policy
-        $policyData = array(
-            "name" => 'Test policy name',
-            "platform" => Platform::IOS,
-            "is_default" => 1,
-            "app_version" => 'v1.0',
-            "data" => ['key' => 'value']
-        );
-
-        $rsp = self::$policyService->create($policyData);
-        $this->assertTrue($rsp->successful, 'New policy not saved');
-        // now that create is good let's delete it
-        $uuid = $rsp->data;
+        // and at the end, test delete
         $rsp = self::$policyService->delete(['uuid' => $uuid]);
-        $this->assertTrue($rsp->successful, 'New policy not saved');
+        $this->assertTrue($rsp->successful, 'New policy not deleted');
 
         // should throw an exception
         self::$policyService->read(['uuid' => $uuid]);

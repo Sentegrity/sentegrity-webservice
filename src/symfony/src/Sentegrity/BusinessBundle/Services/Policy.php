@@ -97,7 +97,6 @@ class Policy  extends Service
      * 
      * @param array $policyData
      * @return \Sentegrity\BusinessBundle\Transformers\Policy
-     * @throws ValidatorException
      */
     public function read(array $policyData)
     {
@@ -133,10 +132,10 @@ class Policy  extends Service
      * Gets policy from database by given uuid
      * 
      * @param $uuid
-     * @return \Sentegrity\BusinessBundle\Entity\Documents\Policy
+     * @return PolicyEntity
      * @throws ValidatorException
      */
-    private function getPolicyByUuid($uuid)
+    public function getPolicyByUuid($uuid)
     {
         /** @var PolicyRepository $repository */
         $repository = $this->entityManager->getRepository(

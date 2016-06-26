@@ -7,6 +7,14 @@ services:
         class: Sentegrity\BusinessBundle\Services\Policy
         arguments: ['@service_container']
 
+    sentegrity_business.organization:
+        class: Sentegrity\BusinessBundle\Services\Organization
+        arguments: ['@service_container']
+
+    sentegrity_business.group:
+        class: Sentegrity\BusinessBundle\Services\Group
+        arguments: ['@service_container']
+
 
 
 

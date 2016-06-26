@@ -75,51 +75,52 @@ class Groups
     /**
      * @var int
      *
-     * @ORM\Column(
+     * @ORM\ManyToOne(
+     *     targetEntity="Policy",
+     *     cascade={"persist"}
+     * )
+     * @ORM\JoinColumn(
      *     name="policy_id_ios",
-     *     type="integer",
-     *     nullable=false,
-     *     options={
-     *         "comment":"FK from policy table for iOS."
-     *     }
+     *     referencedColumnName="id"
      * )
      */
-    private $policyIdIos;
+    private $policyIos;
 
     /**
      * @var int
      *
-     * @ORM\Column(
+     * @ORM\ManyToOne(
+     *     targetEntity="Policy",
+     *     cascade={"persist"}
+     * )
+     * @ORM\JoinColumn(
      *     name="policy_id_android",
-     *     type="integer",
-     *     nullable=false,
-     *     options={
-     *         "comment":"FK from policy table for Android."
-     *     }
+     *     referencedColumnName="id"
      * )
      */
-    private $policyIdAndroid;
+    private $policyAndroid;
 
     /**
      * @var int
      *
-     * @ORM\Column(
+     * @ORM\ManyToOne(
+     *     targetEntity="Organization",
+     *     cascade={"persist"}
+     * )
+     * @ORM\JoinColumn(
      *     name="organization_id",
-     *     type="integer",
-     *     nullable=false,
-     *     options={
-     *         "comment":"FK from organization table."
-     *     }
+     *     referencedColumnName="id",
+     *     onDelete="CASCADE"
      * )
      * @ORM\Id
      */
-    private $organizationId;
+    private $organization;
 
 
-    public function __construct($groupId, $organizationId)
+    public function __construct($groupId, Organization $organization)
     {
         $this->groupId = $groupId;
-        $this->organizationId = $organizationId;
+        $this->organization = $organization;
     }
 
     /**
@@ -157,61 +158,61 @@ class Groups
     }
 
     /**
-     * Set policyIdIos
+     * Set policyIos
      *
-     * @param integer $policyIdIos
+     * @param Policy $policyIos
      *
      * @return Groups
      */
-    public function setPolicyIdIos($policyIdIos)
+    public function setPolicyIos(Policy $policyIos)
     {
-        $this->policyIdIos = $policyIdIos;
+        $this->policyIos = $policyIos;
 
         return $this;
     }
 
     /**
-     * Get policyIdIos
+     * Get policyIos
      *
-     * @return int
+     * @return Policy
      */
-    public function getPolicyIdIos()
+    public function getPolicyIos()
     {
-        return $this->policyIdIos;
+        return $this->policyIos;
     }
 
     /**
-     * Set policyIdAndroid
+     * Set policyAndroid
      *
-     * @param integer $policyIdAndroid
+     * @param Policy $policyAndroid
      *
      * @return Groups
      */
-    public function setPolicyIdAndroid($policyIdAndroid)
+    public function setPolicyIdAndroid(Policy $policyAndroid)
     {
-        $this->policyIdAndroid = $policyIdAndroid;
+        $this->policyAndroid = $policyAndroid;
 
         return $this;
     }
 
     /**
-     * Get policyIdAndroid
+     * Get policyAndroid
      *
-     * @return int
+     * @return Policy
      */
-    public function getPolicyIdAndroid()
+    public function getPolicyAndroid()
     {
-        return $this->policyIdAndroid;
+        return $this->policyAndroid;
     }
 
     /**
-     * Get organizationId
+     * Get organization
      *
-     * @return int
+     * @return Organization
      */
-    public function getOrganizationId()
+    public function getOrganization()
     {
-        return $this->organizationId;
+        return $this->organization;
     }
 }
 

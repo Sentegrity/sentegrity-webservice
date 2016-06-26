@@ -2,6 +2,10 @@
 
 namespace Sentegrity\BusinessBundle\Entity\Repository;
 
+use Sentegrity\BusinessBundle\Entity\Documents\Groups;
+use Sentegrity\BusinessBundle\Entity\Documents\Organization;
+use Symfony\Component\Validator\Tests\Fixtures\Entity;
+
 /**
  * GroupsRepository
  *
@@ -10,4 +14,34 @@ namespace Sentegrity\BusinessBundle\Entity\Repository;
  */
 class GroupsRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Get group from database by group and organization
+     * @param $groupId
+     * @param Organization $organization
+     * @return Groups;
+     */
+    public function getByGroupAndOrganization($groupId, Organization $organization)
+    {
+        return $this->getEntityManager()
+            ->getRepository('\Sentegrity\BusinessBundle\Entity\Documents\Groups')
+            ->findOneBy(array(
+                'groupId' => $groupId,
+                'organization' => $organization
+            ));
+    }
+
+    /**
+     * Deletes all groups from an organization
+     * @param Organization $organization
+     * @return bool
+     */
+    public function deleteByOrganization(Organization $organization)
+    {
+        return $this->createQueryBuilder('groups')
+            ->delete()
+            ->where('groups.organization = :organization')
+            ->setParameter('organization', $organization)
+            ->getQuery()
+            ->execute();
+    }
 }

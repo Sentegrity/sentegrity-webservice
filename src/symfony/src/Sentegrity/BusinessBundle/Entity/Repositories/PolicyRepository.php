@@ -1,6 +1,7 @@
 <?php
 
 namespace Sentegrity\BusinessBundle\Entity\Repository;
+
 use Sentegrity\BusinessBundle\Entity\Documents\Policy;
 
 /**

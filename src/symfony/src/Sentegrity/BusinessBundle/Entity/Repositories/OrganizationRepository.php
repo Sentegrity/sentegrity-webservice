@@ -2,6 +2,8 @@
 
 namespace Sentegrity\BusinessBundle\Entity\Repository;
 
+use Sentegrity\BusinessBundle\Entity\Documents\Organization;
+
 /**
  * OrganizationRepository
  *
@@ -10,4 +12,17 @@ namespace Sentegrity\BusinessBundle\Entity\Repository;
  */
 class OrganizationRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Get organization from database by uuid
+     * @param $uuid
+     * @return Organization;
+     */
+    public function getByUuid($uuid)
+    {
+        return $this->getEntityManager()
+            ->getRepository('\Sentegrity\BusinessBundle\Entity\Documents\Organization')
+            ->findOneBy(array(
+                'uuid' => $uuid
+            ));
+    }
 }
