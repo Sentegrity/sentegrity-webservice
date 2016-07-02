@@ -60,4 +60,45 @@ class OrganizationController extends RootController
             $this->organizationService->read($requestData)
         );
     }
+
+    /**
+     * @Route(
+     *      "/edit/{uuid}",
+     *      defaults={"_format" = "json"},
+     *      requirements={"uuid" = UUID::UUID_REGEX},
+     *      name="admin_organization_edit",
+     *      methods="POST"
+     * )
+     */
+    public function editAction($uuid, Request $request)
+    {
+        $requestData = $this->validate(
+            $request,
+            $this->container->getParameter('validate_organization_create')
+        );
+
+        $requestData['uuid'] = $uuid;
+
+        return $this->response(
+            $this->organizationService->update($requestData)
+        );
+    }
+
+    /**
+     * @Route(
+     *      "/{uuid}",
+     *      defaults={"_format" = "json"},
+     *      requirements={"uuid" = UUID::UUID_REGEX},
+     *      name="admin_organization_delete",
+     *      methods="DELETE"
+     * )
+     */
+    public function deleteAction($uuid)
+    {
+        $requestData = ['uuid' => $uuid];
+
+        return $this->response(
+            $this->organizationService->delete($requestData)
+        );
+    }
 }
