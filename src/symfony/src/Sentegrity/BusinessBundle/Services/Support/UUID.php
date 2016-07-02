@@ -9,6 +9,7 @@ use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 class UUID
 {
     const UUID_REGEX = "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
+    const DEFAULT = '00000000-0000-0000-0000-000000000000';
 
     /** @var string $uuid */
     public static $uuid;

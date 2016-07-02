@@ -3,6 +3,7 @@
 namespace Sentegrity\BusinessBundle\Entity\Repository;
 
 use Sentegrity\BusinessBundle\Entity\Documents\Organization;
+use Symfony\Bridge\Doctrine;
 
 /**
  * OrganizationRepository
@@ -19,10 +20,25 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
      */
     public function getByUuid($uuid)
     {
-        return $this->getEntityManager()
-            ->getRepository('\Sentegrity\BusinessBundle\Entity\Documents\Organization')
-            ->findOneBy(array(
+        return $this->findOneBy(array(
                 'uuid' => $uuid
             ));
+    }
+
+    /**
+     * Get organization database id by uuid
+     * @param $uuid
+     * @return int $id;
+     */
+    public function getIdByUuid($uuid)
+    {
+        $qb = $this->createQueryBuilder('organization')
+            ->select('organization.id')
+            ->where('organization.uuid = :uuid')
+            ->setParameter('uuid', $uuid)
+            ->getQuery()
+            ->execute();
+
+        return (int)$qb[0]['id'];
     }
 }

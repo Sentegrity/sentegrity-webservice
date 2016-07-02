@@ -3,6 +3,10 @@ namespace Sentegrity\BusinessBundle\Services\Support;
 
 class ValidateRequest
 {
+    const POST = 1;
+    const GET = 2;
+    const JSON = 3;
+
     /**
      * Validates Request JSON
      *

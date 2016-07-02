@@ -61,10 +61,6 @@ class PolicyTest extends WebTestCase
         );
 
         $rsp = self::$policyService->update($policyData);
-        $this->assertTrue($rsp->successful, 'Existing policy not updated');
-
-        // now let's check if all is saved as it should be
-        $rsp = self::$policyService->read(['uuid' => $rsp->data]);
         $rsp = json_encode($rsp);
         $rsp = json_decode($rsp);
         $this->assertEquals($rsp->name, $policyData['name'],                'Name is not good');

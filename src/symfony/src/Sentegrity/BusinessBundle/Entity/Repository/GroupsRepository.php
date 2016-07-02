@@ -22,9 +22,7 @@ class GroupsRepository extends \Doctrine\ORM\EntityRepository
      */
     public function getByGroupAndOrganization($groupId, Organization $organization)
     {
-        return $this->getEntityManager()
-            ->getRepository('\Sentegrity\BusinessBundle\Entity\Documents\Groups')
-            ->findOneBy(array(
+        return $this->findOneBy(array(
                 'groupId' => $groupId,
                 'organization' => $organization
             ));

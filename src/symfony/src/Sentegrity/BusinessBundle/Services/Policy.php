@@ -10,10 +10,15 @@ use Sentegrity\BusinessBundle\Entity\Documents\Policy as PolicyEntity;
 
 class Policy  extends Service
 {
+    /** @var PolicyRepository $repository */
+    private $repository;
 
     function __construct(ContainerInterface $containerInterface)
     {
         parent::__construct($containerInterface);
+        $this->repository = $this->entityManager->getRepository(
+            '\Sentegrity\BusinessBundle\Entity\Documents\Policy'
+        );
     }
 
     /**
@@ -24,14 +29,14 @@ class Policy  extends Service
      * @param $organizationId -> defaults to 0 if no organization is sent
      * @return \stdClass
      */
-    public function create(array $policyData, $organizationId = 0)
+    public function create(array $policyData, $organizationUuid = "")
     {
         /**
          * $policyData template:
          * array(
          *      "name" => ...,
          *      "platform" => Platform::IOS | Platform::ANDROID,
-         *      "id_default" => 0|1,
+         *      "is_default" => 0|1,
          *      "app_version" => ...,
          *      "data" => [json decoded into an array]
          * )
@@ -41,6 +46,13 @@ class Policy  extends Service
         $data = json_encode($policyData['data']);
         // create fresh uuid for policy, use current timestamp as a seed
         $uuid = UUID::generateUuid(time());
+
+        $organizationId = 0;
+        if ($organizationUuid) {
+            /** @var Organization $organizationService */
+            $organizationService = $this->containerInterface->get('sentegrity_business.organization');
+            $organizationId = $organizationService->getOrganizationIdByUuid($organizationUuid);
+        }
 
         // now store data using doctrine entity manager
         $policy = new PolicyEntity();
@@ -84,10 +96,16 @@ class Policy  extends Service
             ->setRevisionNo($policy->getRevisionNo() + 1)
             ->setData($data);
 
-        return $this->flush(
+        $flush = $this->flush(
             'An error occurred while updating policy. Edit failed!',
             $policyData['uuid']
         );
+
+        if ($flush->successful) {
+            return new \Sentegrity\BusinessBundle\Transformers\Policy($policy);
+        } else {
+            return $flush;
+        }
     }
     
     /**
@@ -137,12 +155,7 @@ class Policy  extends Service
      */
     public function getPolicyByUuid($uuid)
     {
-        /** @var PolicyRepository $repository */
-        $repository = $this->entityManager->getRepository(
-            '\Sentegrity\BusinessBundle\Entity\Documents\Policy'
-        );
-
-        $policy = $repository->getByUuid($uuid);
+        $policy = $this->repository->getByUuid($uuid);
 
         if (!$policy) {
             throw new ValidatorException(
@@ -153,5 +166,40 @@ class Policy  extends Service
         }
         
         return $policy;
+    }
+    
+    /**
+     * Gets all polices of certain organization
+     * @param $uuid -> organization uuid
+     * @param array $policyData
+     * @return array $rsp
+     */
+    public function getPolicesByOrganization($uuid, array $policyData)
+    {
+        /**
+         * $policyData template:
+         * array(
+         *      "offset" => ...,
+         *      "limit" => ...
+         * )
+         */
+
+        /** @var Organization $organizationService */
+        $organizationService = $this->containerInterface->get('sentegrity_business.organization');
+        if ($uuid == UUID::DEFAULT) {
+            $policies = $this->repository->getAll($policyData['offset'], $policyData['limit']);
+        } else {
+            $id = $organizationService->getOrganizationIdByUuid($uuid);
+            $policies = $this->repository->getByOrganization($id, $policyData['offset'], $policyData['limit']);
+        }
+
+        $rsp = [];
+        foreach ($policies as $policy) {
+            $tmp = new \Sentegrity\BusinessBundle\Transformers\Policy($policy);
+            $rsp[] = $tmp;
+            $tmp = null;
+        }
+
+        return $rsp;
     }
 }

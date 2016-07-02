@@ -15,3 +15,24 @@ parameters:
     pdo.erromode_exception: 2
     pdo.options:
         %pdo.attr_errmode%: %pdo.erromode_exception%
+
+    ## validators
+    validate_organization_create:
+        - name
+        - domain_name
+        - contact_name
+        - contact_email
+        - contact_phone
+        - policy_ios
+        - policy_android
+
+    validate_policy_create:
+        - name
+        - platform
+        - is_default
+        - app_version
+        - data
+
+    validate_policy_get:
+        - offset
+        - limit

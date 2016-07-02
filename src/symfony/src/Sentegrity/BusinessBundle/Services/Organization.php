@@ -11,9 +11,15 @@ use Sentegrity\BusinessBundle\Entity\Documents\Organization as OrganizationEntit
 
 class Organization extends Service
 {
+    /** @var OrganizationRepository $repository */
+    private $repository;
+    
     function __construct(ContainerInterface $containerInterface)
     {
         parent::__construct($containerInterface);
+        $this->repository = $this->entityManager->getRepository(
+            '\Sentegrity\BusinessBundle\Entity\Documents\Organization'
+        );
     }
 
     /**
@@ -154,7 +160,7 @@ class Organization extends Service
     }
 
     /**
-     * Gets policy from database by given uuid
+     * Gets organization from database by given uuid
      *
      * @param $uuid
      * @return OrganizationEntity
@@ -162,12 +168,7 @@ class Organization extends Service
      */
     public function getOrganizationByUuid($uuid)
     {
-        /** @var OrganizationRepository $repository */
-        $repository = $this->entityManager->getRepository(
-            '\Sentegrity\BusinessBundle\Entity\Documents\Organization'
-        );
-
-        $organization = $repository->getByUuid($uuid);
+        $organization = $this->repository->getByUuid($uuid);
 
         if (!$organization) {
             throw new ValidatorException(
@@ -178,5 +179,27 @@ class Organization extends Service
         }
 
         return $organization;
+    }
+
+    /**
+     * Gets id from database by given uuid
+     *
+     * @param $uuid
+     * @return int $id
+     * @throws ValidatorException
+     */
+    public function getOrganizationIdByUuid($uuid)
+    {
+        $id = $this->repository->getIdByUuid($uuid);
+
+        if(!$id) {
+            throw new ValidatorException(
+                null,
+                $this->translator->trans('Organization with a given uuid not founded.'),
+                ErrorCodes::NOT_FOUND
+            );
+        }
+
+        return $id;
     }
 }
