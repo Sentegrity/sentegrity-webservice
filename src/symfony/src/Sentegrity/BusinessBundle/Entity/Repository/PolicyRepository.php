@@ -53,4 +53,21 @@ class PolicyRepository extends \Doctrine\ORM\EntityRepository
             [], null, $limit, $offset
         );
     }
+
+    /**
+     * Delete all policies of certain organization
+     * @param $id
+     */
+    public function deleteByOrganization($id)
+    {
+        $existing = $this->findBy(array(
+            'organizationOwnerId' => $id
+        ));
+
+        foreach ($existing as $record) {
+            $this->getEntityManager()->remove($record);
+        }
+
+        $this->getEntityManager()->flush();
+    }
 }

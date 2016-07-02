@@ -3,6 +3,7 @@ namespace Sentegrity\BusinessBundle\Services;
 
 use Sentegrity\BusinessBundle\Entity\Documents\Groups;
 use Sentegrity\BusinessBundle\Entity\Repository\OrganizationRepository;
+use Sentegrity\BusinessBundle\Entity\Repository\PolicyRepository;
 use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
 use Sentegrity\BusinessBundle\Services\Support\UUID;
@@ -153,6 +154,14 @@ class Organization extends Service
     {
         /***/
         $organization = $this->getOrganizationByUuid($organizationData['uuid']);
+
+        $id = $organization->getId();
+        /** @var PolicyRepository $policyRepository */
+        $policyRepository = $this->entityManager->getRepository(
+            '\Sentegrity\BusinessBundle\Entity\Documents\Policy'
+        );
+        $policyRepository->deleteByOrganization($id);
+
         $this->entityManager->remove($organization);
         return $this->flush(
             'An error occurred while deleting policy. Delete failed!'

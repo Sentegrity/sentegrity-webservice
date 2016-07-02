@@ -133,7 +133,7 @@ class Policy
      * @var int
      *
      * @ORM\Column(
-     *     name="organization_owner_id", 
+     *     name="organization_owner_id",
      *     type="integer",
      *     nullable=false,
      *     options={
