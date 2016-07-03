@@ -1,6 +1,7 @@
 <?php
 namespace Sentegrity\BusinessBundle\Services;
 
+use Sentegrity\BusinessBundle\Services\Support\ErrorLog;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery;
 
@@ -54,7 +55,10 @@ abstract class Service
         try {
             $this->entityManager->flush();
         } catch (\Exception $e) {
-            // TODO: log exception to a file
+            /** @var ErrorLog $errorLog */
+            $errorLog = $this->containerInterface->get('sentegrity_business.error_log');
+            $errorLog->write($e->getMessage(), ErrorLog::PHP_ERROR);
+
             return $this->false(
                 $this->translator->trans($errorMessage)
             );
