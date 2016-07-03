@@ -45,7 +45,7 @@ class Organization extends Service
          *      "policy_android" => uuid of a policy,
          * )
          */
-
+        
         // create fresh uuid for policy, use current timestamp as a seed
         $uuid = UUID::generateUuid(time());
 

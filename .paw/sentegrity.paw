@@ -211,7 +211,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Organization\\",\\"domain_name\\":\\"domain.test\\",\\"contact_name\\":\\"John Doe\\",\\"contact_email\\":\\"jdoe@domain.test\\",\\"contact_phone\\":\\"+1 234 5678\\",\\"policy_ios\\":\\"14aee0fd-e14b-5f87-998d-585e3cd264a0\\",\\"policy_android\\":\\"ae0c2337-1e66-5612-9c2c-c0ff3c5938ed\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Organization 2\\",\\"domain_name\\":\\"domain2.test\\",\\"contact_name\\":\\"John Doe\\",\\"contact_email\\":\\"jdoe@domain.test\\",\\"contact_phone\\":\\"+1 234 5678\\",\\"policy_ios\\":\\"14aee0fd-e14b-5f87-998d-585e3cd264a0\\",\\"policy_android\\":\\"ae0c2337-1e66-5612-9c2c-c0ff3c5938ed\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Create</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z121"></relationship>
@@ -257,7 +257,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Default Andorid policy - a\\",\\"platform\\":1,\\"is_default\\":true,\\"app_version\\":\\"v0.1\\",\\"data\\":{\\"value\\":\\"key\\"}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Default Andorid policy - a\\",\\"platform\\":0,\\"is_default\\":true,\\"app_version\\":\\"v0.1\\",\\"data\\":{\\"value\\":\\"key\\"}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Create</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z122"></relationship>
@@ -265,10 +265,10 @@
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z125 z124"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z124">
-        <attribute name="value" type="string">2c3344dd-b0a4-538d-ac6a-65324d077087</attribute>
+        <attribute name="value" type="string">dfgfdgdf</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">owner</attribute>
-        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
         <relationship name="groupforbodyparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
@@ -365,14 +365,14 @@
     </object>
     <object type="LMREQUEST" id="z133">
         <attribute name="uuid" type="string">B44A777D-F0D7-4243-B3F6-3FB0D53A6296</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"C2EB62DD-759C-4311-8711-1E59A56BB323"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"admin\\/policy\\/edit\\/6923207c-2854-59a8-ac38-16a1e7ba7546"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"C2EB62DD-759C-4311-8711-1E59A56BB323"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"admin\\/policy\\/edit\\/ae0c2337-1e66-5612-9c2c-c0ff3c5938ed"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Default Org iOS policy - edit\\",\\"platform\\":1,\\"is_default\\":true,\\"app_version\\":\\"v0.2\\",\\"data\\":{\\"value\\":\\"key\\"}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Default Org Android policy - edit\\",\\"platform\\":1,\\"is_default\\":true,\\"app_version\\":\\"v0.2\\",\\"data\\":{\\"value\\":\\"key\\"}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">Edit</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z122"></relationship>

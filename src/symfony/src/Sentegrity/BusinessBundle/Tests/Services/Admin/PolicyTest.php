@@ -27,7 +27,7 @@ class PolicyTest extends WebTestCase
         $policyData = array(
             "name" => 'Test policy name',
             "platform" => Platform::IOS,
-            "is_default" => 1,
+            "is_default" => 0,
             "app_version" => 'v1.0',
             "data" => ['key' => 'value']
         );
@@ -75,5 +75,25 @@ class PolicyTest extends WebTestCase
 
         // should throw an exception
         self::$policyService->read(['uuid' => $uuid]);
+    }
+
+    /**
+     * @expectedException        \Sentegrity\BusinessBundle\Exceptions\ValidatorException
+     * @expectedExceptionMessage This organization already has default policy for given platform.
+     * @group policy
+     */
+    public function testDuplivateDefaultPolicy()
+    {
+        // just some test case data
+        $policyData = array(
+            "name" => 'Test policy name',
+            "platform" => Platform::IOS,
+            "is_default" => 1,
+            "app_version" => 'v1.0',
+            "data" => ['key' => 'value']
+        );
+
+        self::$policyService->create($policyData);
+        self::$policyService->create($policyData);
     }
 }

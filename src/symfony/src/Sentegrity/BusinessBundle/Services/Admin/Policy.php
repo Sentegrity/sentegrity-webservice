@@ -29,6 +29,7 @@ class Policy  extends Service
      * @param array $policyData
      * @param $organizationId -> defaults to 0 if no organization is sent
      * @return \stdClass
+     * @throws ValidatorException
      */
     public function create(array $policyData, $organizationUuid = "")
     {
@@ -53,6 +54,16 @@ class Policy  extends Service
             /** @var Organization $organizationService */
             $organizationService = $this->containerInterface->get('sentegrity_business.organization');
             $organizationId = $organizationService->getOrganizationIdByUuid($organizationUuid);
+        }
+
+        if ($policyData['is_default']) {
+            if ($this->repository->getDefaultPolicyByPlatformAndOrganization($policyData['platform'], $organizationId)) {
+                throw new ValidatorException(
+                    null,
+                    "This organization already has default policy for given platform.",
+                    ErrorCodes::FORBIDDEN
+                );
+            }
         }
 
         // now store data using doctrine entity manager

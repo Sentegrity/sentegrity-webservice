@@ -54,6 +54,7 @@ abstract class Service
     ) {
         try {
             $this->entityManager->flush();
+            $this->entityManager->clear();
         } catch (\Exception $e) {
             /** @var ErrorLog $errorLog */
             $errorLog = $this->containerInterface->get('sentegrity_business.error_log');

@@ -18,12 +18,6 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
  *                  "organization_owner_id"
  *              }
  *          )
- *      },
- *     uniqueConstraints={
- *          @UniqueConstraint(
- *              name="unique_policy",
- *              columns={"platform", "is_default", "organization_owner_id"}
- *          )
  *      }
  * )
  * @ORM\Entity(

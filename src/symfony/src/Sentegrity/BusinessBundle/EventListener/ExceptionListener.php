@@ -1,6 +1,7 @@
 <?php
 namespace Sentegrity\BusinessBundle\EventListener;
 
+use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Sentegrity\BusinessBundle\Handlers\Response;
 use Sentegrity\BusinessBundle\Transformers\Error;
@@ -23,6 +24,12 @@ class ExceptionListener
         switch ($e->getCode()) {
             case 200:
                 Response::responseBadRequest($this->unknownError($e));
+                break;
+            case ErrorCodes::NOT_FOUND:
+                Response::responseNotFound($this->unknownError($e));
+                break;
+            case ErrorCodes::FORBIDDEN:
+                Response::responseForbidden($this->unknownError($e));
                 break;
             default:
                 Response::responseInternalServerError($this->unknownError($e));

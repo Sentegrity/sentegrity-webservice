@@ -9,11 +9,18 @@ class OrganizationTest extends WebTestCase
     /** @var \Sentegrity\BusinessBundle\Services\Admin\Organization $organizationService */
     public static $organizationService;
 
+    public static $iosUuid;
+    public static $androidUuid;
+
     public static function setUpBeforeClass()
     {
         self::$organizationService = static::createClient()
             ->getContainer()
             ->get('sentegrity_business.organization');
+
+        // first we need to create two new policies, both for iOS and Android
+        self::$iosUuid = self::createPolicy(Platform::IOS);
+        self::$androidUuid = self::createPolicy(Platform::ANDROID);
     }
 
     /**
@@ -23,18 +30,14 @@ class OrganizationTest extends WebTestCase
      */
     public function testCRUD()
     {
-        // first we need to create two new policies, both for iOS and Android
-        $iosUuid = $this->createPolicy(Platform::IOS);
-        $androidUuid = $this->createPolicy(Platform::ANDROID);
-
         $organizationData = array(
             "name" => 'Test organization name',
             "domain_name" => 'domain.test',
             "contact_name" => 'Contact Name',
             "contact_email" => 'contact.email@domain.test',
             "contact_phone" => '+1 234 5678',
-            "policy_ios" => $iosUuid,
-            "policy_android" => $androidUuid
+            "policy_ios" => self::$iosUuid,
+            "policy_android" => self::$androidUuid
         );
 
         $rsp = self::$organizationService->create($organizationData);
@@ -53,11 +56,11 @@ class OrganizationTest extends WebTestCase
         $this->assertEquals($rsp->contact->name, $organizationData['contact_name'],     'Contact name is not good');
         $this->assertEquals($rsp->contact->email, $organizationData['contact_email'],   'Contact email is not good');
         $this->assertEquals($rsp->contact->phone, $organizationData['contact_phone'],   'Contact phone is not good');
-        $this->assertEquals($rsp->defaultPolicies->ios, $iosUuid,                       'iOS policy is not good');
-        $this->assertEquals($rsp->defaultPolicies->android, $androidUuid,               'Android policy is not good');
+        $this->assertEquals($rsp->defaultPolicies->ios, self::$iosUuid,                 'iOS policy is not good');
+        $this->assertEquals($rsp->defaultPolicies->android, self::$androidUuid,         'Android policy is not good');
 
         // after create and read are good lt's check update
-        $iosUuid = $this->createPolicy(Platform::IOS);
+        $iosUuid = $this->createPolicy(Platform::IOS, 0);
         $organizationData = array(
             "uuid" => $uuid,
             "name" => 'Test organization name edit',
@@ -65,8 +68,8 @@ class OrganizationTest extends WebTestCase
             "contact_name" => 'Contact Name Edit',
             "contact_email" => 'contact.email.edit@domain.test',
             "contact_phone" => '+1 234 5670',
-            "policy_ios" => $iosUuid,
-            "policy_android" => $androidUuid
+            "policy_ios" => self::$iosUuid,
+            "policy_android" => self::$androidUuid
         );
 
         $rsp = self::$organizationService->update($organizationData);
@@ -81,8 +84,8 @@ class OrganizationTest extends WebTestCase
         $this->assertEquals($rsp->contact->name, $organizationData['contact_name'],     'Contact name is not good');
         $this->assertEquals($rsp->contact->email, $organizationData['contact_email'],   'Contact email is not good');
         $this->assertEquals($rsp->contact->phone, $organizationData['contact_phone'],   'Contact phone is not good');
-        $this->assertEquals($rsp->defaultPolicies->ios, $iosUuid,                       'iOS policy is not good');
-        $this->assertEquals($rsp->defaultPolicies->android, $androidUuid,               'Android policy is not good');
+        $this->assertEquals($rsp->defaultPolicies->ios, self::$iosUuid,                 'iOS policy is not good');
+        $this->assertEquals($rsp->defaultPolicies->android, self::$androidUuid,         'Android policy is not good');
 
         // and at the end, test delete
         $rsp = self::$organizationService->delete(['uuid' => $uuid]);
@@ -92,7 +95,7 @@ class OrganizationTest extends WebTestCase
         self::$organizationService->read(['uuid' => $uuid]);
     }
 
-    private function createPolicy($platform)
+    private static function createPolicy($platform, $def = 1)
     {
         $policyService = static::createClient()
             ->getContainer()
@@ -102,7 +105,7 @@ class OrganizationTest extends WebTestCase
         $policyData = array(
             "name" => 'Test policy name',
             "platform" => $platform,
-            "is_default" => 1,
+            "is_default" => $def,
             "app_version" => 'v1.0',
             "data" => ['key' => 'value']
         );
