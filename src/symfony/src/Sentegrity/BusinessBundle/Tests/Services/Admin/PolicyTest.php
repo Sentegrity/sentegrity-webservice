@@ -1,12 +1,12 @@
 <?php
-namespace Sentegrity\BusinessBundle\Tests\Services;
+namespace Sentegrity\BusinessBundle\Tests\Services\Admin;
 
 use Sentegrity\BusinessBundle\Handlers\Platform;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class PolicyTest extends WebTestCase
 {
-    /** @var \Sentegrity\BusinessBundle\Services\Policy $policyService */
+    /** @var \Sentegrity\BusinessBundle\Services\Admin\Policy $policyService */
     public static $policyService;
     
     public static function setUpBeforeClass()

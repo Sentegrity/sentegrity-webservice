@@ -4,19 +4,19 @@ services:
         arguments: ['@service_container']
 
     sentegrity_business.policy:
-        class: Sentegrity\BusinessBundle\Services\Policy
+        class: Sentegrity\BusinessBundle\Services\Admin\Policy
         arguments: ['@service_container']
 
     sentegrity_business.organization:
-        class: Sentegrity\BusinessBundle\Services\Organization
+        class: Sentegrity\BusinessBundle\Services\Admin\Organization
         arguments: ['@service_container']
 
     sentegrity_business.group:
-        class: Sentegrity\BusinessBundle\Services\Group
+        class: Sentegrity\BusinessBundle\Services\Admin\Group
         arguments: ['@service_container']
 
     sentegrity_business.error_log:
-            class: Sentegrity\BusinessBundle\Services\Group
+            class: Sentegrity\BusinessBundle\Services\Support\ErrorLog
             arguments: ['@service_container']
 
 

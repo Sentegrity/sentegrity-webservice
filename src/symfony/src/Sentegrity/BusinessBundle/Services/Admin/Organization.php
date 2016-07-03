@@ -1,5 +1,5 @@
 <?php
-namespace Sentegrity\BusinessBundle\Services;
+namespace Sentegrity\BusinessBundle\Services\Admin;
 
 use Sentegrity\BusinessBundle\Entity\Documents\Groups;
 use Sentegrity\BusinessBundle\Entity\Repository\OrganizationRepository;
@@ -9,6 +9,7 @@ use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
 use Sentegrity\BusinessBundle\Services\Support\UUID;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Entity\Documents\Organization as OrganizationEntity;
+use Sentegrity\BusinessBundle\Services\Service;
 
 class Organization extends Service
 {

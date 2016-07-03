@@ -6,7 +6,7 @@ use Sentegrity\BusinessBundle\Services\Support\UUID;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sentegrity\BusinessBundle\Handlers as Handler;
-use Sentegrity\BusinessBundle\Services\Organization;
+use Sentegrity\BusinessBundle\Services\Admin\Organization;
 
 /**
  * @Route("/admin/organization")

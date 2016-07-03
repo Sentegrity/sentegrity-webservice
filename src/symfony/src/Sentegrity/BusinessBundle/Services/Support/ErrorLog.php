@@ -26,21 +26,19 @@ class ErrorLog extends Service
      * Writes error in database
      * @param $text -> error
      * @param $type
+     * @return bool
      */
     public function write($text, $type)
     {
         /***/
-        $log = new ErrorLogEntity();
-        $log->setText($text)
-            ->setType($type)
-            ->setCreated(time());
-
-        $this->entityManager->persist($log);
-
-        try {
-            $this->entityManager->flush();
-        } catch (\Exception $e) {
-            // TODO: something
-        }
+        return $this->mysqlq->insert(
+            'error_log',
+            array('text', 'type', 'created'),
+            array(
+                'text'      => array('value' => $text),
+                'type'      => array('value' => $type),
+                'created'   => array('value' => time()),
+            )
+        );
     }
 }

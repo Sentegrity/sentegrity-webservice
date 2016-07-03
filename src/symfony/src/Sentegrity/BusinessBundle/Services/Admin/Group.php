@@ -1,5 +1,5 @@
 <?php
-namespace Sentegrity\BusinessBundle\Services;
+namespace Sentegrity\BusinessBundle\Services\Admin;
 
 use Sentegrity\BusinessBundle\Entity\Documents\Groups;
 use Sentegrity\BusinessBundle\Entity\Documents\Organization as OrganizationEntity;
@@ -7,6 +7,7 @@ use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Entity\Repository\GroupsRepository;
+use Sentegrity\BusinessBundle\Services\Service;
 
 class Group extends Service
 {

@@ -1,12 +1,12 @@
 <?php
-namespace Sentegrity\BusinessBundle\Tests\Services;
+namespace Sentegrity\BusinessBundle\Tests\Services\Admin;
 
 use Sentegrity\BusinessBundle\Handlers\Platform;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class OrganizationTest extends WebTestCase
 {
-    /** @var \Sentegrity\BusinessBundle\Services\Organization $organizationService */
+    /** @var \Sentegrity\BusinessBundle\Services\Admin\Organization $organizationService */
     public static $organizationService;
 
     public static function setUpBeforeClass()

@@ -39,6 +39,9 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->execute();
 
+        if (!$qb) {
+            return 0;
+        }
         return (int)$qb[0]['id'];
     }
 }

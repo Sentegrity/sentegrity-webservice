@@ -1,5 +1,5 @@
 <?php
-namespace Sentegrity\BusinessBundle\Services;
+namespace Sentegrity\BusinessBundle\Services\Admin;
 
 use Sentegrity\BusinessBundle\Entity\Repository\PolicyRepository;
 use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
@@ -7,6 +7,7 @@ use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
 use Sentegrity\BusinessBundle\Services\Support\UUID;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Entity\Documents\Policy as PolicyEntity;
+use Sentegrity\BusinessBundle\Services\Service;
 
 class Policy  extends Service
 {
