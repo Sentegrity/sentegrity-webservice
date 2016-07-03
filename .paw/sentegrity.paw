@@ -211,7 +211,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Organization\\",\\"domain_name\\":\\"domain.test\\",\\"contact_name\\":\\"John Doe\\",\\"contact_email\\":\\"jdoe@domain.test\\",\\"contact_phone\\":\\"+1 234 5678\\",\\"policy_ios\\":\\"c9f8af5d-a371-56c9-8c71-8e9ea77aac1d\\",\\"policy_android\\":\\"0d294a06-656d-557c-94dd-0a2ad74c01a4\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Organization\\",\\"domain_name\\":\\"domain.test\\",\\"contact_name\\":\\"John Doe\\",\\"contact_email\\":\\"jdoe@domain.test\\",\\"contact_phone\\":\\"+1 234 5678\\",\\"policy_ios\\":\\"14aee0fd-e14b-5f87-998d-585e3cd264a0\\",\\"policy_android\\":\\"ae0c2337-1e66-5612-9c2c-c0ff3c5938ed\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Create</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z121"></relationship>
@@ -257,7 +257,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Default Android policy\\",\\"platform\\":1,\\"is_default\\":true,\\"app_version\\":\\"v0.1\\",\\"data\\":{\\"value\\":\\"key\\"}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Test Default Andorid policy - a\\",\\"platform\\":1,\\"is_default\\":true,\\"app_version\\":\\"v0.1\\",\\"data\\":{\\"value\\":\\"key\\"}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Create</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z122"></relationship>
@@ -265,7 +265,7 @@
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z125 z124"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z124">
-        <attribute name="value" type="string">39b5b96c-9a5c-51af-9a0f-07ea170634da</attribute>
+        <attribute name="value" type="string">2c3344dd-b0a4-538d-ac6a-65324d077087</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">owner</attribute>
         <attribute name="enabled" type="bool">1</attribute>

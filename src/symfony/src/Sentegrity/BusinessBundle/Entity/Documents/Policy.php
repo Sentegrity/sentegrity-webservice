@@ -3,6 +3,7 @@
 namespace Sentegrity\BusinessBundle\Entity\Documents;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
  * Policy
@@ -16,6 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
  *                  "platform",
  *                  "organization_owner_id"
  *              }
+ *          )
+ *      },
+ *     uniqueConstraints={
+ *          @UniqueConstraint(
+ *              name="unique_policy",
+ *              columns={"platform", "is_default", "organization_owner_id"}
  *          )
  *      }
  * )
@@ -73,7 +80,7 @@ class Policy
      *     name="platform",
      *     type="smallint",
      *     length=2,
-     *     nullable=false
+     *     nullable=false,
      * )
      */
     private $platform;
