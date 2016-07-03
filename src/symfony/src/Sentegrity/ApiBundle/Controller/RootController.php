@@ -4,6 +4,7 @@ namespace Sentegrity\ApiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Handlers as Handler;
+use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\Request;
 use Sentegrity\BusinessBundle\Services\Support\ValidateRequest;
 
@@ -52,6 +53,21 @@ class RootController extends Controller
     {
         Handler\Response::responseOK($data);
         return Handler\Response::$response;
+    }
+    
+    /**
+     * Retrieves owner's uuid from header
+     * @param HeaderBag $header
+     * @return string $owner
+     */
+    protected function getOwnerFromHeader(HeaderBag $header)
+    {
+        $owner = "";
+        if ($t = $header->get('owner')) {
+            $owner = $t;
+        }
+        
+        return $owner;
     }
 
     /**

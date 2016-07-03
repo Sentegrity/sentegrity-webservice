@@ -186,11 +186,11 @@ class Policy  extends Service
 
         /** @var Organization $organizationService */
         $organizationService = $this->containerInterface->get('sentegrity_business.organization');
-        if ($uuid == UUID::DEFAULT) {
-            $policies = $this->repository->getAll($policyData['offset'], $policyData['limit']);
-        } else {
+        if ($uuid) {
             $id = $organizationService->getOrganizationIdByUuid($uuid);
             $policies = $this->repository->getByOrganization($id, $policyData['offset'], $policyData['limit']);
+        } else {
+            $policies = $this->repository->getAll($policyData['offset'], $policyData['limit']);
         }
 
         $rsp = [];

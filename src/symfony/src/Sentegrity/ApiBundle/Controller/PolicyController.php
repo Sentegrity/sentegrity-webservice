@@ -39,11 +39,7 @@ class PolicyController extends RootController
             $this->container->getParameter('validate_policy_create')
         );
 
-        $organization = "";
-        // if organization is sent set it
-        if ($t = $request->headers->get('owner')) {
-            $organization = $t;
-        }
+        $organization = $this->getOwnerFromHeader($request->headers);
 
         return $this->response(
             $this->policyService->create($requestData, $organization)
@@ -52,20 +48,20 @@ class PolicyController extends RootController
 
     /**
      * @Route(
-     *      "/get/organization/{uuid}",
+     *      "/get/organization",
      *      defaults={"_format" = "json"},
-     *      requirements={"uuid" = UUID::UUID_REGEX},
      *      name="admin_policy_get_by_organization",
      *      methods="GET"
      * )
      */
-    public function getByOrganizationAction($uuid, Request $request)
+    public function getByOrganizationAction(Request $request)
     {
         $requestData = $this->validate(
             $request,
             $this->container->getParameter('validate_policy_get'),
             ValidateRequest::GET
         );
+        $uuid = $this->getOwnerFromHeader($request->headers);
 
         return $this->response(
             $this->policyService->getPolicesByOrganization($uuid, $requestData)
