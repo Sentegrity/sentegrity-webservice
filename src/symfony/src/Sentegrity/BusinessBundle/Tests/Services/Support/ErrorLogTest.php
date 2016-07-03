@@ -15,6 +15,9 @@ class ErrorLogTest extends WebTestCase
             ->get('sentegrity_business.error_log');
     }
 
+    /**
+     * @group support_error_log
+     */
     public function testWrite()
     {
         $fakeErrorText = "Some error occurred";

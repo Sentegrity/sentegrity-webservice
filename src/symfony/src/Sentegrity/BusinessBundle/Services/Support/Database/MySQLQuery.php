@@ -314,10 +314,10 @@ class MySQLQuery
             if (!is_string($record)) {
                 $record = (string)$record;
             }
-            if ($record != self::INCR && $record != self::DECR) {
+            if ($record != self::_INCR && $record != self::_DECR) {
                 $updateFields .= $column . " = :" . $column;
             } else {
-                $updateFields .= $column . " = " . $column . (($record == self::INCR) ? "+" : "-") . "1";
+                $updateFields .= $column . " = " . $column . (($record == self::_INCR) ? "+" : "-") . "1";
             }
             if ($counter < count($columns) - 1) {
                 $updateFields .= ", ";
@@ -396,7 +396,7 @@ class MySQLQuery
                 if (!is_string($record)) {
                     $record = (string)$record;
                 }
-                if ($record != self::INCR && $record != self::DECR) {
+                if ($record != self::_INCR && $record != self::_DECR) {
                     $qh->bindValue(":" . $column, $record);
                 }
             }
@@ -446,10 +446,10 @@ class MySQLQuery
                 if ($counter < count($where) - 1) {
                     if (isset($item['logic'])) {
                         switch ($item['logic']) {
-                            case self:: AND:
+                            case self:: _AND:
                                 $whereString .= " AND ";
                                 break;
-                            case self:: OR:
+                            case self:: _OR:
                                 $whereString .= " OR ";
                                 break;
                         }

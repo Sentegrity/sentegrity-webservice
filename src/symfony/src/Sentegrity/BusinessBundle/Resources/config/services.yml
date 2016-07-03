@@ -20,7 +20,18 @@ services:
             arguments: ['@service_container']
 
 
+    ## api related
+    sentegrity_business.api.user:
+        class: Sentegrity\BusinessBundle\Services\Api\User
+        arguments: ['@service_container']
 
+    sentegrity_business.api.policy:
+        class: Sentegrity\BusinessBundle\Services\Api\Policy
+        arguments: ['@service_container']
+
+    sentegrity_business.api.organization:
+        class: Sentegrity\BusinessBundle\Services\Api\Organization
+        arguments: ['@service_container']
 
 
     ## Support stuff

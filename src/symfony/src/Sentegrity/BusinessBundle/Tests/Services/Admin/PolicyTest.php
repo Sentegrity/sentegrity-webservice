@@ -19,7 +19,7 @@ class PolicyTest extends WebTestCase
     /**
      * @expectedException        \Sentegrity\BusinessBundle\Exceptions\ValidatorException
      * @expectedExceptionMessage Policy with a given uuid not founded.
-     * @group policy
+     * @group admin_policy
      */
     public function testCRUD()
     {
@@ -80,7 +80,7 @@ class PolicyTest extends WebTestCase
     /**
      * @expectedException        \Sentegrity\BusinessBundle\Exceptions\ValidatorException
      * @expectedExceptionMessage This organization already has default policy for given platform.
-     * @group policy
+     * @group admin_policy
      */
     public function testDuplivateDefaultPolicy()
     {

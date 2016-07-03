@@ -26,7 +26,7 @@ class OrganizationTest extends WebTestCase
     /**
      * @expectedException        \Sentegrity\BusinessBundle\Exceptions\ValidatorException
      * @expectedExceptionMessage Organization with a given uuid not founded.
-     * @group organization
+     * @group admin_organization
      */
     public function testCRUD()
     {
