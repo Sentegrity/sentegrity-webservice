@@ -29,6 +29,19 @@ class GroupsRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
+     * Get default group for multiple organizations
+     * @param array $organizations
+     * @return array;
+     */
+    public function getDefaultGroupsByMultipleOrganizations(array $organizations)
+    {
+        return $this->findBy(array(
+            'groupId' => 0,
+            'organization' => $organizations
+        ));
+    }
+
+    /**
      * Deletes all groups from an organization
      * @param Organization $organization
      * @return bool

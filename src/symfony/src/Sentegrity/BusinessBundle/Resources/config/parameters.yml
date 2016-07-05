@@ -33,6 +33,6 @@ parameters:
         - app_version
         - data
 
-    validate_policy_get:
+    validate_load_get:
         - offset
         - limit

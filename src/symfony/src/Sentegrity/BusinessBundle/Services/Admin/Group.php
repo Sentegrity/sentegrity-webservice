@@ -53,4 +53,14 @@ class Group extends Service
     {
         return $this->repository->deleteByOrganization($organization);
     }
+
+    /**
+     * Gets a default group for multiple organizations
+     * @param array $organizations
+     * @return array
+     */
+    public function getDefaultGroupsByMultipleOrganizations(array $organizations)
+    {
+        return $this->repository->getDefaultGroupsByMultipleOrganizations($organizations);
+    }
 }

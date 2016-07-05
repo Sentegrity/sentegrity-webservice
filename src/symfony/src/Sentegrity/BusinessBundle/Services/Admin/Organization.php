@@ -6,6 +6,7 @@ use Sentegrity\BusinessBundle\Entity\Repository\OrganizationRepository;
 use Sentegrity\BusinessBundle\Entity\Repository\PolicyRepository;
 use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
+use Sentegrity\BusinessBundle\Services\Support\Database\PDOTransformers;
 use Sentegrity\BusinessBundle\Services\Support\UUID;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Entity\Documents\Organization as OrganizationEntity;
@@ -211,5 +212,61 @@ class Organization extends Service
         }
 
         return $id;
+    }
+    
+    /**
+     * Gets all organizations in the system
+     * 
+     * @param array $organizationData
+     * @return array
+     */
+    public function getAllOrganizations(array $organizationData)
+    {
+        /**
+         * $organizationData template:
+         * array(
+         *      "offset" => ...,
+         *      "limit" => ...
+         * )
+         */
+        /** @var Group $groupService */
+        $groupService = $this->containerInterface->get('sentegrity_business.group');
+        $organizations = $this->repository->getAll($organizationData['offset'], $organizationData['limit']);
+        $groups = $groupService->getDefaultGroupsByMultipleOrganizations($organizations);
+        $groups = self::idsKeysCallable($groups);
+
+        $rsp = [];
+        foreach ($organizations as $organization) {
+            if (!isset($groups[$organization->getId()])) {
+                continue;
+            }
+            $tmp = new \Sentegrity\BusinessBundle\Transformers\Organization(
+                $organization,
+                $groups[$organization->getId()]
+            );
+            $rsp[] = $tmp;
+            $tmp = null;
+        }
+
+        return $rsp;
+    }
+
+    /**
+     * Sets objects id parameter as key and object as a value in an
+     * array
+     */
+    private static function idsKeysCallable($objects)
+    {
+        $returnObjects = array();
+
+        if (!is_array($objects)) {
+            $objects = array($objects);
+        }
+
+        foreach ($objects as $object) {
+            $returnObjects[$object->getOrganization()->getId()] = $object;
+        }
+
+        return $returnObjects;
     }
 }

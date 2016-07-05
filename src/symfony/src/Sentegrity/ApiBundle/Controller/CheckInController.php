@@ -4,7 +4,6 @@ namespace Sentegrity\ApiBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sentegrity\BusinessBundle\Handlers as Handler;
 use Sentegrity\BusinessBundle\Services\Api\CheckIn;
-use Sentegrity\BusinessBundle\Services\Api\RunHistory;
 use Sentegrity\BusinessBundle\Services\Api\User;
 use Sentegrity\BusinessBundle\Services\Support\ValidateRequest;
 use Symfony\Component\HttpFoundation\Request;

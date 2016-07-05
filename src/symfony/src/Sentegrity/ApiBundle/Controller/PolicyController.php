@@ -58,7 +58,7 @@ class PolicyController extends RootController
     {
         $requestData = $this->validate(
             $request,
-            $this->container->getParameter('validate_policy_get'),
+            $this->container->getParameter('validate_load_get'),
             ValidateRequest::GET
         );
         $uuid = $this->getOwnerFromHeader($request->headers);

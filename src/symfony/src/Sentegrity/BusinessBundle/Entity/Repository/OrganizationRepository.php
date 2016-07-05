@@ -44,4 +44,18 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
         }
         return (int)$qb[0]['id'];
     }
+
+    /**
+     * Gets all organizations in the system
+     *
+     * @param $offset
+     * @param $limit
+     * @return array
+     */
+    public function getAll($offset, $limit)
+    {
+        return $this->findBy(
+            [], null, $limit, $offset
+        );
+    }
 }

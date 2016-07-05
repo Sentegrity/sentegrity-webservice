@@ -3,6 +3,7 @@ namespace Sentegrity\ApiBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sentegrity\BusinessBundle\Services\Support\UUID;
+use Sentegrity\BusinessBundle\Services\Support\ValidateRequest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Sentegrity\BusinessBundle\Handlers as Handler;
@@ -58,6 +59,27 @@ class OrganizationController extends RootController
 
         return $this->response(
             $this->organizationService->read($requestData)
+        );
+    }
+
+    /**
+     * @Route(
+     *      "/get/all",
+     *      defaults={"_format" = "json"},
+     *      name="admin_organization_get_all",
+     *      methods="GET"
+     * )
+     */
+    public function getAllAction(Request $request)
+    {
+        $requestData = $this->validate(
+            $request,
+            $this->container->getParameter('validate_load_get'),
+            ValidateRequest::GET
+        );
+
+        return $this->response(
+            $this->organizationService->getAllOrganizations($requestData)
         );
     }
 

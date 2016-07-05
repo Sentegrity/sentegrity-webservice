@@ -95,6 +95,53 @@ class OrganizationTest extends WebTestCase
         self::$organizationService->read(['uuid' => $uuid]);
     }
 
+    /**
+     * @group admin_organization
+     */
+    public function testGetAllOrganizations()
+    {
+        $organizationData = array(
+            "name" => 'Test organization name',
+            "domain_name" => 'domain.test',
+            "contact_name" => 'Contact Name',
+            "contact_email" => 'contact.email@domain.test',
+            "contact_phone" => '+1 234 5678',
+            "policy_ios" => self::$iosUuid,
+            "policy_android" => self::$androidUuid
+        );
+
+        self::$organizationService->create($organizationData);
+
+        $organizationData = array(
+            "name" => 'Test organization name 2',
+            "domain_name" => 'domain.test',
+            "contact_name" => 'Contact Name',
+            "contact_email" => 'contact.email@domain.test',
+            "contact_phone" => '+1 234 5678',
+            "policy_ios" => self::$iosUuid,
+            "policy_android" => self::$androidUuid
+        );
+
+        self::$organizationService->create($organizationData);
+
+        $organizationData = array(
+            "name" => 'Test organization name 3',
+            "domain_name" => 'domain.test',
+            "contact_name" => 'Contact Name',
+            "contact_email" => 'contact.email@domain.test',
+            "contact_phone" => '+1 234 5678',
+            "policy_ios" => self::$androidUuid,
+            "policy_android" => self::$iosUuid
+        );
+
+        self::$organizationService->create($organizationData);
+
+        $rsp = self::$organizationService->getAllOrganizations(['offset' => 0, 'limit' => 10]);
+        $rsp = json_encode($rsp);
+        $rsp = json_decode($rsp);
+        $this->assertEquals($rsp[2]->defaultPolicies->ios, self::$androidUuid, "It didn't get proper one");
+    }
+
     private static function createPolicy($platform, $def = 1)
     {
         $policyService = static::createClient()
