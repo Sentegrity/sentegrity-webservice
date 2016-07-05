@@ -22,6 +22,8 @@ class CheckIn extends Service
     private $organization;
     /** @var ErrorLog $errorLog */
     private $errorLog;
+    /** @var RunHistory $runHistory */
+    private $runHistory;
     
     function __construct(ContainerInterface $containerInterface)
     {
@@ -30,6 +32,7 @@ class CheckIn extends Service
         $this->policy = $this->containerInterface->get('sentegrity_business.api.policy');
         $this->organization = $this->containerInterface->get('sentegrity_business.api.organization');
         $this->errorLog = $this->containerInterface->get('sentegrity_business.error_log');
+        $this->runHistory = $this->containerInterface->get('sentegrity_business.api.run_history');
     }
 
     /**
@@ -77,6 +80,15 @@ class CheckIn extends Service
             $policy = null;
         }
 
+        $this->runHistory->save([
+            "user_activation_id"    => $requestData['user_activation_id'],
+            "organization_id"       => $groupAndOrganization['organization_id'],
+            "device_salt"           => $requestData['device_salt'],
+            "phone_model"           => $requestData['phone_model'],
+            "platform"              => $requestData['platform'],
+            "objects"               => $requestData['run_history_objects']
+        ]);
+
         return $policy;
     }
 
@@ -102,6 +114,16 @@ class CheckIn extends Service
                 $organization,
                 $requestData['platform']
             );
+
+            $this->runHistory->save([
+                "user_activation_id"    => $requestData['user_activation_id'],
+                "organization_id"       => $organization,
+                "device_salt"           => $requestData['device_salt'],
+                "phone_model"           => $requestData['phone_model'],
+                "platform"              => $requestData['platform'],
+                "objects"               => $requestData['run_history_objects']
+            ]);
+
             // always return default organization policy when a new user is created
             return $this->policy->getPolicyById($policyId);
 

@@ -1,8 +1,4 @@
 services:
-    sentegrity_business.run_history:
-        class: Sentegrity\BusinessBundle\Services\RunHistory
-        arguments: ['@service_container']
-
     sentegrity_business.policy:
         class: Sentegrity\BusinessBundle\Services\Admin\Policy
         arguments: ['@service_container']
@@ -35,6 +31,10 @@ services:
 
     sentegrity_business.api.check_in:
         class: Sentegrity\BusinessBundle\Services\Api\CheckIn
+        arguments: ['@service_container']
+
+    sentegrity_business.api.run_history:
+        class: Sentegrity\BusinessBundle\Services\Api\RunHistory
         arguments: ['@service_container']
 
 

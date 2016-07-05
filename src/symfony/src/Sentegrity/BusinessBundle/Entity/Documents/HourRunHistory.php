@@ -37,8 +37,7 @@ class HourRunHistory
      *     name="device_salt", 
      *     type="string", 
      *     length=255,
-     *     nullable=false,
-     *     unique=true
+     *     nullable=false
      * )
      */
     private $deviceSalt;
@@ -93,7 +92,6 @@ class HourRunHistory
      *     name="user_activation_id",
      *     type="string",
      *     nullable=false,
-     *     unique=true,
      *     options={
      *         "comment":"FK from user table"
      *     }
