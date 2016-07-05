@@ -120,7 +120,7 @@ class Policy extends Service
             'policy',
             array('data'),
             array(
-                'id'            => array('value' => $id),
+                'id' => array('value' => $id),
             )
         );
 

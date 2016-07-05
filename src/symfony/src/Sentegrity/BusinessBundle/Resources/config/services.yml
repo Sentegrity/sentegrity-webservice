@@ -33,6 +33,10 @@ services:
         class: Sentegrity\BusinessBundle\Services\Api\Organization
         arguments: ['@service_container']
 
+    sentegrity_business.api.check_in:
+        class: Sentegrity\BusinessBundle\Services\Api\CheckIn
+        arguments: ['@service_container']
+
 
     ## Support stuff
     pdo_master_connection:
