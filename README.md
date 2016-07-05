@@ -103,7 +103,11 @@ app/console doctrine:schema:update --force
 docker-compose ps
 ```
 
-Push stuff on your branch. DO NOT PUSH stuff on MASTER.
+Push stuff on your branch. DO NOT PUSH stuff on MASTER. Before pushing make sure you run tests. Tests will check that all services are OK. To run test execute:
+```sh
+# Assuming that you are in symfony folder
+./vendor/symfony/symfony/phpunit -c src/Sentegrity/BusinessBundle/Tests/phpunit.xml
+```
 
 [composer]:https://getcomposer.org/download/
 [Docker]:https://docs.docker.com/
