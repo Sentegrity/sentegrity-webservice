@@ -103,4 +103,10 @@ class PolicyTest extends WebTestCase
         $rsp = self::$policyService->getNewPolicyRevision(self::$policyId, 1, Platform::IOS);
         $this->assertEquals($rsp->key, $policyData['data']['key'], "New policy not fetched");
     }
+
+    public function testGetPolicyById()
+    {
+        $rsp = self::$policyService->getPolicyById(self::$policyId);
+        $this->assertEquals($rsp->key, 'value', "Policy not fetched");
+    }
 }

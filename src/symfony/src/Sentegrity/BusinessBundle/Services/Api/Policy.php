@@ -106,4 +106,28 @@ class Policy extends Service
 
         return $qr->$platform;
     }
+
+    /**
+     * Gets policy by ID
+     *
+     * @param $id
+     * @return \stdClass
+     */
+    public function getPolicyById($id)
+    {
+        /***/
+        $qr = $this->mysqlq->select(
+            'policy',
+            array('data'),
+            array(
+                'id'            => array('value' => $id),
+            )
+        );
+
+        if (!$qr) {
+            return null;
+        }
+
+        return json_decode($qr->data);
+    }
 }
