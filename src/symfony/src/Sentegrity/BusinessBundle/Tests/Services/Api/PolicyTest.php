@@ -45,7 +45,7 @@ class PolicyTest extends WebTestCase
      */
     public function testCheckIfDefault()
     {
-        $rsp = self::$policyService->checkIfDefault('Test policy name abc', Platform::IOS, 0);
+        $rsp = self::$policyService->checkIfDefault('Test policy name abc', Platform::IOS, 0, 'v0.1');
         $this->assertFalse($rsp);
     }
 

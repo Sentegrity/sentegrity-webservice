@@ -57,10 +57,14 @@ class Policy  extends Service
         }
 
         if ($policyData['is_default']) {
-            if ($this->repository->getDefaultPolicyByPlatformAndOrganization($policyData['platform'], $organizationId)) {
+            if ($this->repository->getDefaultPolicyByPlatformAndOrganization(
+                $policyData['platform'],
+                $organizationId,
+                $policyData['app_version']
+            )) {
                 throw new ValidatorException(
                     null,
-                    "This organization already has default policy for given platform.",
+                    "This organization already has default policy for given platform and App version.",
                     ErrorCodes::FORBIDDEN
                 );
             }

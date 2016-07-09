@@ -138,7 +138,8 @@ class CheckIn extends Service
             if($policyId = $this->policy->checkIfDefault(
                 $requestData['current_policy_id'],
                 $requestData['platform'],
-                0
+                0,
+                $requestData['app_version']
             )) {
                 $this->errorLog->write("Updated policy for user with no organization", ErrorLog::LOGIC_ERROR);
                 return $this->policy->getNewPolicyRevision(

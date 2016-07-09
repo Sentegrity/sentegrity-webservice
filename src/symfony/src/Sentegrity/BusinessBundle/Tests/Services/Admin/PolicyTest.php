@@ -79,10 +79,10 @@ class PolicyTest extends WebTestCase
 
     /**
      * @expectedException        \Sentegrity\BusinessBundle\Exceptions\ValidatorException
-     * @expectedExceptionMessage This organization already has default policy for given platform.
+     * @expectedExceptionMessage This organization already has default policy for given platform and App version.
      * @group admin_policy
      */
-    public function testDuplivateDefaultPolicy()
+    public function testDuplicateDefaultPolicy()
     {
         // just some test case data
         $policyData = array(
@@ -95,5 +95,19 @@ class PolicyTest extends WebTestCase
 
         self::$policyService->create($policyData);
         self::$policyService->create($policyData);
+
+        $policyData = array(
+            "name" => 'Test policy name',
+            "platform" => Platform::IOS,
+            "is_default" => 1,
+            "app_version" => 'v1.1',
+            "data" => ['key' => 'value']
+        );
+        $rsp = self::$policyService->create($policyData);
+        $uuid = $rsp->data;
+        $rsp = self::$policyService->read(['uuid' => $uuid]);
+        $rsp = json_encode($rsp);
+        $rsp = json_decode($rsp);
+        $this->assertEquals($rsp->appVersion, $policyData['app_version'], 'App version is not good');
     }
 }

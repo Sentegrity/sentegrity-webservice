@@ -45,14 +45,16 @@ class PolicyRepository extends \Doctrine\ORM\EntityRepository
      * Gets the default policy for given platform/organization combination
      * @param $platform
      * @param $organizationId
+     * @param $appVersion
      * @return Policy
      */
-    public function getDefaultPolicyByPlatformAndOrganization($platform, $organizationId)
+    public function getDefaultPolicyByPlatformAndOrganization($platform, $organizationId, $appVersion)
     {
         return $this->findBy(array(
             'platform' => $platform,
             'isDefault' => 1,
-            'organizationOwnerId' => $organizationId
+            'organizationOwnerId' => $organizationId,
+            'appVersion' => $appVersion
         ));
     }
 

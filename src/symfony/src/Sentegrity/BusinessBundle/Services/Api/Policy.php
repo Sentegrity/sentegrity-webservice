@@ -47,9 +47,10 @@ class Policy extends Service
      * @param $policy
      * @param $platform
      * @param $organization
+     * @param $appVersion
      * @return int
      */
-    public function checkIfDefault($policy, $platform, $organization)
+    public function checkIfDefault($policy, $platform, $organization, $appVersion)
     {
         /***/
         $qr = $this->mysqlq->select(
@@ -58,7 +59,8 @@ class Policy extends Service
             array(
                 'name'                  => array('value' => $policy),
                 'platform'              => array('value' => $platform, 'logic' => MySQLQuery::_AND),
-                'organization_owner_id' => array('value' => $organization, 'logic' => MySQLQuery::_AND)
+                'organization_owner_id' => array('value' => $organization, 'logic' => MySQLQuery::_AND),
+                'app_version'           => array('value' => $appVersion, 'logic' => MySQLQuery::_AND)
             )
         );
         
