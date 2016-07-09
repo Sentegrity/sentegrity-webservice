@@ -118,7 +118,7 @@ class Policy extends Service
         /***/
         $qr = $this->mysqlq->select(
             'policy',
-            array('data'),
+            array('data', 'name'),
             array(
                 'id' => array('value' => $id),
             )
@@ -128,6 +128,9 @@ class Policy extends Service
             return null;
         }
 
-        return json_decode($qr->data);
+        return [
+            'data' => json_decode($qr->data),
+            'name' => $qr->name
+        ];
     }
 }

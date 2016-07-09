@@ -64,12 +64,18 @@ class CheckIn extends Service
                     $requestData['platform']
                 );
                 $policy = $this->policy->getPolicyById($policyId);
+                $policy = $policy['data'];
             } else {
-                $policy = $this->policy->getNewPolicyRevision(
-                    $policyId,
-                    $requestData['current_policy_revision'],
-                    $requestData['platform']
-                );
+                if ($requestData['current_policy_id'] == $policy['name']) {
+                    $policy = $this->policy->getNewPolicyRevision(
+                        $policyId,
+                        $requestData['current_policy_revision'],
+                        $requestData['platform']
+                    );
+                } else {
+                    $policy = $policy['data'];
+                }
+
             }
         } else {
             $this->errorLog->write(
@@ -125,7 +131,8 @@ class CheckIn extends Service
             ]);
 
             // always return default organization policy when a new user is created
-            return $this->policy->getPolicyById($policyId);
+            $policy =  $this->policy->getPolicyById($policyId);
+            return $policy['data'];
 
         } else {
             if($policyId = $this->policy->checkIfDefault(
