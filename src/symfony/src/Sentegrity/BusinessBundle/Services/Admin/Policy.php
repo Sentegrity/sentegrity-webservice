@@ -27,11 +27,10 @@ class Policy  extends Service
      * to the default organization which has owner ID of 0.
      * 
      * @param array $policyData
-     * @param $organizationId -> defaults to 0 if no organization is sent
      * @return \stdClass
      * @throws ValidatorException
      */
-    public function create(array $policyData, $organizationUuid = "")
+    public function create(array $policyData)
     {
         /**
          * $policyData template:
@@ -50,10 +49,12 @@ class Policy  extends Service
         $uuid = UUID::generateUuid(time());
 
         $organizationId = 0;
-        if ($organizationUuid) {
+        if ($organizationUuid = $this->session->get('org_uuid')) {
             /** @var Organization $organizationService */
             $organizationService = $this->containerInterface->get('sentegrity_business.organization');
             $organizationId = $organizationService->getOrganizationIdByUuid($organizationUuid);
+        } else {
+            $this->checkIfSuperAdmin(true);
         }
 
         if ($policyData['is_default']) {
@@ -106,6 +107,7 @@ class Policy  extends Service
         $data = json_encode($policyData['data']);
 
         $policy = $this->getPolicyByUuid($policyData['uuid']);
+        $this->checkSession($policy->getOrganizationOwnerId());
         $policy->setName($policyData['name'])
             ->setIsDefault($policyData['is_default'])
             ->setAppVersion($policyData['app_version'])
@@ -139,11 +141,10 @@ class Policy  extends Service
          * data needs to be added, and also to keep consistency.
          */
 
-        $policy = new \Sentegrity\BusinessBundle\Transformers\Policy(
-            $this->getPolicyByUuid($policyData['uuid'])
-        );
+        $policy = $this->getPolicyByUuid($policyData['uuid']);
+        $this->checkSession($policy->getOrganizationOwnerId());
 
-        return $policy;
+        return new \Sentegrity\BusinessBundle\Transformers\Policy($policy);
     }
 
     /**
@@ -156,6 +157,7 @@ class Policy  extends Service
     {
         /***/
         $policy = $this->getPolicyByUuid($policyData['uuid']);
+        $this->checkSession($policy->getOrganizationOwnerId());
         $this->entityManager->remove($policy);
         return $this->flush(
             'An error occurred while deleting policy. Delete failed!'
@@ -190,7 +192,7 @@ class Policy  extends Service
      * @param array $policyData
      * @return array $rsp
      */
-    public function getPolicesByOrganization($uuid, array $policyData)
+    public function getPolicesByOrganization(array $policyData)
     {
         /**
          * $policyData template:
@@ -202,10 +204,11 @@ class Policy  extends Service
 
         /** @var Organization $organizationService */
         $organizationService = $this->containerInterface->get('sentegrity_business.organization');
-        if ($uuid) {
+        if ($uuid = $this->session->get('org_uuid')) {
             $id = $organizationService->getOrganizationIdByUuid($uuid);
             $policies = $this->repository->getByOrganization($id, $policyData['offset'], $policyData['limit']);
         } else {
+            $this->checkIfSuperAdmin(true);
             $policies = $this->repository->getAll($policyData['offset'], $policyData['limit']);
         }
 

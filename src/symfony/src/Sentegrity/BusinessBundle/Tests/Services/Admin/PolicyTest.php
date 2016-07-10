@@ -3,6 +3,7 @@ namespace Sentegrity\BusinessBundle\Tests\Services\Admin;
 
 use Sentegrity\BusinessBundle\Handlers\Platform;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Sentegrity\BusinessBundle\Tests\Services\Utility;
 
 class PolicyTest extends WebTestCase
 {
@@ -14,6 +15,7 @@ class PolicyTest extends WebTestCase
         self::$policyService = static::createClient()
             ->getContainer()
             ->get('sentegrity_business.policy');
+        Utility::setUserSession();
     }
     
     /**

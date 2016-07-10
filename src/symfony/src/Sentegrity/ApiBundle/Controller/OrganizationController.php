@@ -3,6 +3,7 @@ namespace Sentegrity\ApiBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sentegrity\BusinessBundle\Services\Support\UUID;
+use Sentegrity\BusinessBundle\Annotations\Permission;
 use Sentegrity\BusinessBundle\Services\Support\ValidateRequest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,9 @@ class OrganizationController extends RootController
      *      name="admin_organization_create",
      *      methods="POST"
      * )
+     * @Permission(
+     *     permission = Permission::SUPERADMIN
+     * )
      */
     public function createAction(Request $request)
     {
@@ -52,6 +56,9 @@ class OrganizationController extends RootController
      *      name="admin_organization_get",
      *      methods="GET"
      * )
+     * @Permission(
+     *     permission = Permission::READ
+     * )
      */
     public function getAction($uuid)
     {
@@ -68,6 +75,9 @@ class OrganizationController extends RootController
      *      defaults={"_format" = "json"},
      *      name="admin_organization_get_all",
      *      methods="GET"
+     * )
+     * @Permission(
+     *     permission = Permission::ADMIN
      * )
      */
     public function getAllAction(Request $request)
@@ -91,6 +101,9 @@ class OrganizationController extends RootController
      *      name="admin_organization_edit",
      *      methods="POST"
      * )
+     * @Permission(
+     *     permission = Permission::WRITE
+     * )
      */
     public function editAction($uuid, Request $request)
     {
@@ -113,6 +126,9 @@ class OrganizationController extends RootController
      *      requirements={"uuid" = UUID::UUID_REGEX},
      *      name="admin_organization_delete",
      *      methods="DELETE"
+     * )
+     * @Permission(
+     *     permission = Permission::SUPERADMIN
      * )
      */
     public function deleteAction($uuid)

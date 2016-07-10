@@ -36,3 +36,7 @@ parameters:
     validate_load_get:
         - offset
         - limit
+
+    validate_sign_in:
+        - username
+        - password

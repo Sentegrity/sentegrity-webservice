@@ -101,6 +101,10 @@ app/console doctrine:schema:update --force
 
 ## to check if containers are running run
 docker-compose ps
+
+## also you need to add a super admin user by running
+cd src/symfony/
+app/console sentegrity:generate:superadmin test1234 # leave test1234 a a password to make sure tests will run succesfully
 ```
 
 Push stuff on your branch. DO NOT PUSH stuff on MASTER. Before pushing make sure you run tests. Tests will check that all services are OK. To run test execute:

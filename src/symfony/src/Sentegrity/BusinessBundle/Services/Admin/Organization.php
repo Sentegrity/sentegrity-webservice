@@ -1,12 +1,13 @@
 <?php
 namespace Sentegrity\BusinessBundle\Services\Admin;
 
+use Sentegrity\BusinessBundle\Entity\Documents\AdminUser;
 use Sentegrity\BusinessBundle\Entity\Documents\Groups;
 use Sentegrity\BusinessBundle\Entity\Repository\OrganizationRepository;
 use Sentegrity\BusinessBundle\Entity\Repository\PolicyRepository;
 use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
-use Sentegrity\BusinessBundle\Services\Support\Database\PDOTransformers;
+use Sentegrity\BusinessBundle\Services\Support\Password;
 use Sentegrity\BusinessBundle\Services\Support\UUID;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Entity\Documents\Organization as OrganizationEntity;
@@ -73,6 +74,14 @@ class Organization extends Service
         $group->setPolicyIos($iosPolicy)
             ->setPolicyIdAndroid($androidPolicy);
         $this->entityManager->persist($group);
+        
+        // after all that we need to create a new admin user
+        $adminUser = new AdminUser();
+        $adminUser->setUsername($organizationData['username'])
+            ->setPassword(Password::seedAndEncryptPassword($organizationData['password']))
+            ->setOrganization($organization)
+            ->setPermission(1);
+        $this->entityManager->persist($adminUser);
 
         return $this->flush(
             'An error occurred while creating organization. Create failed!',
@@ -93,6 +102,7 @@ class Organization extends Service
          * to enables us to find current organization and update it.
          */
 
+        $this->checkSession($organizationData['uuid']);
         $organization = $this->getOrganizationByUuid($organizationData['uuid']);
         $organization->setName($organizationData['name'])
             ->setDomainName($organizationData['domain_name'])
@@ -134,6 +144,7 @@ class Organization extends Service
          * data needs to be added, and also to keep consistency.
          */
 
+        $this->checkSession($organizationData['uuid']);
         /** @var Group $groupService */
         $groupService = $this->containerInterface->get('sentegrity_business.group');
         $organizationEntity = $this->getOrganizationByUuid($organizationData['uuid']);
@@ -166,7 +177,7 @@ class Organization extends Service
 
         $this->entityManager->remove($organization);
         return $this->flush(
-            'An error occurred while deleting policy. Delete failed!'
+            'An error occurred while deleting organization. Delete failed!'
         );
     }
 
@@ -231,7 +242,8 @@ class Organization extends Service
          */
         /** @var Group $groupService */
         $groupService = $this->containerInterface->get('sentegrity_business.group');
-        $organizations = $this->repository->getAll($organizationData['offset'], $organizationData['limit']);
+        $orgUuid = $this->session->get('org_uuid');
+        $organizations = $this->repository->getAllByUuid($organizationData['offset'], $organizationData['limit'], $orgUuid);
         $groups = $groupService->getDefaultGroupsByMultipleOrganizations($organizations);
         $groups = self::idsKeysCallable($groups);
 

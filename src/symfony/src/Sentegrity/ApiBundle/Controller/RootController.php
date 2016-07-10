@@ -54,21 +54,6 @@ class RootController extends Controller
         Handler\Response::responseOK($data);
         return Handler\Response::$response;
     }
-    
-    /**
-     * Retrieves owner's uuid from header
-     * @param HeaderBag $header
-     * @return string $owner
-     */
-    protected function getOwnerFromHeader(HeaderBag $header)
-    {
-        $owner = "";
-        if ($t = $header->get('owner')) {
-            $owner = $t;
-        }
-        
-        return $owner;
-    }
 
     /**
      * Sets the container.

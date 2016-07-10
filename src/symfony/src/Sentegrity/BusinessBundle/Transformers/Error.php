@@ -11,6 +11,6 @@ class Error
     {
         $this->code = $code;
         $this->message = $msg;
-        //$this->developer = $dMsg;
+        $this->developer = $dMsg;
     }
 } 

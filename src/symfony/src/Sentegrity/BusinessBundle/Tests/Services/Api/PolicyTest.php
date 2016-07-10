@@ -66,7 +66,9 @@ class PolicyTest extends WebTestCase
             "contact_email" => 'contact.email@domain.test',
             "contact_phone" => '+1 234 5678',
             "policy_ios" => self::$policyUuid,
-            "policy_android" => self::$policyUuid
+            "policy_android" => self::$policyUuid,
+            "username" => "admin",
+            "password" => "pass"
         );
         
         $uuid = $adminOrganizationService->create($organizationData);

@@ -3,6 +3,7 @@ namespace Sentegrity\ApiBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sentegrity\BusinessBundle\Services\Support\UUID;
+use Sentegrity\BusinessBundle\Annotations\Permission;
 use Sentegrity\BusinessBundle\Services\Support\ValidateRequest;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,9 @@ class PolicyController extends RootController
      *      name="admin_policy_create",
      *      methods="POST"
      * )
+     * @Permission(
+     *     permission = Permission::WRITE
+     * )
      */
     public function createAction(Request $request)
     {
@@ -39,10 +43,8 @@ class PolicyController extends RootController
             $this->container->getParameter('validate_policy_create')
         );
 
-        $organization = $this->getOwnerFromHeader($request->headers);
-
         return $this->response(
-            $this->policyService->create($requestData, $organization)
+            $this->policyService->create($requestData)
         );
     }
 
@@ -53,6 +55,9 @@ class PolicyController extends RootController
      *      name="admin_policy_get_by_organization",
      *      methods="GET"
      * )
+     * @Permission(
+     *     permission = Permission::READ
+     * )
      */
     public function getByOrganizationAction(Request $request)
     {
@@ -61,10 +66,9 @@ class PolicyController extends RootController
             $this->container->getParameter('validate_load_get'),
             ValidateRequest::GET
         );
-        $uuid = $this->getOwnerFromHeader($request->headers);
 
         return $this->response(
-            $this->policyService->getPolicesByOrganization($uuid, $requestData)
+            $this->policyService->getPolicesByOrganization($requestData)
         );
     }
 
@@ -75,6 +79,9 @@ class PolicyController extends RootController
      *      requirements={"uuid" = UUID::UUID_REGEX},
      *      name="admin_policy_get",
      *      methods="GET"
+     * )
+     * @Permission(
+     *     permission = Permission::READ
      * )
      */
     public function getAction($uuid)
@@ -93,6 +100,9 @@ class PolicyController extends RootController
      *      requirements={"uuid" = UUID::UUID_REGEX},
      *      name="admin_policy_edit",
      *      methods="POST"
+     * )
+     * @Permission(
+     *     permission = Permission::WRITE
      * )
      */
     public function editAction($uuid, Request $request)
@@ -116,6 +126,9 @@ class PolicyController extends RootController
      *      requirements={"uuid" = UUID::UUID_REGEX},
      *      name="admin_policy_delete",
      *      methods="DELETE"
+     * )
+     * @Permission(
+     *     permission = Permission::WRITE
      * )
      */
     public function deleteAction($uuid)

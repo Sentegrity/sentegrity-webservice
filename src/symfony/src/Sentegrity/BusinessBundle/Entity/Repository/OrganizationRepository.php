@@ -50,12 +50,18 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
      *
      * @param $offset
      * @param $limit
+     * @param $uuid = ""
      * @return array
      */
-    public function getAll($offset, $limit)
+    public function getAllByUuid($offset, $limit, $uuid = "")
     {
+        $criteria = [];
+        if ($uuid) {
+            $criteria['uuid'] = $uuid;
+        }
+
         return $this->findBy(
-            [], null, $limit, $offset
+            $criteria, null, $limit, $offset
         );
     }
 }
