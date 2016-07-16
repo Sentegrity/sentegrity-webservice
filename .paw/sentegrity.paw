@@ -489,7 +489,7 @@
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z143"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z145">
-        <attribute name="value" type="string">a2c0eccaeb5fdefd70b3cf08ab46682f90f258ca
+        <attribute name="value" type="string">9d7e0048a1eb1918b5f965fed1ba2c4276e76c15
 
 
 </attribute>
@@ -546,7 +546,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"keyValues":[[["username"],["my_admin_2"],true],[["password"],["test1234"],true]]},"identifier":"com.luckymarmot.BodyMultipartFormDataDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"keyValues":[[["username"],["superadmin"],true],[["password"],["superadmin1234"],true]]},"identifier":"com.luckymarmot.BodyMultipartFormDataDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Sign In</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z150"></relationship>
@@ -593,7 +593,7 @@
         <attribute name="value" type="string">d97e5dff276470081e5a724a7b6cefa5e1cf048d</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">access-token</attribute>
-        <attribute name="enabled" type="bool">1</attribute>
+        <attribute name="enabled" type="bool">0</attribute>
         <relationship name="groupforbodyparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="groupforheaders" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>

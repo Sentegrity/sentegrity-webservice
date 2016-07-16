@@ -31,6 +31,9 @@ class ExceptionListener
             case ErrorCodes::FORBIDDEN:
                 Response::responseForbidden($this->unknownError($e));
                 break;
+            case ErrorCodes::UNAUTHORIZED_ACCESS:
+                Response::responseUnauthorised($this->unknownError($e));
+                break;
             default:
                 Response::responseInternalServerError($this->unknownError($e));
                 break;

@@ -8,4 +8,5 @@ class ErrorCodes
     const NOT_FOUND = 404;
     const FORBIDDEN = 403;
     const INVALID_METHOD_PARAMS = 1324;
+    const UNAUTHORIZED_ACCESS = 401;
 }

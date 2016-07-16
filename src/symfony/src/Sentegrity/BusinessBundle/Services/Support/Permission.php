@@ -59,8 +59,17 @@ class Permission
         $sessionRepository = $this->em->getRepository(
             '\Sentegrity\BusinessBundle\Entity\Documents\AdminSession'
         );
+        
+        
 
         $adminSession = $sessionRepository->getSessionByAccessToken($accessToken);
+        if (!$adminSession) {
+            throw new ValidatorException(
+                null,
+                "Access token invalid or missing",
+                ErrorCodes::UNAUTHORIZED_ACCESS
+            );
+        }
         $permission = $adminSession->getPermission();
         $session = $this->request->getSession();
         $currOrg = $adminSession->getOrganization();
