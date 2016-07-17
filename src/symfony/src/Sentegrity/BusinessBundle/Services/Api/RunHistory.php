@@ -31,6 +31,9 @@ class RunHistory extends Service
          * )
          */
 
+        if (!$runHistoryData['objects']) {
+            return true;
+        }
         // create JSON to store
         $historyJSON = json_encode($runHistoryData['objects']);
 
