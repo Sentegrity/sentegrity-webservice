@@ -44,17 +44,17 @@ class CheckInController extends RootController
         );
         if ($groupAndOrganization) {
             return $this->response(
-                $this->processor->processExistingUser(
+                ["newPolicy" => $this->processor->processExistingUser(
                     $groupAndOrganization,
                     $requestData
-                )
+                )]
             );
 
         } else {
             return $this->response(
-                $this->processor->processNewUser(
+                ["newPolicy" => $this->processor->processNewUser(
                     $requestData
-                )
+                )]
             );
         }
     }
