@@ -12,7 +12,6 @@ class Policy implements \JsonSerializable
     private $appVersion;
     private $revision;
     private $data;
-    private $organization;
 
     function __construct(PolicyEntity $policy)
     {
@@ -23,7 +22,6 @@ class Policy implements \JsonSerializable
         $this->appVersion = $policy->getAppVersion();
         $this->revision = (int)$policy->getRevisionNo();
         $this->data = json_decode($policy->getData(), true);
-        $this->organization = $policy->getOrganizationOwnerId();
     }
 
     function jsonSerialize()
@@ -35,8 +33,7 @@ class Policy implements \JsonSerializable
             'isDefault'     => $this->isDefault,
             'appVersion'    => $this->appVersion,
             'revision'      => $this->revision,
-            'data'          => $this->data,
-            'organization'  => $this->organization
+            'data'          => $this->data
         ];
     }
 }
