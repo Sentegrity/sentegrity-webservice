@@ -204,6 +204,28 @@ class Organization extends Service
     }
 
     /**
+     * Gets organizations from database by given ids
+     *
+     * @param $ids
+     * @return OrganizationEntity
+     * @throws ValidatorException
+     */
+    public function getOrganizationByIds($ids)
+    {
+        $organization = $this->repository->getByIds($ids);
+
+        if (!$organization) {
+            throw new ValidatorException(
+                null,
+                $this->translator->trans('Organization with a given id not founded.'),
+                ErrorCodes::NOT_FOUND
+            );
+        }
+
+        return $organization;
+    }
+
+    /**
      * Gets id from database by given uuid
      *
      * @param $uuid

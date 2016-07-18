@@ -1,6 +1,7 @@
 <?php
 namespace Sentegrity\BusinessBundle\Transformers;
 
+use Sentegrity\BusinessBundle\Entity\Documents\Organization as OrganizationEntity;
 use Sentegrity\BusinessBundle\Entity\Documents\Policy as PolicyEntity;
 
 class Policy implements \JsonSerializable
@@ -14,7 +15,10 @@ class Policy implements \JsonSerializable
     private $data;
     private $organization;
 
-    function __construct(PolicyEntity $policy)
+    function __construct(
+        PolicyEntity $policy,
+        OrganizationEntity $organization = null
+    )
     {
         $this->uuid = $policy->getUuid();
         $this->name = $policy->getName();
@@ -23,7 +27,15 @@ class Policy implements \JsonSerializable
         $this->appVersion = $policy->getAppVersion();
         $this->revision = (int)$policy->getRevisionNo();
         $this->data = json_decode($policy->getData(), true);
-        $this->organization = $policy->getOrganizationOwnerId();
+        
+        if ($organization) {
+            $this->organization = new \stdClass();
+            $this->organization->name = $organization->getName();
+            $this->organization->uuid = $organization->getUuid();
+        } else {
+            $this->organization = null;
+        }
+        
     }
 
     function jsonSerialize()

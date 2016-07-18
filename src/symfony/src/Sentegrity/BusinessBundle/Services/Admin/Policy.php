@@ -143,8 +143,15 @@ class Policy  extends Service
 
         $policy = $this->getPolicyByUuid($policyData['uuid']);
         $this->checkSession($policy->getOrganizationOwnerId());
+        /** @var Organization $organizationService */
+        $organizationService = $this->containerInterface->get('sentegrity_business.organization');
+        try {
+            $organization = $organizationService->getOrganizationByIds($policy->getOrganizationOwnerId());
+        } catch (\Exception $e) {
+            $organization = null;
+        }
 
-        return new \Sentegrity\BusinessBundle\Transformers\Policy($policy);
+        return new \Sentegrity\BusinessBundle\Transformers\Policy($policy, $organization);
     }
 
     /**
@@ -212,13 +219,46 @@ class Policy  extends Service
             $policies = $this->repository->getAll($policyData['offset'], $policyData['limit']);
         }
 
+        $pids = [];
+        foreach ($policies as $policy) {
+            $pids[] =  $policy->getOrganizationOwnerId();
+        }
+        $organizations = $organizationService->getOrganizationByIds($pids);
+        $organizations = self::idsKeysCallable($organizations);
+
         $rsp = [];
         foreach ($policies as $policy) {
-            $tmp = new \Sentegrity\BusinessBundle\Transformers\Policy($policy);
+            $organization =
+                isset($organizations[$policy->getOrganizationOwnerId()])
+                    ? $organizations[$policy->getOrganizationOwnerId()]
+                    : null;
+            $tmp = new \Sentegrity\BusinessBundle\Transformers\Policy(
+                $policy,
+                $organization
+            );
             $rsp[] = $tmp;
             $tmp = null;
         }
 
         return $rsp;
+    }
+
+    /**
+     * Sets objects id parameter as key and object as a value in an
+     * array
+     */
+    private static function idsKeysCallable($objects)
+    {
+        $returnObjects = array();
+
+        if (!is_array($objects)) {
+            $objects = array($objects);
+        }
+
+        foreach ($objects as $object) {
+            $returnObjects[$object->getId()] = $object;
+        }
+
+        return $returnObjects;
     }
 }

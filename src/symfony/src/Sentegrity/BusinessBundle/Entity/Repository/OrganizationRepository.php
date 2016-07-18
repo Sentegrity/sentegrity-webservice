@@ -26,6 +26,24 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
+     * Get organizations from database by ids
+     * @param $ids
+     * @return Organization;
+     */
+    public function getByIds($ids)
+    {
+        if (is_array($ids)) {
+            return $this->findBy(array(
+                'id' => $ids
+            ));
+        }
+        
+        return $this->findOneBy(array(
+            'id' => $ids
+        ));
+    }
+
+    /**
      * Get organization database id by uuid
      * @param $uuid
      * @return int $id;
