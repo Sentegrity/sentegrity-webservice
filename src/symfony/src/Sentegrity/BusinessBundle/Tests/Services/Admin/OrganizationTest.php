@@ -154,4 +154,15 @@ class OrganizationTest extends WebTestCase
         $rsp = json_decode($rsp);
         $this->assertEquals($rsp[count($rsp)-1]->defaultPolicies->ios, self::$androidUuid, "It didn't get proper one");
     }
+
+    /**
+     * @group admin_organization
+     */
+    public function testCountOrganizations()
+    {
+        $rsp = self::$organizationService->countOrganizations();
+        // 5 organizations are created withing groups service, and 3 in this one
+        // so far
+        $this->assertEquals(8, $rsp, "It should be eight organizations");
+    }
 }

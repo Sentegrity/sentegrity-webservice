@@ -286,6 +286,18 @@ class Organization extends Service
     }
 
     /**
+     * Get count of all organizations. This is used for pagination purposes.
+     * If not superadmin it is always one.
+     * @return int
+     */
+    public function countOrganizations()
+    {
+        return $this->repository->countOrganizations(
+            $this->session->get('org_uuid')
+        );
+    }
+
+    /**
      * Sets objects id parameter as key and object as a value in an
      * array
      */

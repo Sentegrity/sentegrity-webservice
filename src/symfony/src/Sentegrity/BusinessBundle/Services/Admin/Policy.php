@@ -242,6 +242,17 @@ class Policy  extends Service
 
         return $rsp;
     }
+    
+    /**
+     * Get count of all policies by logged organization. This is used for pagination purposes.
+     * @return int
+     */
+    public function countPoliciesByOrganization()
+    {
+        return $this->repository->countPolicies(
+            $this->session->get('org_id')
+        );
+    }
 
     /**
      * Sets objects id parameter as key and object as a value in an

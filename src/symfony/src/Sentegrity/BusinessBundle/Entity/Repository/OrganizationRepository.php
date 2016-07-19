@@ -37,7 +37,7 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
                 'id' => $ids
             ));
         }
-        
+
         return $this->findOneBy(array(
             'id' => $ids
         ));
@@ -81,5 +81,22 @@ class OrganizationRepository extends \Doctrine\ORM\EntityRepository
         return $this->findBy(
             $criteria, null, $limit, $offset
         );
+    }
+
+    /**
+     * Counts all organizations
+     * @param $uuid
+     * @return int
+     */
+    public function countOrganizations($uuid = "")
+    {
+        $qb = $this->createQueryBuilder('organization')
+            ->select('COUNT(organization.id)');
+
+        if ($uuid) {
+            $qb->where('organization.uuid = :uuid')->setParameter('uuid', $uuid);
+        }
+
+        return (int)$qb->getQuery()->getSingleScalarResult();
     }
 }
