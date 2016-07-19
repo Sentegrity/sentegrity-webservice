@@ -112,4 +112,14 @@ class PolicyTest extends WebTestCase
         $rsp = json_decode($rsp);
         $this->assertEquals($rsp->appVersion, $policyData['app_version'], 'App version is not good');
     }
+
+    /**
+     * @group admin_policy
+     */
+    public function testCountPolicies()
+    {
+        $rsp = self::$policyService->countPoliciesByOrganization();
+        // 14 policies has been created so far trough the tests
+        $this->assertEquals(14, $rsp, "It should be three organizations");
+    }
 }

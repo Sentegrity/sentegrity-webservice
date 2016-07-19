@@ -60,8 +60,6 @@ class Permission
             '\Sentegrity\BusinessBundle\Entity\Documents\AdminSession'
         );
         
-        
-
         $adminSession = $sessionRepository->getSessionByAccessToken($accessToken);
         if (!$adminSession) {
             throw new ValidatorException(

@@ -87,4 +87,21 @@ class PolicyRepository extends \Doctrine\ORM\EntityRepository
 
         $this->getEntityManager()->flush();
     }
+
+    /**
+     * Counts all policies
+     * @param $id
+     * @return int
+     */
+    public function countPolicies($id = "")
+    {
+        $qb = $this->createQueryBuilder('policy')
+            ->select('COUNT(policy.id)');
+
+        if ($id) {
+            $qb->where('policy.organizationOwnerId IN(:id)')->setParameter('id', [$id, 0]);
+        }
+
+        return (int)$qb->getQuery()->getSingleScalarResult();
+    }
 }
