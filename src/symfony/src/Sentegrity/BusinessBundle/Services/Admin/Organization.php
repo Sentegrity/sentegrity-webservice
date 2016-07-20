@@ -215,11 +215,7 @@ class Organization extends Service
         $organization = $this->repository->getByIds($ids);
 
         if (!$organization) {
-            throw new ValidatorException(
-                null,
-                $this->translator->trans('Organization with a given id not founded.'),
-                ErrorCodes::NOT_FOUND
-            );
+            $organization = null;
         }
 
         return $organization;

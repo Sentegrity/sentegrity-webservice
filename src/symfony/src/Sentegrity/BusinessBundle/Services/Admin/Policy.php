@@ -142,7 +142,10 @@ class Policy  extends Service
          */
 
         $policy = $this->getPolicyByUuid($policyData['uuid']);
-        $this->checkSession($policy->getOrganizationOwnerId());
+        if ($oid = $policy->getOrganizationOwnerId()) {
+            // if owner iz zero everyone can read it
+            $this->checkSession($oid);
+        }
         /** @var Organization $organizationService */
         $organizationService = $this->containerInterface->get('sentegrity_business.organization');
         try {
@@ -261,6 +264,10 @@ class Policy  extends Service
     private static function idsKeysCallable($objects)
     {
         $returnObjects = array();
+
+        if (!$objects) {
+            return $returnObjects;
+        }
 
         if (!is_array($objects)) {
             $objects = array($objects);
