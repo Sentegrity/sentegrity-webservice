@@ -69,7 +69,10 @@ class SignIn extends Service
 
         return $this->flush(
             'An error occurred while signing in. Sign in failed!',
-            $accessToken
+            [
+                'token' => $accessToken,
+                'permission' => $user->getPermission()
+            ]
         );
         
     }
