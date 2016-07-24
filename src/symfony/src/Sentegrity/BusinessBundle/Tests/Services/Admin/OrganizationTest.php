@@ -165,4 +165,65 @@ class OrganizationTest extends WebTestCase
         // so far
         $this->assertEquals(8, $rsp, "It should be eight organizations");
     }
+
+    /**
+     * @group admin_organization
+     */
+    public function testGetOrganizationByIds()
+    {
+        $uuids = [];
+
+        $organizationData = array(
+            "name" => 'Test organization name',
+            "domain_name" => 'domain.test',
+            "contact_name" => 'Contact Name',
+            "contact_email" => 'contact.email@domain.test',
+            "contact_phone" => '+1 234 5678',
+            "policy_ios" => self::$iosUuid,
+            "policy_android" => self::$androidUuid,
+            "username" => "admin",
+            "password" => "pass"
+        );
+
+        $t = self::$organizationService->create($organizationData);
+        $uuids[] = $t->data;
+
+        $organizationData = array(
+            "name" => 'Test organization name 2',
+            "domain_name" => 'domain.test',
+            "contact_name" => 'Contact Name',
+            "contact_email" => 'contact.email@domain.test',
+            "contact_phone" => '+1 234 5678',
+            "policy_ios" => self::$iosUuid,
+            "policy_android" => self::$androidUuid,
+            "username" => "admin",
+            "password" => "pass"
+        );
+
+        $t = self::$organizationService->create($organizationData);
+        $uuids[] = $t->data;
+
+        $organizationData = array(
+            "name" => 'Test organization name 3',
+            "domain_name" => 'domain.test',
+            "contact_name" => 'Contact Name',
+            "contact_email" => 'contact.email@domain.test',
+            "contact_phone" => '+1 234 5678',
+            "policy_ios" => self::$androidUuid,
+            "policy_android" => self::$iosUuid,
+            "username" => "admin",
+            "password" => "pass"
+        );
+
+        $t = self::$organizationService->create($organizationData);
+        $uuids[] = $t->data;
+
+        $ids = [];
+        foreach ($uuids as $uuid) {
+            $ids[] = self::$organizationService->getOrganizationIdByUuid($uuid);
+        }
+
+        $rsp = self::$organizationService->getOrganizationByIds($ids);
+        $this->assertEquals($organizationData['name'], $rsp[2]->getName());
+    }
 }

@@ -120,6 +120,19 @@ class PolicyTest extends WebTestCase
     {
         $rsp = self::$policyService->countPoliciesByOrganization();
         // 14 policies has been created so far trough the tests
-        $this->assertEquals(14, $rsp, "It should be three organizations");
+        $this->assertEquals(20, $rsp, "It should be three organizations");
+    }
+
+    /**
+     * @group admin_policy
+     */
+    public function testGetPoliciesByOrganization()
+    {
+        $rsp = self::$policyService->getPolicesByOrganization([
+            'offset' => 0,
+            'limit' => 1
+        ]);
+
+        $this->assertCount(1, $rsp, "There should be only one policy");
     }
 }

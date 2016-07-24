@@ -546,7 +546,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"keyValues":[[["username"],["my_admin_1"],true],[["password"],["test1234"],true]]},"identifier":"com.luckymarmot.BodyMultipartFormDataDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"keyValues":[[["username"],["superadmin"],true],[["password"],["superadmin1234"],true]]},"identifier":"com.luckymarmot.BodyMultipartFormDataDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Sign In</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z150"></relationship>

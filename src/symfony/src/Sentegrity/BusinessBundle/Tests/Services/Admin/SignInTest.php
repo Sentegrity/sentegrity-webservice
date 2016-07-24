@@ -49,6 +49,8 @@ class SignInTest extends WebTestCase
 
         $rsp = self::$signInService->signIn($userData);
         $this->assertTrue($rsp->successful, "Sign In failed");
+        $this->assertArrayHasKey('token', $rsp->data, "Token should be returned as part of response");
+        $this->assertArrayHasKey('permission', $rsp->data, "Token should be returned as part of response");
 
         // now test sign out
         $rsp = self::$signInService->signOut($rsp->data);
