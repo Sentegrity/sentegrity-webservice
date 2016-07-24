@@ -51,4 +51,68 @@ class Policy implements \JsonSerializable
             'organization'  => $this->organization
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPlatform()
+    {
+        return $this->platform;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIsDefault()
+    {
+        return $this->isDefault;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppVersion()
+    {
+        return $this->appVersion;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRevision()
+    {
+        return $this->revision;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return null
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
 }

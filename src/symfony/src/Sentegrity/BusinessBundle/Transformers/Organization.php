@@ -41,4 +41,44 @@ class Organization implements \JsonSerializable
             'defaultPolicies'   => $this->defaultPolicies
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomainName()
+    {
+        return $this->domainName;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getContact()
+    {
+        return $this->contact;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getDefaultPolicies()
+    {
+        return $this->defaultPolicies;
+    }
 }
