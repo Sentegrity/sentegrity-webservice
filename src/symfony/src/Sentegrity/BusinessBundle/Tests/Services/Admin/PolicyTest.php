@@ -91,7 +91,7 @@ class PolicyTest extends WebTestCase
             "name" => 'Test policy name',
             "platform" => Platform::IOS,
             "is_default" => 1,
-            "app_version" => 'v1.0',
+            "app_version" => 'v3.0',
             "data" => ['key' => 'value']
         );
 
@@ -102,7 +102,7 @@ class PolicyTest extends WebTestCase
             "name" => 'Test policy name',
             "platform" => Platform::IOS,
             "is_default" => 1,
-            "app_version" => 'v1.1',
+            "app_version" => 'v3.1',
             "data" => ['key' => 'value']
         );
         $rsp = self::$policyService->create($policyData);
