@@ -34,6 +34,9 @@ class ExceptionListener
             case ErrorCodes::UNAUTHORIZED_ACCESS:
                 Response::responseUnauthorised($this->unknownError($e));
                 break;
+            case ErrorCodes::REQUEST_FILEDS_INVALID:
+                Response::responseBadRequest($this->unknownError($e));
+                break;
             default:
                 Response::responseInternalServerError($this->unknownError($e));
                 break;

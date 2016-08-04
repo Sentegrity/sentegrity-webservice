@@ -43,6 +43,14 @@ class Policy  extends Service
          * )
          */
 
+        if (empty($policyData['data'])) {
+            throw new ValidatorException(
+                null,
+                "Policy must have data to be valid",
+                ErrorCodes::REQUEST_FILEDS_INVALID
+            );
+        }
+
         // data should be saved as a json string
         $data = json_encode($policyData['data']);
         // create fresh uuid for policy, use current timestamp as a seed

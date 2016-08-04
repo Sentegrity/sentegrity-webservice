@@ -258,7 +258,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Android default 2\\",\\"platform\\":0,\\"is_default\\":false,\\"app_version\\":\\"v0.2\\",\\"data\\":{\\"value\\":\\"key\\"}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"name\\":\\"Android default 2\\",\\"platform\\":0,\\"is_default\\":false,\\"app_version\\":\\"v0.2\\",\\"data\\":{}}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Create</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z122"></relationship>
@@ -266,7 +266,7 @@
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z125 z155"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z125">
-        <attribute name="value" type="string">ee13b21edaccfc73039f61997a55d69434dad9dc
+        <attribute name="value" type="string">3a3027d1b4cca70eaa191d25dc3466eb1317cb4f
 </attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">access-token</attribute>
@@ -319,7 +319,7 @@
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z142 z156"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z131">
-        <attribute name="value" type="string">ee13b21edaccfc73039f61997a55d69434dad9dc</attribute>
+        <attribute name="value" type="string">3a3027d1b4cca70eaa191d25dc3466eb1317cb4f</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">access-token</attribute>
         <attribute name="enabled" type="bool">1</attribute>
@@ -330,7 +330,7 @@
     </object>
     <object type="LMREQUEST" id="z132">
         <attribute name="uuid" type="string">3979D81B-EA2F-4745-81E0-19014E5EF688</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"C2EB62DD-759C-4311-8711-1E59A56BB323"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"admin\\/policy\\/1f2cdfa8-ccd2-57a0-a191-167913adc06b"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"C2EB62DD-759C-4311-8711-1E59A56BB323"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"admin\\/policy\\/40c4a662-4ad6-58c3-a7cc-ecbe8bd55dd2"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -342,7 +342,7 @@
         <attribute name="name" type="string">Get</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z122"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z157 z131"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z131 z157"></relationship>
     </object>
     <object type="LMREQUEST" id="z133">
         <attribute name="uuid" type="string">B44A777D-F0D7-4243-B3F6-3FB0D53A6296</attribute>
@@ -451,7 +451,7 @@
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z140"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z142">
-        <attribute name="value" type="string">ee13b21edaccfc73039f61997a55d69434dad9dc
+        <attribute name="value" type="string">fc3edddc2e424f6b23fc461f66032a255396aa5f
 </attribute>
         <attribute name="order" type="int64">2</attribute>
         <attribute name="name" type="string">access-token</attribute>
@@ -481,7 +481,7 @@
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
         <attribute name="clientcertificate" type="string">[{"data":{"keyUUID":"2EC72CFA-1FE2-4ED2-B97B-1DA2EEADDD82","pemCertificateName":"","mode":0},"identifier":"com.luckymarmot.CertificateDynamicValue"}]</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"current_policy_id\\":\\"Test Default iOS policy\\",\\"current_policy_revision\\":1,\\"platform\\":0,\\"user_activation_id\\":\\"test@domain.test\\",\\"run_history_objects\\":[\\"item1\\",\\"item2\\"],\\"device_salt\\":\\"abc\\",\\"phone_model\\":\\"phone\\",\\"app_version\\":\\"v0.1\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"current_policy_id\\":\\"default\\",\\"current_policy_revision\\":1,\\"platform\\":1,\\"user_activation_id\\":\\"davor@sentegrity.com\\",\\"run_history_objects\\":[\\"item1\\",\\"item2\\"],\\"device_salt\\":\\"7D528BB738785FB0FEB2D7FC7B41CD5F132D24A4612ADF8CF6A9A0420C78260E\\",\\"phone_model\\":\\"Nexus 5X\\",\\"app_version\\":\\"1.0.0\\"}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">Check In</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z118"></relationship>
@@ -489,7 +489,7 @@
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z143"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z145">
-        <attribute name="value" type="string">88c371e1ee5e775108218161451ba634abc212bb
+        <attribute name="value" type="string">fc3edddc2e424f6b23fc461f66032a255396aa5f
 
 
 </attribute>
@@ -546,7 +546,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"keyValues":[[["username"],["superadmin"],true],[["password"],["superadmin1234"],true]]},"identifier":"com.luckymarmot.BodyMultipartFormDataDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"keyValues":[[["username"],["superadmin"],true],[["password"],["test1234"],true]]},"identifier":"com.luckymarmot.BodyMultipartFormDataDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Sign In</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z150"></relationship>

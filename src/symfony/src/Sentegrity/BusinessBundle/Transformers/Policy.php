@@ -26,7 +26,7 @@ class Policy implements \JsonSerializable
         $this->isDefault = (bool)$policy->getIsDefault();
         $this->appVersion = $policy->getAppVersion();
         $this->revision = (int)$policy->getRevisionNo();
-        $this->data = json_decode($policy->getData(), true);
+        $this->data = json_decode($policy->getData(), true) ?: null;
         
         if ($organization) {
             $this->organization = new \stdClass();
