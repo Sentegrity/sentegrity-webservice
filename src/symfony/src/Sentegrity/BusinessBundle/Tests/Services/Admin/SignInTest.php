@@ -25,8 +25,8 @@ class SignInTest extends WebTestCase
             "contact_name" => 'Contact Name',
             "contact_email" => 'contact.email@domain.test',
             "contact_phone" => '+1 234 5678',
-            "policy_ios" => Utility::createPolicy(Platform::IOS),
-            "policy_android" => Utility::createPolicy(Platform::ANDROID),
+            "policy_ios" => Utility::mockPolicy(Platform::IOS),
+            "policy_android" => Utility::mockPolicy(Platform::ANDROID),
             "username" => "admin",
             "password" => "pass"
         );

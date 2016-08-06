@@ -21,9 +21,9 @@ class OrganizationTest extends WebTestCase
 
         // first we need to create two new policies, both for iOS and Android
         Utility::init(static::createClient()->getContainer());
-        Utility::setUserSession();
-        self::$iosUuid = Utility::createPolicy(Platform::IOS);
-        self::$androidUuid = Utility::createPolicy(Platform::ANDROID);
+        Utility::mockUserSession();
+        self::$iosUuid = Utility::mockPolicy(Platform::IOS);
+        self::$androidUuid = Utility::mockPolicy(Platform::ANDROID);
     }
 
     /**
@@ -65,7 +65,7 @@ class OrganizationTest extends WebTestCase
         $this->assertEquals($rsp->defaultPolicies->android, self::$androidUuid,         'Android policy is not good');
 
         // after create and read are good lt's check update
-        $iosUuid = Utility::createPolicy(Platform::IOS, 0);
+        $iosUuid = Utility::mockPolicy(Platform::IOS, 0);
         $organizationData = array(
             "uuid" => $uuid,
             "name" => 'Test organization name edit',

@@ -23,6 +23,7 @@ class ExceptionListener
 
         switch ($e->getCode()) {
             case 200:
+            case ErrorCodes::REQUEST_FILEDS_INVALID:
                 Response::responseBadRequest($this->unknownError($e));
                 break;
             case ErrorCodes::NOT_FOUND:
@@ -33,9 +34,6 @@ class ExceptionListener
                 break;
             case ErrorCodes::UNAUTHORIZED_ACCESS:
                 Response::responseUnauthorised($this->unknownError($e));
-                break;
-            case ErrorCodes::REQUEST_FILEDS_INVALID:
-                Response::responseBadRequest($this->unknownError($e));
                 break;
             default:
                 Response::responseInternalServerError($this->unknownError($e));

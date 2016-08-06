@@ -15,7 +15,7 @@ class PolicyTest extends WebTestCase
         self::$policyService = static::createClient()
             ->getContainer()
             ->get('sentegrity_business.policy');
-        Utility::setUserSession();
+        Utility::mockUserSession();
     }
     
     /**

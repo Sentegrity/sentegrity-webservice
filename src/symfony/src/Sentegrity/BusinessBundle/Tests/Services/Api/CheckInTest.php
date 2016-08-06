@@ -2,6 +2,7 @@
 namespace Sentegrity\BusinessBundle\Tests\Services\Api;
 
 use Sentegrity\BusinessBundle\Handlers\Platform;
+use Sentegrity\BusinessBundle\Tests\Services\Utility;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CheckInTest extends WebTestCase
@@ -14,16 +15,7 @@ class CheckInTest extends WebTestCase
         self::$checkInService = static::createClient()
             ->getContainer()
             ->get('sentegrity_business.api.check_in');
-
-        /** @var \Sentegrity\BusinessBundle\Services\Api\User $userService */
-        $userService = $checkInService = static::createClient()
-            ->getContainer()
-            ->get('sentegrity_business.api.user');
-        $userService->create(array(
-            "device_activation_id" => "test@domain4.com",
-            "organization_id" => 1,
-            "group_id" => 0
-        ));
+        Utility::init(static::createClient()->getContainer());
     }
 
     /**
@@ -31,6 +23,8 @@ class CheckInTest extends WebTestCase
      */
     public function testProcessExistingUser()
     {
+        Utility::mockUser('test@domain23.dfg');
+
         // policyId exists new revision available
         $rsp = self::$checkInService->processExistingUser([
             "organization_id"   => 1,
@@ -38,8 +32,8 @@ class CheckInTest extends WebTestCase
             "platform"                  => Platform::IOS,
             "current_policy_id"         => 'Test policy name',
             "current_policy_revision"   => 0,
-            "user_activation_id"        => 'test@domain.dfg',
-            "device_salt"               => 'qwerty',
+            "user_activation_id"        => 'test@domain23.dfg',
+            "device_salt"               => Utility::mockDeviceSalt(),
             "phone_model"               => 'iPhone 5s',
             "run_history_objects"       => ['key' => 'value']
         ]);
@@ -54,8 +48,8 @@ class CheckInTest extends WebTestCase
             "platform"                  => Platform::IOS,
             "current_policy_id"         => 'Test policy name',
             "current_policy_revision"   => 1,
-            "user_activation_id"        => 'test@domain.dfg',
-            "device_salt"               => 'qwerty',
+            "user_activation_id"        => 'test@domain23.dfg',
+            "device_salt"               => Utility::mockDeviceSalt(),
             "phone_model"               => 'iPhone 5s',
             "run_history_objects"       => ['key' => 'value']
         ]);
@@ -70,8 +64,8 @@ class CheckInTest extends WebTestCase
             "platform"                  => Platform::IOS,
             "current_policy_id"         => 'Test policy name',
             "current_policy_revision"   => 0,
-            "user_activation_id"        => 'test@domain.dfg',
-            "device_salt"               => 'qwerty',
+            "user_activation_id"        => 'test@domain23.dfg',
+            "device_salt"               => Utility::mockDeviceSalt(),
             "phone_model"               => 'iPhone 5s',
             "run_history_objects"       => ['key' => 'value']
         ]);

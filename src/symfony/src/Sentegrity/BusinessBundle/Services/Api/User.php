@@ -39,12 +39,11 @@ class User extends Service
          * )
          */
 
-        $deviceUserId = UUID::generateUuid($userData['device_activation_id']);
         return $this->mysqlq->insert(
             'user',
             array('device_user_id', 'device_activation_id', 'organization_id', 'group_id'),
             array(
-                'device_user_id'        => array('value' => $deviceUserId),
+                'device_user_id'        => array('value' => $userData['device_salt']),
                 'device_activation_id'  => array('value' => $userData['device_activation_id']),
                 'organization_id'       => array('value' => $userData['organization_id']),
                 'group_id'              => array('value' => $userData['group_id'])

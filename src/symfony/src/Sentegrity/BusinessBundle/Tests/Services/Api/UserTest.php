@@ -1,6 +1,7 @@
 <?php
 namespace Sentegrity\BusinessBundle\Tests\Services\Api;
 
+use Sentegrity\BusinessBundle\Tests\Services\Utility;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserTest extends WebTestCase
@@ -23,7 +24,8 @@ class UserTest extends WebTestCase
          $userData = array(
               "device_activation_id" => "test@domain.com",
               "organization_id" => 1,
-              "group_id" => 0
+              "group_id" => 0,
+              "device_salt" => Utility::mockDeviceSalt()
          );
         
         $rsp = self::$userService->create($userData);
@@ -33,13 +35,14 @@ class UserTest extends WebTestCase
     /**
      * @group api_user
      */
-    public function testGetGroupAndOrganization()
+    public function testGetGroupOrganizationAndDeviceSalt()
     {
         // first create a new user
         $userData = array(
             "device_activation_id" => "test@domain2.com",
             "organization_id" => 1,
-            "group_id" => 0
+            "group_id" => 0,
+            "device_salt" => Utility::mockDeviceSalt()
         );
 
         self::$userService->create($userData);

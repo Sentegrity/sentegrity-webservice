@@ -22,9 +22,9 @@ class GroupTest extends WebTestCase
 
         // first we need to create two new policies, both for iOS and Android
         Utility::init(static::createClient()->getContainer());
-        Utility::setUserSession();
-        self::$iosUuid = Utility::createPolicy(Platform::IOS);
-        self::$androidUuid = Utility::createPolicy(Platform::ANDROID);
+        Utility::mockUserSession();
+        self::$iosUuid = Utility::mockPolicy(Platform::IOS);
+        self::$androidUuid = Utility::mockPolicy(Platform::ANDROID);
     }
 
     /**

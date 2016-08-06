@@ -47,7 +47,6 @@ class User
      *     type="string",
      *     length=255,
      *     nullable=false,
-     *     unique=true,
      *     options={
      *         "comment":"The user full email sent during the first policy update request"
      *     }
