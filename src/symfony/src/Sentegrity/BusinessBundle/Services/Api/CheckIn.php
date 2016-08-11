@@ -2,6 +2,7 @@
 namespace Sentegrity\BusinessBundle\Services\Api;
 
 use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
+use Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery;
 use Sentegrity\BusinessBundle\Transformers\Error;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Services\Service;
@@ -182,7 +183,8 @@ class CheckIn extends Service
             array('device_user_id'),
             array(
                 'device_activation_id' => array('value' => $userActivationId)
-            )
+            ), [], [], '',
+            MySQLQuery::MULTI_ROWS
         );
 
         if (!$rsp) {
@@ -193,9 +195,11 @@ class CheckIn extends Service
             );
         }
 
-        if ($deviceSalt == $rsp->device_user_id) {
-            // this is an existing user with an existing device
-            return;
+        foreach ($rsp as $record) {
+            if ($deviceSalt == $record->device_user_id) {
+                // this is an existing user with an existing device
+                return;
+            }
         }
 
         $this->user->create([
