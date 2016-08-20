@@ -70,3 +70,8 @@ services:
     my_sql_query:
         class: Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery
         arguments: ['@pdo_master_connection', '@pdo_slave_connection']
+
+    ## Batch
+    sentegrity_business.batch.daily:
+        class: Sentegrity\BusinessBundle\BatchJobs\Daily
+        arguments: ['@service_container']

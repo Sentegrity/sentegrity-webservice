@@ -408,7 +408,7 @@ class MySQLQuery
             $qh->execute();
             $this->rowCount = $qh->rowCount();
         } catch (\PDOException $e) {
-            //var_dump($query, $where, $e->getMessage());
+            var_dump($query, $where, $e->getMessage());
             throw new \Sentegrity\BusinessBundle\Exceptions\QueryFailedException();
         }
 
