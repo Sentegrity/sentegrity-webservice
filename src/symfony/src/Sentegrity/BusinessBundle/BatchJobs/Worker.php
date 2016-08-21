@@ -220,4 +220,30 @@ abstract class Worker
     {
         return Utility::getMostCommonValue($coreDetectionResults);
     }
+
+    /**
+     * Checks if record exists, and if it is, add it.
+     * @param $key
+     * @param $record
+     * @param $bucket
+     */
+    protected function add($key, &$record, &$bucket)
+    {
+        if (isset($record[$key])) {
+            $bucket[] = $record[$key];
+        }
+    }
+
+    /**
+     * Checks if record exists, and if it is, do the merging.
+     * @param $key
+     * @param $record
+     * @param $bucket
+     */
+    protected function merge($key, &$record, &$bucket)
+    {
+        if (isset($record[$key])) {
+            $bucket = array_merge($bucket, $record[$key]);
+        }
+    }
 }

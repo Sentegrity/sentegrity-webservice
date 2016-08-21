@@ -75,3 +75,11 @@ services:
     sentegrity_business.batch.daily:
         class: Sentegrity\BusinessBundle\BatchJobs\Daily
         arguments: ['@service_container']
+
+    sentegrity_business.batch.weekly:
+        class: Sentegrity\BusinessBundle\BatchJobs\Weekly
+        arguments: ['@service_container']
+
+    sentegrity_business.batch.monthly:
+        class: Sentegrity\BusinessBundle\BatchJobs\Monthly
+        arguments: ['@service_container']

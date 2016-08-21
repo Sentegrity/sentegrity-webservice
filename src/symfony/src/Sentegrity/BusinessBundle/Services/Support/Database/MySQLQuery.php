@@ -118,7 +118,8 @@ class MySQLQuery
         $order = [],
         $limit = [],
         $special = "",
-        $resultType = self::SINGLE_ROW
+        $resultType = self::SINGLE_ROW,
+        $fetchType = \PDO::FETCH_OBJ
     )
     {
         $query = "SELECT :columns FROM :table";
@@ -150,7 +151,7 @@ class MySQLQuery
         }
 
         $query = $this->buildQuery($query, $table, Handlers\JString::array2CSString($columns), $where);
-        $result = $this->execute($query, $where)->fetchAll(\PDO::FETCH_OBJ);
+        $result = $this->execute($query, $where)->fetchAll($fetchType);
         $this->setOldDbh();
 
         switch ($resultType) {
@@ -338,15 +339,23 @@ class MySQLQuery
     /**
      * Performs a raw query
      * @param $query
+     * @param $fetch -> set is as true if query must return a result
+     * @param $fetchType
      * @return array $result
      * @return \stdClass $result
      *         It depends if there are multiple rows or a single
      * @return bool
      * @throws \Sentegrity\BusinessBundle\Exceptions\QueryFailedException
      */
-    public function raw($query)
+    public function raw($query, $fetch = false, $fetchType = \PDO::FETCH_OBJ)
     {
-        return $this->execute($query);
+        $result = $this->execute($query);
+
+        if ($fetch) {
+            return $result->fetchAll($fetchType);
+        }
+
+        return $result;
     }
 
     /**

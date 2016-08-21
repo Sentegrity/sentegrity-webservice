@@ -30,6 +30,7 @@ class Daily extends Worker
     public function execute($time, $chunkSize)
     {
         // we are looking for ata older than 24 hours so
+        $originalTime = $time;
         $time = $time - 86400;
 
         // Step 1. get all unique device salts older than 24 hour
@@ -44,13 +45,13 @@ class Daily extends Worker
         );
 
         foreach ($records as $record) {
-            $table = $this->createTable($this->tableNameTemplate, $record->organization_id, $time);
+            $table = $this->createTable($this->tableNameTemplate, $record->organization_id, $originalTime);
             $data = $this->getDataByDeviceSalt($record->device_salt, $time, $chunkSize);
             $data = $this->summarize($data);
             $basicData = [
                 'user_activation_id'    => $record->user_activation_id,
                 'device_salt'           => $record->device_salt,
-                'date'                  => $time,
+                'date'                  => $originalTime,
                 'phone_model'           => $record->phone_model,
                 'platform'              => $record->platform,
             ];
@@ -69,24 +70,15 @@ class Daily extends Worker
      */
     protected function summarize(array $data)
     {
-        $userIssues             = $this->summaryUserIssues($data['user_issues']);
-        $systemIssues           = $this->summarySystemIssues($data['system_issues']);
-        $userSuggestions        = $this->summaryUserSuggestions($data['user_suggestions']);
-        $systemSuggestions      = $this->summarySystemSuggestions($data['system_suggestions']);
-        $deviceScores           = $this->summaryDeviceScore($data['device_scores']);
-        $trustScores            = $this->summaryTrustScore($data['trust_scores']);
-        $userScores             = $this->summaryUserScore($data['user_scores']);
-        $coreDetectionResults   = $this->summaryCoreDetectionResult($data['core_detection_results']);
-
         return [
-            'user_issues'              => $userIssues,
-            'system_issues'            => $systemIssues,
-            'user_suggestions'         => $userSuggestions,
-            'system_suggestions'       => $systemSuggestions,
-            'device_score'             => $deviceScores,
-            'trust_score'              => $trustScores,
-            'user_score'               => $userScores,
-            'core_detection_result'    => $coreDetectionResults
+            'user_issues'              => $this->summaryUserIssues($data['user_issues']),
+            'system_issues'            => $this->summarySystemIssues($data['system_issues']),
+            'user_suggestions'         => $this->summaryUserSuggestions($data['user_suggestions']),
+            'system_suggestions'       => $this->summarySystemSuggestions($data['system_suggestions']),
+            'device_score'             => $this->summaryDeviceScore($data['device_scores']),
+            'trust_score'              => $this->summaryTrustScore($data['trust_scores']),
+            'user_score'               => $this->summaryUserScore($data['user_scores']),
+            'core_detection_result'    => $this->summaryCoreDetectionResult($data['core_detection_results'])
         ];
     }
     
@@ -100,41 +92,33 @@ class Daily extends Worker
      */
     private function createDataSetsPerDeviceSalt(array $rawData)
     {
-        // init data sets that needs to be summarized
-        $userIssues             = [];
-        $systemIssues           = [];
-        $userSuggestions        = [];
-        $systemSuggestions      = [];
-        $deviceScores           = [];
-        $trustScores            = [];
-        $userScores             = [];
-        $coreDetectionResults   = [];
+        $dataSets = [
+            'user_issues'               => [],
+            'system_issues'             => [],
+            'user_suggestions'          => [],
+            'system_suggestions'        => [],
+            'device_scores'             => [],
+            'trust_scores'              => [],
+            'user_scores'               => [],
+            'core_detection_results'    => []
+        ];
 
 
         foreach ($rawData as $records) {
             $json = json_decode($records->json, true);
             foreach ($json as $record) {
-                $this->merge('userIssues', $record, $userIssues);
-                $this->merge('systemIssues', $record, $systemIssues);
-                $this->merge('userSuggestions', $record, $userSuggestions);
-                $this->merge('systemSuggestions', $record, $systemSuggestions);
-                $this->add('deviceScore', $record, $deviceScores);
-                $this->add('trustScore', $record, $trustScores);
-                $this->add('userScore', $record, $userScores);
-                $this->add('coreDetectionResult', $record, $coreDetectionResults);
+                $this->merge('userIssues', $record, $dataSets['user_issues']);
+                $this->merge('systemIssues', $record, $dataSets['system_issues']);
+                $this->merge('userSuggestions', $record, $dataSets['user_suggestions']);
+                $this->merge('systemSuggestions', $record, $dataSets['system_suggestions']);
+                $this->add('deviceScore', $record, $dataSets['device_scores']);
+                $this->add('trustScore', $record, $dataSets['trust_scores']);
+                $this->add('userScore', $record, $dataSets['user_scores']);
+                $this->add('coreDetectionResult', $record, $dataSets['core_detection_results']);
             }
         }
 
-        return [
-            'user_issues'               => $userIssues,
-            'system_issues'             => $systemIssues,
-            'user_suggestions'          => $userSuggestions,
-            'system_suggestions'        => $systemSuggestions,
-            'device_scores'             => $deviceScores,
-            'trust_scores'              => $trustScores,
-            'user_scores'               => $userScores,
-            'core_detection_results'    => $coreDetectionResults
-        ];
+        return $dataSets;
     }
 
     /**
@@ -208,31 +192,5 @@ class Daily extends Worker
 
         // TODO: update flags
         return $allData;
-    }
-
-    /**
-     * Checks if record exists, and if it is, do the merging.
-     * @param $key
-     * @param $record
-     * @param $bucket
-     */
-    private function merge($key, &$record, &$bucket)
-    {
-        if (isset($record[$key])) {
-            $bucket = array_merge($bucket, $record[$key]);
-        }
-    }
-
-    /**
-     * Checks if record exists, and if it is, add it.
-     * @param $key
-     * @param $record
-     * @param $bucket
-     */
-    private function add($key, &$record, &$bucket)
-    {
-        if (isset($record[$key])) {
-            $bucket[] = $record[$key];
-        }
     }
 }

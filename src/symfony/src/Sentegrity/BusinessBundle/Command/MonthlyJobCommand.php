@@ -1,19 +1,19 @@
 <?php
 namespace Sentegrity\BusinessBundle\Command;
 
-use Sentegrity\BusinessBundle\BatchJobs\Daily;
+use Sentegrity\BusinessBundle\BatchJobs\Monthly;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DailyJobCommand extends ContainerAwareCommand
+class MonthlyJobCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('batch:daily:execute')
-            ->setDescription('Execute daily job')
+            ->setName('batch:monthly:execute')
+            ->setDescription('Execute monthly job')
             ->addArgument(
                 'chunk_size',
                 InputArgument::REQUIRED,
@@ -25,10 +25,10 @@ class DailyJobCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $chunkSize = $input->getArgument('chunk_size');
-        /** @var Daily $job */
-        $job = $this->getContainer()->get('sentegrity_business.batch.daily');
+        /** @var Monthly $job */
+        $job = $this->getContainer()->get('sentegrity_business.batch.monthly');
         $job->execute(time(), $chunkSize);
 
-        $output->writeln("Daily job complete");
+        $output->writeln("Monthly job complete");
     }
 }
