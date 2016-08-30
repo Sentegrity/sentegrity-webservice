@@ -113,6 +113,20 @@ class HourRunHistory
      */
     private $organizationId;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(
+     *      name="processed",
+     *      type="boolean",
+     *      nullable=false,
+     *      options={
+     *          "default":0
+     *      }
+     * )
+     */
+    private $processed;
+
 
     /**
      * Get id
@@ -290,6 +304,30 @@ class HourRunHistory
     public function getOrganizationId()
     {
         return $this->organizationId;
+    }
+
+    /**
+     * Set processed
+     *
+     * @param boolean $processed
+     *
+     * @return HourRunHistory
+     */
+    public function setProcessed($processed)
+    {
+        $this->processed = $processed;
+
+        return $this;
+    }
+
+    /**
+     * Get processed
+     *
+     * @return boolean
+     */
+    public function getProcessed()
+    {
+        return $this->processed;
     }
 }
 

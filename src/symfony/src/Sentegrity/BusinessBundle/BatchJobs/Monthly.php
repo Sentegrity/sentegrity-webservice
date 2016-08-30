@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Monthly extends Weekly
 {
     private $tableNameTemplate = "monthly_{organization}_{time}";
+    private $period = 0; //2592000;
 
     function __construct(ContainerInterface $containerInterface)
     {
@@ -27,20 +28,20 @@ class Monthly extends Weekly
      */
     public function execute($time, $chunkSize)
     {
-        // TODO: adjust time
         $originalTime = $time;
-        $dailyTables = $this->getListOfWeeklyTables($time);
-        if(empty($dailyTables)) {
+        $time -= $this->period;
+        $weeklyTables = $this->getListOfWeeklyTables($time);
+        if(empty($weeklyTables)) {
             return true;
         }
 
         // now we should get all unique users from all daily tables per
         // each organization
-        foreach ($dailyTables as $organizationId => $dailyTable) {
+        foreach ($weeklyTables as $organizationId => $weeklyTable) {
             $table = $this->createTable($this->tableNameTemplate, $organizationId, $originalTime);
-            $deviceSalts = $this->getUniqueDeviceSaltsPerOrganization($dailyTable, $organizationId);
+            $deviceSalts = $this->getUniqueDeviceSaltsPerOrganization($weeklyTable, $organizationId);
             foreach ($deviceSalts as $deviceSalt) {
-                $data = $this->getDataByDeviceSalt($deviceSalt->device_salt, $dailyTable, $chunkSize);
+                $data = $this->getDataByDeviceSalt($deviceSalt->device_salt, $weeklyTable, $chunkSize);
                 $data = $this->summarize($data);
                 $basicData = [
                     'user_activation_id'    => $deviceSalt->user_activation_id,
@@ -50,6 +51,12 @@ class Monthly extends Weekly
                     'platform'              => $deviceSalt->platform,
                 ];
                 $this->insertData($basicData, $data, $table);
+            }
+
+            // after table is processed rename it to format: "proc_{table_name}"
+            // that will mark that table as processed
+            foreach ($weeklyTable as $table) {
+                $this->mysqlq->raw('RENAME TABLE ' . $table . ' TO proc_' . $table);
             }
         }
         return true;

@@ -3,6 +3,7 @@ namespace Sentegrity\BusinessBundle\BatchJobs;
 
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
 use Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery;
+use Sentegrity\BusinessBundle\Services\Support\Database\PDOTransformers;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -37,9 +38,10 @@ class Daily extends Worker
         $records = $this->mysqlq->slave()->select(
             '24_hour_run_history',
             array('DISTINCT(device_salt) as device_salt', 'organization_id', 'phone_model', 'user_activation_id', 'platform'),
-            array('upload_timestamp' => array(
-                'value' => $time, 'operator' => '<'
-            )),
+            array(
+                'upload_timestamp' => array('value' => $time, 'operator' => '<'),
+                'processed' => array('value' => 0, 'logic' => MySQLQuery::_AND)
+            ),
             [], [], '',
             MySQLQuery::MULTI_ROWS
         );
@@ -137,7 +139,8 @@ class Daily extends Worker
             array('id', 'json'),
             array(
                 'upload_timestamp' => array('value' => $time, 'operator' => '<'),
-                'device_salt' => array('value' => $deviceSalt, 'logic' => MySQLQuery::_AND)
+                'device_salt' => array('value' => $deviceSalt, 'logic' => MySQLQuery::_AND),
+                'processed' => array('value' => 0, 'logic' => MySQLQuery::_AND)
             ),
             [],
             array("offset" => 0, "limit" => $chunkSize),
@@ -179,7 +182,8 @@ class Daily extends Worker
                 array('id', 'json'),
                 array(
                     'upload_timestamp' => array('value' => $time, 'operator' => '<'),
-                    'device_salt' => array('value' => $deviceSalt, 'logic' => MySQLQuery::_AND)
+                    'device_salt' => array('value' => $deviceSalt, 'logic' => MySQLQuery::_AND),
+                    'processed' => array('value' => 0, 'logic' => MySQLQuery::_AND)
                 ),
                 [],
                 array("offset" => $counter * $chunkSize, "limit" => $chunkSize),
@@ -190,7 +194,17 @@ class Daily extends Worker
             $counter++;
         }
 
-        // TODO: update flags
+        if ($flag) {
+            $flag = implode(',', $flag);
+            $this->mysqlq->update(
+                '24_hour_run_history',
+                array('processed' => 1),
+                array(
+                    'id' => array('value' => $flag, 'in' => 1)
+                )
+            );
+        }
+
         return $allData;
     }
 }

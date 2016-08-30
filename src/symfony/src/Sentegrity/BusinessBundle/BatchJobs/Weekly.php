@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Weekly extends Worker
 {
     private $tableNameTemplate = "weekly_{organization}_{time}";
+    private $period = 0; //604800;
 
     function __construct(ContainerInterface $containerInterface)
     {
@@ -28,8 +29,8 @@ class Weekly extends Worker
      */
     public function execute($time, $chunkSize)
     {
-        // TODO: adjust time
         $originalTime = $time;
+        $time -= $this->period;
         $dailyTables = $this->getListOfDailyTables($time);
         if(empty($dailyTables)) {
             return true;
@@ -51,6 +52,12 @@ class Weekly extends Worker
                     'platform'              => $deviceSalt->platform,
                 ];
                 $this->insertData($basicData, $data, $table);
+            }
+
+            // after table is processed rename it to format: "proc_{table_name}"
+            // that will mark that table as processed
+            foreach ($dailyTable as $table) {
+                $this->mysqlq->raw('RENAME TABLE ' . $table . ' TO proc_' . $table);
             }
         }
         return true;
@@ -182,7 +189,7 @@ class Weekly extends Worker
                 $counter++;
             }
         }
-        // TODO: mark processed
+
         return $allData;
     }
 
