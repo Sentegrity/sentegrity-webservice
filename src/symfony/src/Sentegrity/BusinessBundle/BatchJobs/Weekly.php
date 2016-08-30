@@ -73,7 +73,7 @@ class Weekly extends Worker
             'device_score'             => $this->summaryDeviceScore($data['device_scores']),
             'trust_score'              => $this->summaryTrustScore($data['trust_scores']),
             'user_score'               => $this->summaryUserScore($data['user_scores']),
-            'core_detection_result'    => $this->summaryCoreDetectionResult($data['core_detection_results'])
+            'core_detection_result'    => json_encode($data['core_detection_results'])
         ];
     }
     
@@ -157,7 +157,7 @@ class Weekly extends Worker
                 $this->merge('device_scores', $data, $allData['device_scores']);
                 $this->merge('trust_scores', $data, $allData['trust_scores']);
                 $this->merge('user_scores', $data, $allData['user_scores']);
-                $this->merge('core_detection_results', $data, $allData['core_detection_results']);
+                $this->sumCounts('core_detection_results', $data, $allData['core_detection_results']);
 
                 $rawData = $this->mysqlq->slave()->select(
                     $table,
@@ -243,7 +243,7 @@ class Weekly extends Worker
                 $this->add('device_score', $record, $dataSets['device_scores']);
                 $this->add('trust_score', $record, $dataSets['trust_scores']);
                 $this->add('user_score', $record, $dataSets['user_scores']);
-                $this->add('core_detection_result', $record, $dataSets['core_detection_results']);
+                $this->sumCounts('core_detection_result', $record, $dataSets['core_detection_results']);
         }
 
         return $dataSets;

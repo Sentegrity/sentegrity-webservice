@@ -72,7 +72,7 @@ class Monthly extends Weekly
             'device_score'             => $this->summaryDeviceScore($data['device_scores']),
             'trust_score'              => $this->summaryTrustScore($data['trust_scores']),
             'user_score'               => $this->summaryUserScore($data['user_scores']),
-            'core_detection_result'    => $this->summaryCoreDetectionResult($data['core_detection_results'])
+            'core_detection_result'    => json_encode($data['core_detection_results'])
         ];
     }
 

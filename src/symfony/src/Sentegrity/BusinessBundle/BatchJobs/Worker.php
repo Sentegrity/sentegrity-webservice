@@ -76,7 +76,7 @@ abstract class Worker
                   `user_score` decimal(7,4) NOT NULL,
                   `device_score` decimal(7,4) NOT NULL,
                   `trust_score` decimal(7,4) NOT NULL,
-                  `core_detection_result` int(11) NOT NULL,
+                  `core_detection_result` longtext COLLATE utf8_unicode_ci NOT NULL,
                   PRIMARY KEY (`id`)
             ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;'
         )) {
@@ -218,7 +218,7 @@ abstract class Worker
      */
     protected function summaryCoreDetectionResult(array $coreDetectionResults)
     {
-        return Utility::getMostCommonValue($coreDetectionResults);
+        return Utility::calculateNumberOfAppearances($coreDetectionResults);
     }
 
     /**
