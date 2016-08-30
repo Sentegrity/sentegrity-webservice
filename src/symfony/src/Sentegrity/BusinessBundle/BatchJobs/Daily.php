@@ -3,7 +3,6 @@ namespace Sentegrity\BusinessBundle\BatchJobs;
 
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
 use Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery;
-use Sentegrity\BusinessBundle\Services\Support\Database\PDOTransformers;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Monthly extends Weekly
 {
     private $tableNameTemplate = "monthly_{organization}_{time}";
-    private $period = 0; //2592000;
+    private $period = 2592000;
 
     function __construct(ContainerInterface $containerInterface)
     {

@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Weekly extends Worker
 {
     private $tableNameTemplate = "weekly_{organization}_{time}";
-    private $period = 0; //604800;
+    private $period = 604800;
 
     function __construct(ContainerInterface $containerInterface)
     {

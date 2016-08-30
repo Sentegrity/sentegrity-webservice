@@ -83,3 +83,7 @@ services:
     sentegrity_business.batch.monthly:
         class: Sentegrity\BusinessBundle\BatchJobs\Monthly
         arguments: ['@service_container']
+
+    sentegrity_business.batch.cleaner:
+        class: Sentegrity\BusinessBundle\BatchJobs\Cleaner
+        arguments: ['@service_container']
