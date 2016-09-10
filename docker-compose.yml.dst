@@ -20,3 +20,12 @@ services:
         dns: 8.8.8.8
         links:
             - mysql
+
+    worker:
+        image: sentegrity/batch-jobs
+        container_name: sentegrity_batch_jobs
+        volumes_from:
+            - application
+        dns: 8.8.8.8
+        links:
+            - mysql

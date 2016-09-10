@@ -1,0 +1,12 @@
+# daily
+01 0 * * * root php /opt/symfony/app/console --env=prod batch:daily:execute 100 >> /var/log/cron.log 2>&1
+# weekly
+00 01 * * 1 root php /opt/symfony/app/console --env=prod batch:weekly:execute 100 >> /var/log/cron.log 2>&1
+# monthly
+00 02 1 * * root php /opt/symfony/app/console --env=prod batch:monthly:execute 100 >> /var/log/cron.log 2>&1
+
+# Cleanup jobs
+01 1 * * * root php /opt/symfony/app/console --env=prod batch:clean:execute row >> /var/log/cron.log 2>&1
+01 3 * * 1 root php /opt/symfony/app/console --env=prod batch:clean:execute table >> /var/log/cron.log 2>&1
+
+# An empty line is required at the end of this file for a valid cron file.

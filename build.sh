@@ -29,6 +29,7 @@ echo "Make base image\n"
 docker build -t sentegrity/base -f src/.docker/builders/Dockerfile ../
 ## make app image
 docker build -t sentegrity/web-service -f src/.docker/builders/webservice/$ENV/Dockerfile ../
+docker build -t sentegrity/batch-jobs -f src/.docker/builders/batchjobs/$ENV/Dockerfile ../
 
 ## create database schema if dev
 if [ "$1" == "dev" ]; then
