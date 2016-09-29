@@ -31,6 +31,9 @@ class Cleaner
             case 'table':
                 $this->cleanTables();
                 break;
+            case 'table_by_time':
+                $this->cleanTablesByTime();
+                break;
             default:
                 break;
         }
@@ -60,6 +63,27 @@ class Cleaner
         if ($tables) {
             foreach ($tables as $table) {
                 $this->mysqlq->raw('DROP TABLE ' . $table['Tables_in_sentegrity (' . $prefix . '%)']);
+            }
+        }
+    }
+
+    /**
+     * Delete all tables older than month
+     */
+    private function cleanTablesByTime()
+    {
+        // tables that are older than month (+2 days to make some buffer)
+        $limit = time() - 2764800;
+
+        $tables = $this->mysqlq->slave()->raw('SHOW TABLES LIKE \'daily_%\'', true, \PDO::FETCH_ASSOC);
+        if ($tables) {
+            foreach ($tables as $table) {
+                $daily = explode("_", $table['Tables_in_sentegrity (daily_%)']);
+                // explode will result in
+                // $daily = array(0 => 'daily', 1 => {organization_id}, 2 => {time})
+                if ($daily[2] < $limit) {
+                    $this->mysqlq->raw('DROP TABLE ' . $table['Tables_in_sentegrity (daily_%)']);
+                }
             }
         }
     }

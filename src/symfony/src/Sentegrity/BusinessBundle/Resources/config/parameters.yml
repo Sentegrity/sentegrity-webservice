@@ -40,3 +40,7 @@ parameters:
     validate_sign_in:
         - username
         - password
+
+    validate_dashboard_get:
+        - time_frame
+        - organization_uuid

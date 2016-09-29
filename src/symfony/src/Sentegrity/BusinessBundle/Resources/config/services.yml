@@ -11,6 +11,10 @@ services:
         class: Sentegrity\BusinessBundle\Services\Admin\Group
         arguments: ['@service_container']
 
+    sentegrity_business.dashboard:
+        class: Sentegrity\BusinessBundle\Services\Admin\Dashboard
+        arguments: ['@service_container']
+
     sentegrity_business.sign_in:
         class: Sentegrity\BusinessBundle\Services\Admin\SignIn
         arguments: ['@service_container']

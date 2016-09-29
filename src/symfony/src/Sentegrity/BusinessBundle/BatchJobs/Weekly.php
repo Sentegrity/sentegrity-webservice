@@ -3,6 +3,7 @@ namespace Sentegrity\BusinessBundle\BatchJobs;
 
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
 use Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery;
+use Sentegrity\BusinessBundle\Handlers\Utility;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -52,12 +53,6 @@ class Weekly extends Worker
                     'platform'              => $deviceSalt->platform,
                 ];
                 $this->insertData($basicData, $data, $table);
-            }
-
-            // after table is processed rename it to format: "proc_{table_name}"
-            // that will mark that table as processed
-            foreach ($dailyTable as $table) {
-                $this->mysqlq->raw('RENAME TABLE ' . $table . ' TO proc_' . $table);
             }
         }
         return true;
@@ -264,14 +259,6 @@ class Weekly extends Worker
      */
     private function sumCounts($key, &$record, &$bucket)
     {
-        if (isset($record[$key])) {
-            if (is_string($record[$key])) {
-                $record[$key] = json_decode($record[$key], true);
-            }
-
-            array_walk_recursive($record[$key], function($item, $key) use (&$bucket){
-                $bucket[$key] = isset($bucket[$key]) ?  $item + $bucket[$key] : $item;
-            });
-        }
+        Utility::sumCounts($key, $record, $bucket);
     }
 }

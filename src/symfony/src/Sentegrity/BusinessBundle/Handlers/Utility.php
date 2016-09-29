@@ -63,4 +63,42 @@ class Utility
 
         return $result;
     }
+
+    /**
+     * Checks if record exists, and if it is, do the merging.
+     *
+     * @param $key
+     * @param $record
+     * @param $bucket
+     */
+    public static function sumCounts($key, &$record, &$bucket)
+    {
+        if (isset($record[$key])) {
+            if (is_string($record[$key])) {
+                $record[$key] = json_decode($record[$key], true);
+            }
+
+            array_walk_recursive($record[$key], function($item, $key) use (&$bucket){
+                $bucket[$key] = isset($bucket[$key]) ?  $item + $bucket[$key] : $item;
+            });
+        }
+    }
+
+    /**
+     * Sort array of object by object's property
+     *
+     * @param $property
+     * @param $sort [ASS|DESC]
+     * @return bool
+     */
+    public static function sortByObjectProperty($property, $sort = 'ASC')
+    {
+        $supportData = ['property' => $property, 'sort' => $sort];
+        return function ($a, $b) use ($supportData) {
+            $property = $supportData['property'];
+            return ($supportData['sort'] == 'DESC') ?
+                strcmp($b->$property, $a->$property) :
+                strcmp($a->$property, $b->$property);
+        };
+    }
 }
