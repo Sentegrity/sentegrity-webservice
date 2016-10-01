@@ -30,7 +30,7 @@ class Dashboard extends Service
         $period = $requestData['time_frame'] * 86400;
         /** @var Organization $organization */
         $organization = $this->containerInterface->get('sentegrity_business.organization');
-        $organizationId = $organization->getOrganizationIdByUuid($requestData['organization_uuid']);
+        $organizationId = $organization->getOrganizationIdByUuid($this->session->get('org_uuid'));
         $tables = $this->selectTable(time(), $period, $organizationId);
 
         if (!$tables) {
