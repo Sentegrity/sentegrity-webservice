@@ -62,7 +62,7 @@ class Dashboard extends Service
             );
 
             foreach ($data as $item) {
-                $transformer->setGraphData($item, $time);
+                $transformer->setGraphData($item, $time - 86400);
                 Utility::sumCounts('user_issues', $item, $userIssues);
                 Utility::sumCounts('system_issues', $item, $systemIssues);
 
@@ -144,7 +144,13 @@ class Dashboard extends Service
         switch ($type) {
             case self::TYPE_RISKS:
                 usort($data, Utility::sortByObjectProperty('trustScore', 'DESC'));
-                $list = array_slice($data, 0, $limit);
+                $known = [];
+                $filtered = array_filter($data, function ($val) use (&$known) {
+                    $unique = !in_array($val->userActivationId, $known);
+                    $known[] = $val->userActivationId;
+                    return $unique;
+                });
+                $list = array_slice($filtered, 0, $limit);
                 break;
             case self::TYPE_USER:
                 arsort($data);
