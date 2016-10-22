@@ -82,15 +82,28 @@ class Dashboard extends Service
             // where needs to be generated based on sent data
             $where = array();
             if (isset($requestData['platform'])) {
-                $where['platform'] = array(
-                    'value' => $requestData['platform']
-                );
+                if ($requestData['platform']) {
+                    $platform = implode(",", $requestData['platform']);
+                    $where['platform'] = array(
+                        'value' => $platform,
+                        'in' => 1
+                    );
+                }
             }
-            if (isset($requestData['phone_model']) && isset($requestData['platform'])) {
-                $where['phone_model'] = array(
-                    'value' => $requestData['phone_model'],
-                    'logic' => MySQLQuery::_AND
-                );
+            if (isset($requestData['phone_model'])) {
+                if ($requestData['phone_model']) {
+                    $phoneModel = "'" . implode("','", $requestData['phone_model']) . "'";
+                    $where['phone_model'] = array(
+                        'value' => $phoneModel,
+                        'in' => 1
+                    );
+                }
+
+                if (isset($requestData['platform'])) {
+                    if ($requestData['platform']) {
+                        $where['phone_model']['logic'] = MySQLQuery::_OR;
+                    }
+                }
             }
 
             $data = $this->mysqlq->slave()->select(
