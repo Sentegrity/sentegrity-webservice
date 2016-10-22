@@ -23,24 +23,15 @@ class Dashboard extends Service
      * Get data for dashboard
      * 
      * @param $requestData
-     * @return \Sentegrity\BusinessBundle\Transformers\Dashboard $transformer
+     * @return \Sentegrity\BusinessBundle\Transformers\GraphData $transformer
      */
-    public function getData(array $requestData)
+    public function getGraphData(array $requestData)
     {
-        $period = $requestData['time_frame'] * 86400;
-        /** @var Organization $organization */
-        $organization = $this->containerInterface->get('sentegrity_business.organization');
-        $organizationId = $organization->getOrganizationIdByUuid($this->session->get('org_uuid'));
-        $tables = $this->selectTable(time(), $period, $organizationId);
-
+        $tables = $this->getTablesByOrganization($requestData['time_frame']);
         if (!$tables) {
-            return array();
+            return [];
         }
-
-        $transformer = new \Sentegrity\BusinessBundle\Transformers\Dashboard();
-        $userIssues = [];
-        $systemIssues = [];
-        $risks = [];
+        $transformer = new \Sentegrity\BusinessBundle\Transformers\GraphData();
         
         foreach ($tables as $time => $table) {
             $data = $this->mysqlq->slave()->select(
@@ -63,6 +54,65 @@ class Dashboard extends Service
 
             foreach ($data as $item) {
                 $transformer->setGraphData($item, $time - 86400);
+            }
+        }
+        
+        return $transformer;
+    }
+
+    /**
+     * Get data for dashboard
+     *
+     * @param $requestData
+     * @return \Sentegrity\BusinessBundle\Transformers\DashboardTopData $transformer
+     */
+    public function getTopData(array $requestData)
+    {
+        $tables = $this->getTablesByOrganization($requestData['time_frame']);
+        if (!$tables) {
+            return [];
+        }
+        $transformer = new \Sentegrity\BusinessBundle\Transformers\DashboardTopData();
+        $userIssues = [];
+        $systemIssues = [];
+        $risks = [];
+
+        foreach ($tables as $time => $table) {
+
+            // where needs to be generated based on sent data
+            $where = array();
+            if (isset($requestData['platform'])) {
+                $where['platform'] = array(
+                    'value' => $requestData['platform']
+                );
+            }
+            if (isset($requestData['phone_model']) && isset($requestData['platform'])) {
+                $where['phone_model'] = array(
+                    'value' => $requestData['phone_model'],
+                    'logic' => MySQLQuery::_AND
+                );
+            }
+
+            $data = $this->mysqlq->slave()->select(
+                $table,
+                array(
+                    'phone_model',
+                    'platform',
+                    'user_issues',
+                    'system_issues',
+                    'user_score',
+                    'device_score',
+                    'trust_score',
+                    'user_activation_id',
+                    'device_salt'
+                ),
+                $where,
+                [], [], '',
+                MySQLQuery::MULTI_ROWS,
+                \PDO::FETCH_ASSOC
+            );
+
+            foreach ($data as $item) {
                 Utility::sumCounts('user_issues', $item, $userIssues);
                 Utility::sumCounts('system_issues', $item, $systemIssues);
 
@@ -86,8 +136,29 @@ class Dashboard extends Service
         $transformer->setTopRisks(
             $this->findTopIssues($risks)
         );
-        
+
         return $transformer;
+    }
+
+    /**
+     * Get tables by organization for given time frame
+     *
+     * @param $timeFrame
+     * @return array
+     */
+    private function getTablesByOrganization($timeFrame)
+    {
+        $period = $timeFrame * 86400;
+        /** @var Organization $organization */
+        $organization = $this->containerInterface->get('sentegrity_business.organization');
+        $organizationId = $organization->getOrganizationIdByUuid($this->session->get('org_uuid'));
+        $tables = $this->selectTable(time(), $period, $organizationId);
+
+        if (!$tables) {
+            return array();
+        }
+
+        return $tables;
     }
     
     /**

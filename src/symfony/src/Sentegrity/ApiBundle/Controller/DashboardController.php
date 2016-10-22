@@ -26,16 +26,16 @@ class DashboardController extends RootController
 
     /**
      * @Route(
-     *      "/",
+     *      "/graph",
      *      defaults={"_format" = "json"},
-     *      name="admin_dashboard_get",
+     *      name="admin_dashboard_get_graph",
      *      methods="POST"
      * )
      * @Permission(
      *     permission = Permission::READ
      * )
      */
-    public function getAction(Request $request)
+    public function getGraphAction(Request $request)
     {
         $requestData = $this->validate(
             $request,
@@ -43,7 +43,32 @@ class DashboardController extends RootController
         );
 
         return $this->response(
-            $this->dashboardService->getData($requestData)
+            $this->dashboardService->getGraphData($requestData)
+        );
+    }
+
+    /**
+     * @Route(
+     *      "/top",
+     *      defaults={"_format" = "json"},
+     *      name="admin_dashboard_get_top",
+     *      methods="POST"
+     * )
+     * @Permission(
+     *     permission = Permission::READ
+     * )
+     */
+    public function getTopAction(Request $request)
+    {
+        $this->validate(
+            $request,
+            $this->container->getParameter('validate_dashboard_get')
+        );
+
+        $requestData = json_decode($request->getContent(), true);
+
+        return $this->response(
+            $this->dashboardService->getTopData($requestData)
         );
     }
 }
