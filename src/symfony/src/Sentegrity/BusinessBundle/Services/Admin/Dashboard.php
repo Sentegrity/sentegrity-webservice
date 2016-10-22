@@ -227,7 +227,7 @@ class Dashboard extends Service
 
         switch ($type) {
             case self::TYPE_RISKS:
-                usort($data, Utility::sortByObjectProperty('trustScore', 'DESC'));
+                usort($data, Utility::sortByObjectProperty('trustScore', 'ASC'));
                 $known = [];
                 $filtered = array_filter($data, function ($val) use (&$known) {
                     $unique = !in_array($val->userActivationId, $known);
