@@ -270,6 +270,19 @@ class Dashboard extends Service
             }
         }
 
+        if (isset($requestData['devices'])) {
+            if ($requestData['devices']) {
+
+                if (!empty($where)) {
+                    $where['device_salt']['logic'] = MySQLQuery::_AND;
+                }
+
+                $devices = "'" . implode("','", $requestData['devices']) . "'";
+                $where['device_salt']['value'] = $devices;
+                $where['device_salt']['in'] = 1;
+            }
+        }
+
         return $where;
     }
 }
