@@ -90,13 +90,13 @@
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">server</attribute>
         <relationship name="domain" type="0/1" destination="LMENVIRONMENTDOMAIN" idrefs="z105"></relationship>
-        <relationship name="values" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z112 z115 z108"></relationship>
+        <relationship name="values" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z115 z108"></relationship>
     </object>
     <object type="LMENVIRONMENTDOMAIN" id="z105">
         <attribute name="uuid" type="string">E59EE4FB-CB7B-4E51-9671-70FF0D14525F</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Default Domain</attribute>
-        <relationship name="environments" type="0/0" destination="LMENVIRONMENT" idrefs="z113 z114 z109"></relationship>
+        <relationship name="environments" type="0/0" destination="LMENVIRONMENT" idrefs="z114 z109"></relationship>
         <relationship name="variables" type="0/0" destination="LMENVIRONMENTVARIABLE" idrefs="z104"></relationship>
     </object>
     <object type="LMCOOKIEJAR" id="z106">
@@ -148,21 +148,9 @@
         <relationship name="groupforurlparameters" type="0/1" destination="LMREQUESTGROUP"></relationship>
         <relationship name="request" type="0/1" destination="LMREQUEST" idrefs="z110"></relationship>
     </object>
-    <object type="LMENVIRONMENTVARIABLEVALUE" id="z112">
-        <attribute name="value" type="string">https://cloud.sentegrity.com/app_dev.php/</attribute>
-        <relationship name="environment" type="1/1" destination="LMENVIRONMENT" idrefs="z113"></relationship>
-        <relationship name="variable" type="1/1" destination="LMENVIRONMENTVARIABLE" idrefs="z104"></relationship>
-    </object>
-    <object type="LMENVIRONMENT" id="z113">
-        <attribute name="uuid" type="string">18B12223-2899-4C82-8EBB-C26B10F4C324</attribute>
-        <attribute name="order" type="int64">1</attribute>
-        <attribute name="name" type="string">cloud.sentegrity.com</attribute>
-        <relationship name="domain" type="0/1" destination="LMENVIRONMENTDOMAIN" idrefs="z105"></relationship>
-        <relationship name="variablesvalues" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z112"></relationship>
-    </object>
     <object type="LMENVIRONMENT" id="z114">
         <attribute name="uuid" type="string">EF0D889E-F121-4733-9797-DC4EFD76ABAA</attribute>
-        <attribute name="order" type="int64">2</attribute>
+        <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">amazon - staging</attribute>
         <relationship name="domain" type="0/1" destination="LMENVIRONMENTDOMAIN" idrefs="z105"></relationship>
         <relationship name="variablesvalues" type="0/0" destination="LMENVIRONMENTVARIABLEVALUE" idrefs="z115"></relationship>
@@ -738,7 +726,8 @@
         <relationship name="urlparameters" type="0/0" destination="LMKEYVALUE"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z168">
-        <attribute name="value" type="string">1f1caa3519216154d28c2dc8c870162e0509ab1e
+        <attribute name="value" type="string">34e3676d45204b662945d325188ed6399d51aa23
+
 
 </attribute>
         <attribute name="order" type="int64">0</attribute>
@@ -768,7 +757,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"7\\"\\/*,\\"organization_uuid\\":\\"c013fff0-f763-5e88-9248-ef6da5d1d441\\"*\\/}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"40\\"\\/*,\\"organization_uuid\\":\\"c013fff0-f763-5e88-9248-ef6da5d1d441\\"*\\/}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Get Graph</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z167"></relationship>
@@ -776,7 +765,7 @@
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z169 z168"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z171">
-        <attribute name="value" type="string">1f1caa3519216154d28c2dc8c870162e0509ab1e
+        <attribute name="value" type="string">34e3676d45204b662945d325188ed6399d51aa23
 
 
 
@@ -798,7 +787,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"7\\",\\"platform\\":[\\"0\\",\\"1\\"]\\/*,\\"phone_model\\":[\\"iPhone8,1\\",\\"Nexus 5X\\"]*\\/}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"40\\",\\"platform\\":[\\"0\\",\\"1\\"],\\"phone_model\\":[\\"iPhone8,1\\",\\"Nexus 5X\\"],\\"user\\":[\\"jsinchak@sentegrity.com\\",\\"davor@sentegrity.com\\"]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">Get Top</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z167"></relationship>
