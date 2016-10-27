@@ -787,7 +787,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"40\\",\\"platform\\":[\\"0\\",\\"1\\"],\\"phone_model\\":[\\"iPhone8,1\\",\\"Nexus 5X\\"],\\"user\\":[\\"jsinchak@sentegrity.com\\",\\"davor@sentegrity.com\\"]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"40\\"\\/*,\\"platform\\":[\\"0\\",\\"1\\"],\\"phone_model\\":[\\"iPhone8,1\\",\\"Nexus 5X\\"]*\\/,\\"user\\":[\\"jsinchak@sentegrity.com\\",\\"davor@sentegrity.com\\"]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">Get Top</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z167"></relationship>
