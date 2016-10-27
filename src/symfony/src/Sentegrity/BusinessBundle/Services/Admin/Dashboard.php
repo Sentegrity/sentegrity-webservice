@@ -79,33 +79,6 @@ class Dashboard extends Service
 
         foreach ($tables as $time => $table) {
 
-            // where needs to be generated based on sent data
-            $where = array();
-            if (isset($requestData['platform'])) {
-                if ($requestData['platform']) {
-                    $platform = implode(",", $requestData['platform']);
-                    $where['platform'] = array(
-                        'value' => $platform,
-                        'in' => 1
-                    );
-                }
-            }
-            if (isset($requestData['phone_model'])) {
-                if ($requestData['phone_model']) {
-                    $phoneModel = "'" . implode("','", $requestData['phone_model']) . "'";
-                    $where['phone_model'] = array(
-                        'value' => $phoneModel,
-                        'in' => 1
-                    );
-                }
-
-                if (isset($requestData['platform'])) {
-                    if ($requestData['platform']) {
-                        $where['phone_model']['logic'] = MySQLQuery::_OR;
-                    }
-                }
-            }
-
             $data = $this->mysqlq->slave()->select(
                 $table,
                 array(
@@ -119,7 +92,7 @@ class Dashboard extends Service
                     'user_activation_id',
                     'device_salt'
                 ),
-                $where,
+                $this->setWhereForTopData($requestData),
                 [], [], '',
                 MySQLQuery::MULTI_ROWS,
                 \PDO::FETCH_ASSOC
@@ -250,5 +223,53 @@ class Dashboard extends Service
         }
 
         return $list;
+    }
+
+    /**
+     * Create where for top data - just to keep code easier to maintain
+     * @param array $requestData
+     * @return array $where
+     */
+    private function setWhereForTopData(array $requestData)
+    {
+        $where = array();
+        if (isset($requestData['platform'])) {
+            if ($requestData['platform']) {
+                $platform = implode(",", $requestData['platform']);
+                $where['platform'] = array(
+                    'value' => $platform,
+                    'in' => 1
+                );
+            }
+        }
+        if (isset($requestData['phone_model'])) {
+            if ($requestData['phone_model']) {
+
+                if (!empty($where)) {
+                    $where['phone_model']['logic'] = MySQLQuery::_OR;
+                    $where['phone_model']['group_close'] = 1;
+                    $where['platform']['group_open'] = 1;
+                }
+
+                $phoneModel = "'" . implode("','", $requestData['phone_model']) . "'";
+                $where['phone_model']['value'] = $phoneModel;
+                $where['phone_model']['in'] = 1;
+            }
+        }
+
+        if (isset($requestData['user'])) {
+            if ($requestData['user']) {
+
+                if (!empty($where)) {
+                    $where['user_activation_id']['logic'] = MySQLQuery::_AND;
+                }
+
+                $users = "'" . implode("','", $requestData['user']) . "'";
+                $where['user_activation_id']['value'] = $users;
+                $where['user_activation_id']['in'] = 1;
+            }
+        }
+
+        return $where;
     }
 }
