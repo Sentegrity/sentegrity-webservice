@@ -18,7 +18,7 @@ class GraphData implements \JsonSerializable
         $item->deviceScore   = (float)$graphData['device_score'];
         $item->trustScore    = (float)$graphData['trust_score'];
         $item->user          = $graphData['user_activation_id'];
-        $this->device        = $graphData['device_salt'];
+        $item->device        = $graphData['device_salt'];
 
         $this->graphData[$timestamp][] = $item;
         $item = null;
