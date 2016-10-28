@@ -257,14 +257,14 @@ class Dashboard extends Service
             }
         }
 
-        if (isset($requestData['user'])) {
-            if ($requestData['user']) {
+        if (isset($requestData['users'])) {
+            if ($requestData['users']) {
 
                 if (!empty($where)) {
                     $where['user_activation_id']['logic'] = MySQLQuery::_AND;
                 }
 
-                $users = "'" . implode("','", $requestData['user']) . "'";
+                $users = "'" . implode("','", $requestData['users']) . "'";
                 $where['user_activation_id']['value'] = $users;
                 $where['user_activation_id']['in'] = 1;
             }
@@ -274,7 +274,7 @@ class Dashboard extends Service
             if ($requestData['devices']) {
 
                 if (!empty($where)) {
-                    $where['device_salt']['logic'] = MySQLQuery::_AND;
+                    $where['device_salt']['logic'] = MySQLQuery::_OR;
                 }
 
                 $devices = "'" . implode("','", $requestData['devices']) . "'";

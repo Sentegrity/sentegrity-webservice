@@ -726,7 +726,7 @@
         <relationship name="urlparameters" type="0/0" destination="LMKEYVALUE"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z168">
-        <attribute name="value" type="string">34e3676d45204b662945d325188ed6399d51aa23
+        <attribute name="value" type="string">1f1caa3519216154d28c2dc8c870162e0509ab1e
 
 
 </attribute>
@@ -757,7 +757,7 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"40\\"\\/*,\\"organization_uuid\\":\\"c013fff0-f763-5e88-9248-ef6da5d1d441\\"*\\/}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"7\\"\\/*,\\"organization_uuid\\":\\"c013fff0-f763-5e88-9248-ef6da5d1d441\\"*\\/}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">0</attribute>
         <attribute name="name" type="string">Get Graph</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z167"></relationship>
@@ -765,7 +765,7 @@
         <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z169 z168"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z171">
-        <attribute name="value" type="string">34e3676d45204b662945d325188ed6399d51aa23
+        <attribute name="value" type="string">1f1caa3519216154d28c2dc8c870162e0509ab1e
 
 
 
@@ -788,12 +788,12 @@
         <attribute name="redirectauthorization" type="bool">0</attribute>
         <attribute name="method" type="string">POST</attribute>
         <attribute name="followredirects" type="bool">0</attribute>
-        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"40\\",\\"platform\\":[\\"0\\",\\"1\\"],\\"phone_model\\":[\\"iPhone8,1\\",\\"Nexus 5X\\"]\\/*,\\"user\\":[\\"jsinchak@sentegrity.com\\"\\/*,\\"davor@sentegrity.com\\"*\\/]*\\/,\\"devices\\":[\\/*\\"67DF74AE1DE58FF227F875E7245113FBB99D10C580E55C2B73FED4338D0B6475\\"*\\/]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
+        <attribute name="body" type="string">[{"data":{"json":"{\\"time_frame\\":\\"7\\"\\/*,\\"platform\\":[\\"0\\",\\"1\\"],\\"phone_model\\":[\\"iPhone8,1\\",\\"Nexus 5X\\"]*\\/,\\"users\\":[\\"jsinchak@sentegrity.com\\",\\"davor@sentegrity.com\\"\\/*,\\"speechpro@sentegrity.com\\"*\\/],\\"devices\\":[\\/*\\"b5143c53d6a3cf4ed29fdcf706c67eeae67399b860e92c5120a6813acc13a300\\",\\"e19d5630f1a06b58d0efae3afd5cfcd2f5579435d520c42afca16c58c9d40a9d\\"*\\/]}"},"identifier":"com.luckymarmot.JSONDynamicValue"}]</attribute>
         <attribute name="order" type="int64">1</attribute>
         <attribute name="name" type="string">Get Top</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z167"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z173 z171"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z171 z173"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z173">
         <attribute name="value" type="string"></attribute>
