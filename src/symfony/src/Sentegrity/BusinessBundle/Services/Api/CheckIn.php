@@ -1,13 +1,12 @@
 <?php
 namespace Sentegrity\BusinessBundle\Services\Api;
 
-use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
 use Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery;
-use Sentegrity\BusinessBundle\Transformers\Error;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Sentegrity\BusinessBundle\Services\Service;
 use Sentegrity\BusinessBundle\Services\Support\ErrorLog;
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
+use Sentegrity\BusinessBundle\Transformers\CheckIn as Transformer;
 
 /**
  * This is more of a helper class which allows the code to be more
@@ -27,6 +26,8 @@ class CheckIn extends Service
     private $errorLog;
     /** @var RunHistory $runHistory */
     private $runHistory;
+    /** @var Transformer */
+    private $transformer;
     
     function __construct(ContainerInterface $containerInterface)
     {
@@ -36,6 +37,8 @@ class CheckIn extends Service
         $this->organization = $this->containerInterface->get('sentegrity_business.api.organization');
         $this->errorLog = $this->containerInterface->get('sentegrity_business.error_log');
         $this->runHistory = $this->containerInterface->get('sentegrity_business.api.run_history');
+
+        $this->transformer = new Transformer();
     }
 
     /**
@@ -43,7 +46,7 @@ class CheckIn extends Service
      * 
      * @param array $groupAndOrganization
      * @param array $requestData
-     * @return \stdClass
+     * @return Transformer
      */
     public function processExistingUser(array $groupAndOrganization, array $requestData)
     {
@@ -60,7 +63,10 @@ class CheckIn extends Service
         );
 
         if ($policyId) {
-            $policy = $this->policy->getPolicyById($policyId);
+            $policy = $this->policy->getPolicyByIdAndAppVersion(
+                $policyId,
+                $requestData['app_version']
+            );
             if (!$policy) {
                 $this->errorLog->write(
                     "No policy match for group id " . $groupAndOrganization['group_id'] .
@@ -72,19 +78,25 @@ class CheckIn extends Service
                     $groupAndOrganization['organization_id'],
                     $requestData['platform']
                 );
-                $policy = $this->policy->getPolicyById($policyId);
-                $policy = $policy['data'];
+                $policy = $this->policy->getPolicyByIdAndAppVersion(
+                    $policyId,
+                    $requestData['app_version']
+                );
+                if ($policy) {
+                    $this->transformer->setPolicy($policy['data']);
+                } else {
+                    $this->transformer->setPolicyExists(false);
+                }
             } else {
                 if ($requestData['current_policy_id'] == $policy['name']) {
-                    $policy = $this->policy->getNewPolicyRevision(
+                    $this->transformer->setPolicy($this->policy->getNewPolicyRevision(
                         $policyId,
                         $requestData['current_policy_revision'],
                         $requestData['platform']
-                    );
+                    ));
                 } else {
-                    $policy = $policy['data'];
+                    $this->transformer->setPolicy($policy['data']);
                 }
-
             }
         } else {
             $this->errorLog->write(
@@ -92,7 +104,6 @@ class CheckIn extends Service
                 " and organization id " . $groupAndOrganization['organization_id'] . " id found",
                 ErrorLog::LOGIC_ERROR
             );
-            $policy = null;
         }
 
         $this->runHistory->save([
@@ -104,15 +115,14 @@ class CheckIn extends Service
             "objects"               => $requestData['run_history_objects']
         ]);
 
-        return $policy;
+        return $this->transformer;
     }
 
     /**
      * Process policy for existing user
      *
      * @param array $requestData
-     * @return \stdClass
-     * @throws ValidatorException
+     * @return Transformer
      */
     public function processNewUser(array $requestData)
     {
@@ -141,8 +151,15 @@ class CheckIn extends Service
             ]);
 
             // always return default organization policy when a new user is created
-            $policy =  $this->policy->getPolicyById($policyId);
-            return $policy['data'];
+            $policy =  $this->policy->getPolicyByIdAndAppVersion(
+                $policyId,
+                $requestData['app_version']
+            );
+            if ($policy) {
+                $this->transformer->setPolicy($policy['data']);
+            } else {
+                $this->transformer->setPolicyExists(false);
+            }
 
         } else {
             if($policyId = $this->policy->checkIfDefault(
@@ -152,18 +169,16 @@ class CheckIn extends Service
                 $requestData['app_version']
             )) {
                 $this->errorLog->write("Updated policy for user with no organization", ErrorLog::LOGIC_ERROR);
-                return $this->policy->getNewPolicyRevision(
+                $this->transformer->setPolicy($this->policy->getNewPolicyRevision(
                     $policyId,
                     $requestData['current_policy_revision'],
                     $requestData['platform']
-                );
+                ));
+            } else {
+                $this->transformer->setPolicyExists(false);
             }
-            throw new ValidatorException(
-                null,
-                'Update impossible',
-                ErrorCodes::FORBIDDEN
-            );
         }
+        return $this->transformer;
     }
 
     /**
@@ -202,11 +217,19 @@ class CheckIn extends Service
             }
         }
 
-        $this->user->create([
-            "device_activation_id" => $userActivationId,
-            "organization_id" => $groupAndOrganization['organization_id'],
-            "group_id" => $groupAndOrganization['group_id'],
-            "device_salt" => $deviceSalt
-        ]);
+        try {
+            $this->user->create([
+                "device_activation_id" => $userActivationId,
+                "organization_id" => $groupAndOrganization['organization_id'],
+                "group_id" => $groupAndOrganization['group_id'],
+                "device_salt" => $deviceSalt
+            ]);
+        } catch (\Exception $e) {
+            throw new ValidatorException(
+                null,
+                'Internal server error has occurred. Please contact administrator to resolve this.',
+                0
+            );
+        }
     }
 }

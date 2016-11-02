@@ -113,7 +113,7 @@ class Policy extends Service
      * Gets policy by ID
      *
      * @param $id
-     * @return \stdClass
+     * @return array
      */
     public function getPolicyById($id)
     {
@@ -127,7 +127,35 @@ class Policy extends Service
         );
 
         if (!$qr) {
-            return null;
+            return [];
+        }
+
+        return [
+            'data' => json_decode($qr->data),
+            'name' => $qr->name
+        ];
+    }
+
+    /**
+     * Gets policy by ID and app version
+     *
+     * @param $id
+     * @return array
+     */
+    public function getPolicyByIdAndAppVersion($id, $version)
+    {
+        /***/
+        $qr = $this->mysqlq->select(
+            'policy',
+            array('data', 'name'),
+            array(
+                'id' => array('value' => $id),
+                'app_version' => array('value' => $version, 'logic' => MySQLQuery::_AND)
+            )
+        );
+
+        if (!$qr) {
+            return [];
         }
 
         return [
