@@ -19,14 +19,14 @@ class Policy extends Service
      * @param $policy
      * @param $revision
      * @param $platform
-     * @return \stdClass
+     * @return array
      */
     public function getNewPolicyRevision($policy, $revision, $platform)
     {
         /***/
         $qr = $this->mysqlq->select(
             'policy',
-            array('data'),
+            array('data', 'name', 'app_version'),
             array(
                 'id'            => array('value' => $policy),
                 'revision_no'   => array('value' => $revision, 'logic' => MySQLQuery::_AND, 'operator' => '>'),
@@ -38,7 +38,11 @@ class Policy extends Service
             return null;
         }
 
-        return json_decode($qr->data);
+        return [
+            'data' => json_decode($qr->data),
+            'name' => $qr->name,
+            'app_version' => $qr->app_version
+        ];
     }
     
     /**
@@ -47,10 +51,9 @@ class Policy extends Service
      * @param $policy
      * @param $platform
      * @param $organization
-     * @param $appVersion
      * @return int
      */
-    public function checkIfDefault($policy, $platform, $organization, $appVersion)
+    public function checkIfDefault($policy, $platform, $organization)
     {
         /***/
         $qr = $this->mysqlq->select(
@@ -59,8 +62,7 @@ class Policy extends Service
             array(
                 'name'                  => array('value' => $policy),
                 'platform'              => array('value' => $platform, 'logic' => MySQLQuery::_AND),
-                'organization_owner_id' => array('value' => $organization, 'logic' => MySQLQuery::_AND),
-                'app_version'           => array('value' => $appVersion, 'logic' => MySQLQuery::_AND)
+                'organization_owner_id' => array('value' => $organization, 'logic' => MySQLQuery::_AND)
             )
         );
         
@@ -120,7 +122,7 @@ class Policy extends Service
         /***/
         $qr = $this->mysqlq->select(
             'policy',
-            array('data', 'name'),
+            array('data', 'name', 'app_version'),
             array(
                 'id' => array('value' => $id),
             )
@@ -132,7 +134,8 @@ class Policy extends Service
 
         return [
             'data' => json_decode($qr->data),
-            'name' => $qr->name
+            'name' => $qr->name,
+            'app_version' => $qr->app_version
         ];
     }
 
@@ -147,7 +150,7 @@ class Policy extends Service
         /***/
         $qr = $this->mysqlq->select(
             'policy',
-            array('data', 'name'),
+            array('data', 'name', 'app_version'),
             array(
                 'id' => array('value' => $id),
                 'app_version' => array('value' => $version, 'logic' => MySQLQuery::_AND)
@@ -160,7 +163,8 @@ class Policy extends Service
 
         return [
             'data' => json_decode($qr->data),
-            'name' => $qr->name
+            'name' => $qr->name,
+            'app_version' => $qr->app_version
         ];
     }
 }

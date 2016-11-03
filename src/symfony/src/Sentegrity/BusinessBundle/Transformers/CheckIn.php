@@ -5,7 +5,7 @@ namespace Sentegrity\BusinessBundle\Transformers;
 class CheckIn implements \JsonSerializable
 {
     private $policy = null;
-    private $policyExists = true;
+    private $policyOrganizationExists = true;
 
     /**
      * @param mixed $policy
@@ -18,16 +18,16 @@ class CheckIn implements \JsonSerializable
     /**
      * @param mixed $policyExists
      */
-    public function setPolicyExists($policyExists)
+    public function setPolicyExists($policyOrganizationExists)
     {
-        $this->policyExists = $policyExists;
+        $this->policyOrganizationExists = $policyOrganizationExists;
     }
 
     function jsonSerialize()
     {
         return [
-            'newPolicy'        => $this->policy,
-            'policyExists'  => $this->policyExists
+            'newPolicy'                 => $this->policy,
+            'policyOrganizationExists'  => $this->policyOrganizationExists
         ];
     }
 }

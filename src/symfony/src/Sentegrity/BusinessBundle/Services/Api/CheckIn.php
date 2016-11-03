@@ -63,10 +63,7 @@ class CheckIn extends Service
         );
 
         if ($policyId) {
-            $policy = $this->policy->getPolicyByIdAndAppVersion(
-                $policyId,
-                $requestData['app_version']
-            );
+            $policy = $this->policy->getPolicyById($policyId);
             if (!$policy) {
                 $this->errorLog->write(
                     "No policy match for group id " . $groupAndOrganization['group_id'] .
@@ -78,24 +75,28 @@ class CheckIn extends Service
                     $groupAndOrganization['organization_id'],
                     $requestData['platform']
                 );
-                $policy = $this->policy->getPolicyByIdAndAppVersion(
-                    $policyId,
-                    $requestData['app_version']
-                );
+                $policy = $this->policy->getPolicyById($policyId);
                 if ($policy) {
-                    $this->transformer->setPolicy($policy['data']);
+                    if ($this->checkPolicyAppVersion($policy, $requestData['app_version'])) {
+                        $this->transformer->setPolicy($policy['data']);
+                    }
                 } else {
                     $this->transformer->setPolicyExists(false);
                 }
             } else {
                 if ($requestData['current_policy_id'] == $policy['name']) {
-                    $this->transformer->setPolicy($this->policy->getNewPolicyRevision(
+                    $policy = $this->policy->getNewPolicyRevision(
                         $policyId,
                         $requestData['current_policy_revision'],
                         $requestData['platform']
-                    ));
+                    );
+                    if ($this->checkPolicyAppVersion($policy, $requestData['app_version'])) {
+                        $this->transformer->setPolicy($policy['data']);
+                    }
                 } else {
-                    $this->transformer->setPolicy($policy['data']);
+                    if ($this->checkPolicyAppVersion($policy, $requestData['app_version'])) {
+                        $this->transformer->setPolicy($policy['data']);
+                    }
                 }
             }
         } else {
@@ -151,12 +152,11 @@ class CheckIn extends Service
             ]);
 
             // always return default organization policy when a new user is created
-            $policy =  $this->policy->getPolicyByIdAndAppVersion(
-                $policyId,
-                $requestData['app_version']
-            );
+            $policy =  $this->policy->getPolicyById($policyId);
             if ($policy) {
-                $this->transformer->setPolicy($policy['data']);
+                if ($this->checkPolicyAppVersion($policy, $requestData['app_version'])) {
+                    $this->transformer->setPolicy($policy['data']);
+                }
             } else {
                 $this->transformer->setPolicyExists(false);
             }
@@ -165,18 +165,20 @@ class CheckIn extends Service
             if($policyId = $this->policy->checkIfDefault(
                 $requestData['current_policy_id'],
                 $requestData['platform'],
-                0,
-                $requestData['app_version']
+                0
             )) {
                 $this->errorLog->write("Updated policy for user with no organization", ErrorLog::LOGIC_ERROR);
-                $this->transformer->setPolicy($this->policy->getNewPolicyRevision(
+                $policy = $this->policy->getNewPolicyRevision(
                     $policyId,
                     $requestData['current_policy_revision'],
                     $requestData['platform']
-                ));
-            } else {
-                $this->transformer->setPolicyExists(false);
+                );
+                if ($this->checkPolicyAppVersion($policy, $requestData['app_version'])) {
+                    $this->transformer->setPolicy($policy['data']);
+                }
             }
+
+            $this->transformer->setPolicyExists(false);
         }
         return $this->transformer;
     }
@@ -231,5 +233,14 @@ class CheckIn extends Service
                 0
             );
         }
+    }
+
+    /**
+     * Check policy's app version
+     * @return bool
+     */
+    private function checkPolicyAppVersion($policy, $appVersion)
+    {
+        return $policy['app_version'] == $appVersion;
     }
 }
