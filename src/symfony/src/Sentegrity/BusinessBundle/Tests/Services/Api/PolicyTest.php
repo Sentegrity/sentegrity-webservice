@@ -5,6 +5,7 @@ use Sentegrity\BusinessBundle\Services\Admin\Organization;
 use Sentegrity\BusinessBundle\Services\Admin\Policy;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Sentegrity\BusinessBundle\Handlers\Platform;
+use Sentegrity\BusinessBundle\Tests\Services\Utility;
 
 class PolicyTest extends WebTestCase
 {
@@ -103,7 +104,8 @@ class PolicyTest extends WebTestCase
         $adminPolicyService->update($policyData);
 
         $rsp = self::$policyService->getNewPolicyRevision(self::$policyId, 1, Platform::IOS);
-        $this->assertEquals($rsp->key, $policyData['data']['key'], "New policy not fetched");
+        $rsp = Utility::enablePrivateProperties($rsp);
+        $this->assertEquals($rsp->data->key, $policyData['data']['key'], "New policy not fetched");
     }
 
     /**

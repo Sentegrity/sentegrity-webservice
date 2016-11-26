@@ -37,8 +37,6 @@ class CheckIn extends Service
         $this->organization = $this->containerInterface->get('sentegrity_business.api.organization');
         $this->errorLog = $this->containerInterface->get('sentegrity_business.error_log');
         $this->runHistory = $this->containerInterface->get('sentegrity_business.api.run_history');
-
-        $this->transformer = new Transformer();
     }
 
     /**
@@ -50,6 +48,7 @@ class CheckIn extends Service
      */
     public function processExistingUser(array $groupAndOrganization, array $requestData)
     {
+        $this->transformer = new Transformer();
         $this->identifyDevice(
             $requestData['device_salt'],
             $requestData['user_activation_id'],
@@ -127,6 +126,7 @@ class CheckIn extends Service
      */
     public function processNewUser(array $requestData)
     {
+        $this->transformer = new Transformer();
         $organization = $this->organization->getOrganizationByDomainName($requestData['user_activation_id']);
         if ($organization) {
             $this->user->create([

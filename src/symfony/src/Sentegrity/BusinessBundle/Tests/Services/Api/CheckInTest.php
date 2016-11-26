@@ -35,11 +35,13 @@ class CheckInTest extends WebTestCase
             "user_activation_id"        => 'test@domain23.dfg',
             "device_salt"               => Utility::mockDeviceSalt(),
             "phone_model"               => 'iPhone 5s',
-            "run_history_objects"       => ['key' => 'value']
+            "run_history_objects"       => ['key' => 'value'],
+            "app_version"               => 'v1.0'
         ]);
 
         $this->assertNotEmpty($rsp);
-        $this->assertEquals('value', $rsp->key);
+        $rsp = Utility::enablePrivateProperties($rsp);
+        $this->assertEquals('value', $rsp->newPolicy->key);
 
         // policyId exists no new revision
         $rsp = self::$checkInService->processExistingUser([
@@ -51,10 +53,12 @@ class CheckInTest extends WebTestCase
             "user_activation_id"        => 'test@domain23.dfg',
             "device_salt"               => Utility::mockDeviceSalt(),
             "phone_model"               => 'iPhone 5s',
-            "run_history_objects"       => ['key' => 'value']
+            "run_history_objects"       => ['key' => 'value'],
+            "app_version"               => 'v3.0'
         ]);
 
-        $this->assertNull($rsp);
+        $rsp = Utility::enablePrivateProperties($rsp);
+        $this->assertNull($rsp->newPolicy);
 
 
         // policyId does not exist
@@ -62,20 +66,22 @@ class CheckInTest extends WebTestCase
             "organization_id"   => 1,
             "group_id"          => 1], [
             "platform"                  => Platform::IOS,
-            "current_policy_id"         => 'Test policy name',
+            "current_policy_id"         => 'Test policy name unexisting',
             "current_policy_revision"   => 0,
             "user_activation_id"        => 'test@domain23.dfg',
             "device_salt"               => Utility::mockDeviceSalt(),
             "phone_model"               => 'iPhone 5s',
-            "run_history_objects"       => ['key' => 'value']
+            "run_history_objects"       => ['key' => 'value'],
+            "app_version"               => 'v3.0'
         ]);
 
-        $this->assertNull($rsp);
+        $rsp = Utility::enablePrivateProperties($rsp);
+        $this->assertNull($rsp->newPolicy);
     }
 
+
+
     /**
-     * @expectedException        \Sentegrity\BusinessBundle\Exceptions\ValidatorException
-     * @expectedExceptionMessage Update impossible
      * @group api_check_in
      */
     public function testProcessNewUser()
@@ -88,11 +94,13 @@ class CheckInTest extends WebTestCase
             "user_activation_id"        => 'test@domain.test',
             "device_salt"               => 'qwerty',
             "phone_model"               => 'iPhone 5s',
-            "run_history_objects"       => ['key' => 'value']
+            "run_history_objects"       => ['key' => 'value'],
+            "app_version"               => 'v1.0'
         ]);
 
         $this->assertNotEmpty($rsp);
-        $this->assertEquals('value', $rsp->key);
+        $rsp = Utility::enablePrivateProperties($rsp);
+        $this->assertEquals('value', $rsp->newPolicy->key);
 
         // no organization but default policy with old revision
         self::$checkInService->processNewUser([
@@ -107,7 +115,8 @@ class CheckInTest extends WebTestCase
         ]);
 
         $this->assertNotEmpty($rsp);
-        $this->assertEquals('value', $rsp->key);
+        $rsp = Utility::enablePrivateProperties($rsp);
+        $this->assertEquals('value', $rsp->newPolicy->key);
 
         // no organization but default policy with valid revision
         $rsp = self::$checkInService->processNewUser([
@@ -121,7 +130,8 @@ class CheckInTest extends WebTestCase
             "app_version"               => 'v3.0'
         ]);
 
-        $this->assertNull($rsp);
+        $rsp = Utility::enablePrivateProperties($rsp);
+        $this->assertNull($rsp->newPolicy);
         
         // no organization and policy is not default
         self::$checkInService->processNewUser([

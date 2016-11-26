@@ -80,4 +80,15 @@ class Utility
             "device_salt" => self::mockDeviceSalt()
         ));
     }
+
+    /**
+     * Makes private properties accessible to check on it
+     *
+     * @param $object
+     * @return \stdClass
+     */
+    public static function enablePrivateProperties($object)
+    {
+        return json_decode(json_encode($object));
+    }
 }
