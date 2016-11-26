@@ -6,6 +6,7 @@ use Sentegrity\BusinessBundle\Services\Service;
 use Sentegrity\BusinessBundle\Exceptions\ErrorCodes;
 use Sentegrity\BusinessBundle\Exceptions\ValidatorException;
 use Sentegrity\BusinessBundle\Services\Support\Database\MySQLQuery;
+use Sentegrity\BusinessBundle\Transformers\TopRisks;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Dashboard extends Service
@@ -103,13 +104,7 @@ class Dashboard extends Service
                 Utility::sumCounts('system_issues', $item, $systemIssues);
 
                 // risks we have to create manually 'coz we're gonna return array of objects
-                $risk = new \stdClass();
-                $risk->userActivationId = $item['user_activation_id'];
-                $risk->deviceSalt = $item['device_salt'];
-                $risk->trustScore = (float)$item['trust_score'];
-                $risks[] = $risk;
-                $risk = null;
-                unset($risk);
+                $risks[] = new TopRisks($item);
             }
         }
 
