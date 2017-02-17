@@ -62,7 +62,13 @@ class Policy  extends Service
             $organizationService = $this->containerInterface->get('sentegrity_business.organization');
             $organizationId = $organizationService->getOrganizationIdByUuid($organizationUuid);
         } else {
-            $this->checkIfSuperAdmin(true);
+            if($this->checkIfSuperAdmin(true)) {
+                throw new ValidatorException(
+                    null,
+                    "You can only edit current default policies as superadmin! Log in as a custom organization to create a new policy",
+                    ErrorCodes::FORBIDDEN
+                );
+            }
         }
 
         if ($policyData['is_default']) {
@@ -89,7 +95,15 @@ class Policy  extends Service
             ->setData($data)
             ->setOrganizationOwnerId($organizationId);
 
+        /** @var Organization $organitazionService */
+        $organitazionService = $this->containerInterface->get('sentegrity_business.organization');
+        $organization = $organitazionService->getOrganizationByIds($organizationId);
+        /** @var Group $groupService */
+        $groupService = $this->containerInterface->get('sentegrity_business.group');
+        $group = $groupService->getGroupByGroupAndOrganization(0, $organization);
+        $group->setPolicyIos($policy);
         $this->entityManager->persist($policy);
+        $this->entityManager->persist($group);
 
         return $this->flush(
             'An error occurred while saving policy. Save failed!',
